@@ -1,0 +1,68 @@
+# Does JFPainter build on its four targets, with the rust-version it names and with the newest
+# stable Rust, and do its plugins build? The test scripts need windows: `cargo jflib test` and
+# `python tools/linux_test.py` on the developer machines run them (README.md, "Tests"), as JFLib
+# does with its apps.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Mondays: a new stable that breaks something shows before a release does
+    - cron: "37 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    name: check ${{ matrix.target }} (${{ matrix.toolchain }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        # 1.98: rust-version in Cargo.toml (keep both equal)
+        toolchain: ["1.98", stable]
+        target: [x86_64-unknown-linux-gnu, x86_64-pc-windows-msvc, wasm32-unknown-unknown, aarch64-linux-android]
+    steps:
+      - uses: actions/checkout@v6
+      - name: Rust
+        run: |
+          rustup toolchain install ${{ matrix.toolchain }} --profile minimal --target ${{ matrix.target }} --no-self-update
+          rustup default ${{ matrix.toolchain }}
+          rustc --version
+      - name: JFPainter
+        run: cargo check --locked --lib --bins --target ${{ matrix.target }}
+
+  plugins:
+    name: plugins (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-latest, target: x86_64-pc-windows-msvc }
+          - { os: ubuntu-latest, target: x86_64-unknown-linux-gnu }
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v6
+      - name: Rust
+        run: |
+          rustup toolchain install 1.98 --profile minimal --target ${{ matrix.target }} --no-self-update
+          rustup default 1.98
+      - name: Plugins
+        working-directory: plugins
+        run: cargo build --locked --release --target ${{ matrix.target }}

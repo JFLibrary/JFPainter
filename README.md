@@ -187,6 +187,7 @@ Dedicated native macOS and iOS app targets are not currently provided.
 python tools/plugins.py      # the test plugins next to the program (tests/plugins*.uis)
 python tools/pdn_host.py     # optional: the paint.net host (the .NET SDK and paint.net)
 cargo jflib test             # every tests/*.uis
+python tools/linux_test.py   # on Windows: the same scripts on the Linux program, through WSL
 ```
 
 ### Release builds, styles, and packages
