@@ -1,0 +1,150 @@
+# JFPainter: a raster image editor written in Rust with JFLib (https://jflib.org).
+[package]
+name = "JFPainter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.98"
+license = "MIT"
+repository = "https://github.com/JFLibrary/JFPainter"
+publish = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+
+# The app is the library crate, so the same code also builds for the browser and Android
+# (cargo jflib web, cargo jflib android); the program only links it.
+[lib]
+name = "jfpainter"
+path = "src/lib.rs"
+test = false
+doctest = false
+
+[[bin]]
+name = "JFPainter"
+path = "src/main.rs"
+test = false
+bench = false
+
+[dependencies]
+jflib = "0.1"
+
+[build-dependencies]
+jflib-build = "0.1"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = [
+    'cfg(jfgui_assets)',    # ui::main!: the app has assets/
+    'cfg(jfgui_dev)',       # a development build
+    'cfg(jfgui_glibc)',     # Linux against glibc, not static
+    'cfg(jfgui_manifest)',  # ui::main!: PERMISSIONS as a file
+    'cfg(jfgui_package)',   # ui::main!: PACKAGE as a file
+    'cfg(web_threads)',     # the browser with threads
+] }
+
+# Cargo takes no profile from a dependency.  JFLib's runtime needs panic = "abort"; a development
+# build without overflow checks and debug assertions is the build JFLib is tested with.
+[profile.dev]
+panic = "abort"
+opt-level = 1
+debug = 0
+debug-assertions = false
+overflow-checks = false
+codegen-units = 16
+
+# the crates whose speed matters in development builds too: pixels and codecs stay fast in the
+# tests, and JFPainter draws with its own pixel loops
+[profile.dev.package.JFPainter]
+opt-level = 2
+
+[profile.dev.package.jflib-gfx]
+opt-level = 2
+
+[profile.dev.package.jflib-text]
+opt-level = 2
+
+[profile.dev.package.jflib-simd]
+opt-level = 2
+
+[profile.dev.package.jflib-fx]
+opt-level = 2
+
+[profile.dev.package.jflib-crypto]
+opt-level = 2
+
+[profile.dev.package.jflib-compress]
+opt-level = 2
+
+[profile.dev.package.jflib-cas]
+opt-level = 2
+
+[profile.dev.package.jflib-spell]
+opt-level = 2
+
+[profile.dev.package.jflib-img-core]
+opt-level = 2
+
+[profile.dev.package.jflib-img-png]
+opt-level = 2
+
+[profile.dev.package.jflib-img-jpeg]
+opt-level = 2
+
+[profile.dev.package.jflib-img-bmp]
+opt-level = 2
+
+[profile.dev.package.jflib-img-gif]
+opt-level = 2
+
+[profile.dev.package.jflib-img-tga]
+opt-level = 2
+
+[profile.dev.package.jflib-img-tiff]
+opt-level = 2
+
+[profile.dev.package.jflib-img-webp]
+opt-level = 2
+
+[profile.dev.package.jflib-img-hevc]
+opt-level = 2
+
+[profile.dev.package.jflib-img-av1]
+opt-level = 2
+
+[profile.dev.package.jflib-img-heif]
+opt-level = 2
+
+[profile.dev.package.jflib-img-avif]
+opt-level = 2
+
+[profile.dev.package.jflib-img-jxl]
+opt-level = 2
+
+[profile.dev.package.jflib-img-jxl-enc]
+opt-level = 2
+
+[profile.dev.package.jflib-img-jxr]
+opt-level = 2
+
+[profile.dev.package.jflib-img-dds]
+opt-level = 2
+
+[profile.dev.package.jflib-img-pdn]
+opt-level = 2
+
+[profile.dev.package.jflib-img-svg]
+opt-level = 2
+
+[profile.dev.package.jflib-img-all]
+opt-level = 2
+
+[profile.dev.package.jflib-text-shape]
+opt-level = 2
+
+[profile.release]
+panic = "abort"
+opt-level = 2
+codegen-units = 1
+lto = "fat"
+debug = 0
+strip = "symbols"
