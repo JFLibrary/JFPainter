@@ -118,7 +118,7 @@ JFPainter --brush-presets DynamicDrawSettings.json --brush-preset "Red ink"
 ```
 
 Ohne `--brush-preset` wird nur die Bibliothek geladen. Für die unveränderte
-Plugin-DLL steht außerdem der [Paint.NET-Host](pdn-host/README.md)
+Plugin-DLL steht außerdem der [Paint.NET-Host](../pdn-host/README.md)
 zur Verfügung. Dynamic Draw v4.0 wurde auf Windows und Linux/Wine geladen und mit
 seinem Originaldialog konstruiert; interaktives Zeichnen, Tablets und alle
 Plugin-Funktionen sind damit noch nicht vollständig abgenommen.

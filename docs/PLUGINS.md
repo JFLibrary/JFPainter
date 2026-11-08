@@ -1,7 +1,7 @@
 # JFPainter plugins
 
 This document describes the native PNAPI ABI. Original managed Paint.NET DLLs use
-the separate [Windows host](pdn-host/README.md), including
+the separate [Windows host](../pdn-host/README.md), including
 folder discovery, effects menus, FileType factories and diagnostics. Managed DLLs
 may share Effects/FileTypes folders with PNAPI DLLs; the PE CLR header selects
 the loader before execution.

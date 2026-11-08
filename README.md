@@ -1,14 +1,16 @@
 # JFPainter
 
 JFPainter is a raster graphics editor inspired by paint.net, written in Rust with
-[JFLib](../../README.md). It combines a layered canvas, multiple open documents,
-selection tools, image adjustments, effects, and an extensible plugin system.
+[JFLib](https://github.com/JFLibrary/JFLib) (the crate [`jflib`](https://crates.io/crates/jflib)).
+It combines a layered canvas, multiple open documents, selection tools, image adjustments,
+effects, and an extensible plugin system. Until November 2026 it was called PaintCraft and lived
+in the JFLib repository (`apps/PaintCraft`).
 
 Use it for drawing, photo editing, compositing, and converting images between
 formats. For a smaller drawing program, see
-[Kritzel](../Kritzel/README.md).
+[Kritzel](https://github.com/JFLibrary/JFLib/tree/main/apps/Kritzel).
 
-![JFPainter in its dark theme, with the canvas and Tools, Colors, History, and Layers panels](../../docs/images/readme/paintcraft-dark.png)
+![JFPainter in its dark theme, with the canvas and Tools, Colors, History, and Layers panels](docs/images/jfpainter-dark.png)
 
 *JFPainter with the WinUI style and dark theme. German is the default UI language; English and French catalogs are also available.*
 
@@ -16,13 +18,13 @@ formats. For a smaller drawing program, see
 
 ### macOS style
 
-![JFPainter with the macOS style and dark theme, showing the same image and editing panels](../../docs/images/readme/paintcraft-macos-dark.png)
+![JFPainter with the macOS style and dark theme, showing the same image and editing panels](docs/images/jfpainter-macos-dark.png)
 
 *The same image, 75% zoom, and dark theme with JFLib's macOS style.*
 
 ### KDE style
 
-![JFPainter with the KDE style and dark theme, showing the same image and editing panels](../../docs/images/readme/paintcraft-kde-dark.png)
+![JFPainter with the KDE style and dark theme, showing the same image and editing panels](docs/images/jfpainter-kde-dark.png)
 
 *The same image, 75% zoom, and dark theme with JFLib's KDE style.*
 
@@ -102,7 +104,7 @@ use this protective import behavior. A simple supported 8-bit PSD can be edited
 and saved directly. PSD export refuses blend modes it cannot represent.
 
 On Windows a pan of the canvas comes from GPU textures, byte for byte what the
-CPU draws ([GPU.md](../../docs/GPU.md)); everything else draws on the CPU.
+CPU draws ([GPU.md](https://github.com/JFLibrary/JFLib/blob/main/docs/GPU.md) of JFLib); everything else draws on the CPU.
 
 The editing canvas uses 8-bit color channels. A codec's ability to read a
 higher-bit-depth source does not make JFPainter an HDR editor. Animated and
@@ -122,108 +124,87 @@ dialogs. QOI is an included example plugin, not part of the default codec set.
 
 ## Build and run
 
-**Run these commands from the JFLib repository root**, where `build_rs.py` is
-located. The app name is case-sensitive: **`JFPainter`**.
+You need Rust through rustup (1.98 or later) and the tool `cargo jflib` for what Cargo does not
+do itself:
 
-You need Python 3, Rust/Cargo through rustup, and LLVM/LLD. The repository targets Rust
-1.98.x. The Python script builds the app with `rustc` and the pinned shaping
-dependencies with `cargo --locked`. The first build needs crates.io access (or
-a populated Cargo cache). See the
-[shared build prerequisites](../../README.md#prerequisites) for tool paths and
-platform setup. Use `python3` instead of `python` where required.
+```sh
+cargo install cargo-jflib
+```
+
+JFLib comes from crates.io as the one dependency `jflib`. The helper scripts in `tools/` need
+Python 3.11.
 
 ### Windows
 
-```powershell
-rustup target add x86_64-pc-windows-msvc
-python build_rs.py app JFPainter --target win
-.\build\win\JFPainter.exe
-```
-
-To build and launch with an image and a dark theme:
-
-```powershell
-python build_rs.py run JFPainter --target win -- --open "C:\Pictures\example.png" --theme dark
+```sh
+cargo run
+cargo run -- --open "C:\Pictures\example.png" --theme dark
 ```
 
 ### Linux
 
+Name the target, also on Linux (`.cargo/config.toml` says why):
+
 ```sh
 rustup target add x86_64-unknown-linux-gnu
-python3 build_rs.py app JFPainter --target linux
-./build/linux/JFPainter
+cargo run --target x86_64-unknown-linux-gnu
 ```
 
-Running the desktop app requires a Wayland or X11 session. See the
-[Linux build notes](../../README.md#linux-quick-start) for cross-building and WSL.
+Running the program needs a Wayland or X11 session. On Windows the same `cargo build --target
+x86_64-unknown-linux-gnu` makes the Linux program (`target/x86_64-unknown-linux-gnu/debug/JFPainter`).
 
 ### Browser / WebAssembly
 
 ```sh
 rustup target add wasm32-unknown-unknown
 rustup component add rust-src
-python build_rs.py app JFPainter --target web
-python tools/serve_web.py build/web/JFPainter
+cargo jflib web --serve
 ```
 
-Open [http://127.0.0.1:8766/](http://127.0.0.1:8766/). LLVM's `wasm-ld` is required.
-For a smaller build that does not need `rust-src`, add `--web-mode scalar` to the
-build command. See the [browser build guide](../../README.md#browser-builds) for
-the SIMD and worker variants.
+Open [http://127.0.0.1:8766/](http://127.0.0.1:8766/). `--modes scalar` builds only the variant
+without SIMD and threads, which does not need `rust-src`.
 
 ### Android (experimental)
 
 ```sh
 rustup target add aarch64-linux-android
-python build_rs.py app JFPainter --target android
-adb install -r build/android/JFPainter-arm64-v8a-debug.apk
+cargo jflib android --install
 ```
 
-For the emulator add `--android-abi x86_64`. This is the desktop interface on a phone: painting,
+For the emulator add `--abi x86_64`. This is the desktop interface on a phone: painting,
 files through the system picker, undo, and two-finger zoom work, but the interface is not
 adapted to a small screen yet. In portrait the title bar is cut off (Korrekturen, Effekte, the
 tabs, the panel buttons), and in landscape some dialogs are taller than the screen; turning the
 phone reaches what is missing either way. There are no worker threads on Android, so opening and
 effects run on the interface thread.
 
-This app currently has `win`, `linux`, `web`, and the experimental `android` build targets.
-Native plugins, the `jxlenc` module, printing, and the optional paint.net compatibility host
-are desktop features. Dedicated native macOS and iOS app targets are not currently provided.
+Native plugins, printing, and the optional paint.net compatibility host are desktop features.
+Dedicated native macOS and iOS app targets are not currently provided.
 
-### Release builds and styles
+### Tests
 
 ```sh
-# Optimized Windows build: build/release/win/JFPainter.exe
-python build_rs.py app JFPainter --target win --release
-
-# Separate style variants: build/win/<style>/JFPainter.exe
-python build_rs.py app JFPainter --target win --style winui,classic,macos,kde,jfoffice
+python tools/plugins.py      # the test plugins next to the program (tests/plugins*.uis)
+python tools/pdn_host.py     # optional: the paint.net host (the .NET SDK and paint.net)
+cargo jflib test             # every tests/*.uis
 ```
 
-JFLib styles are selected when building. Theme and scale can be selected when
-launching, for example `--theme dark --scale 150`.
+### Release builds, styles, and packages
 
-The build script automatically builds JFPainter's additional modules, including
-`jxlenc.dll` on Windows and `jxlenc.so` on Linux. Keep the module beside the
-executable when distributing a native build to retain the enhanced JPEG XL writer.
-A fallback writer is available when the module is absent. Keep the generated
-`licenses/` folder with the executable; it includes font and text-shaping notices.
-
-### Build Manager
-
-The same build can be configured through the graphical
-[Build Manager](../buildManager/README.md):
-
-```powershell
-python build_rs.py app buildManager --target win
-.\build\win\buildManager.exe
+```sh
+cargo build --release                               # target/release/JFPainter.exe
+python tools/pdn_host.py --out build/pdn-host       # optional: the host for the setup
+cargo jflib package                                 # a setup for Windows and a .deb
+cargo jflib package --formats all                   # also MSIX, AppImage, RPM, Flatpak
 ```
 
-Select the JFLib repository and **JFPainter**, choose the target and style
-under **Development (Entwicklung)**, then select **Prepare jobs (Aufträge
-vorbereiten)** and add the jobs to the queue. The GUI still requires Python, Rust,
-and LLVM. The [Build Manager walkthrough](../../README.md#build-manager) covers
-launch profiles, release builds, and packages.
+The style is chosen when building: the environment variable `JFLIB_STYLE` (`winui`, `classic`,
+`kde`, `macos`; without it `winui`) picks it for `cargo build` and `cargo run`. Theme and scale
+can be selected when launching, for example `--theme dark --scale 150`. `cargo jflib package`
+builds every style of `PACKAGE` into one setup and lets the user pick one at installation.
+The packages land in `target/jflib-package/`; the setup brings `pdn-host/` when it was built
+(`PACKAGE` `win_files`, a feature of `cargo-jflib` after 0.1.0). Keep the `licenses/` folder with
+the program; it holds the font and text-shaping notices.
 
 ## Plugins
 
@@ -232,18 +213,18 @@ launch profiles, release builds, and packages.
 JFPainter has its own **PNAPI** plugin interface. Native plugins are `.dll` files
 on Windows and `.so` files on Linux, placed in `Effects`, `FileTypes`, or `Shapes`
 beside the executable. They can provide effects, adjustments, file codecs, and
-shapes. See the [native plugin guide](../../plugins/README.md).
+shapes. See the [native plugin guide](plugins/README.md).
 
-For example, add QOI support to the default Windows build:
+For example, add QOI support to the development build on Windows:
 
 ```powershell
-python build_rs.py plugin qoi --target win
-New-Item -ItemType Directory -Force .\build\win\FileTypes
-Copy-Item .\build\win\plugins\qoi.dll .\build\win\FileTypes\qoi.dll
+python tools/plugins.py
+New-Item -ItemType Directory -Force .\target\debug\FileTypes
+Copy-Item .\plugins\target\x86_64-pc-windows-msvc\release\qoi.dll .\target\debug\FileTypes\qoi.dll
 ```
 
-Restart JFPainter after installing the plugin. For a release or style-specific
-build, use the `FileTypes` directory beside that build's executable.
+Restart JFPainter after installing the plugin. For a release build or an installed
+JFPainter, use the `FileTypes` directory beside that executable.
 
 ### Original paint.net plugins
 
@@ -319,12 +300,12 @@ remaining work; it does not claim complete Paint.NET or Photoshop parity.
 ## Related documentation
 
 - [Source architecture and module responsibilities](docs/ARCHITECTURE.md)
-- [JFLib library and app overview](../../README.md)
+- [JFLib, the library](https://github.com/JFLibrary/JFLib)
 - [Layer behavior](docs/LAYERS.md), [selection tools](docs/SELECTION.md), and
   [image operations](docs/IMAGEOPS.md)
 - [Effects](docs/EFFECTS.md), [G'MIC and bitmap brushes](docs/CREATIVE_TOOLS.md), and [color palettes](docs/COLORS.md)
 - [Handbook comparison and regression tests](docs/MANUAL_PARITY.md)
-- [Text-shaping dependency notices](../../lib/text_shape/NOTICE.md)
-- [Native plugin development](../../plugins/README.md)
-- [Packaging guide](../../docs/PACKAGING.md)
-- [Kritzel: the smaller drawing app](../Kritzel/README.md)
+- [Text-shaping dependency notices](https://github.com/JFLibrary/JFLib/blob/main/lib/text_shape/NOTICE.md) (JFLib)
+- [Native plugin development](plugins/README.md)
+- [Packaging with `cargo jflib package`](https://github.com/JFLibrary/JFLib/blob/main/lib/cargo_jflib/README.md) (JFLib)
+- [Kritzel: the smaller drawing app](https://github.com/JFLibrary/JFLib/tree/main/apps/Kritzel) (JFLib)

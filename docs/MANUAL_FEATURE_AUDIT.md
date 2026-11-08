@@ -94,7 +94,7 @@ Die Installation der im Buch genannten Paint.NET-DLLs ist deshalb kein verfügba
 Weg, diese Funktionen in JFPainter zu ergänzen.
 
 Belege: [Loader-Vertrag](../plugins.rs#L1206),
-[Rust-Plugin-Vertrag](../../../plugins/README.md#L1).
+[Rust-Plugin-Vertrag](../plugins/README.md#L1).
 Das vorhandene Plugin-System wird hier ausdrücklich nicht als fehlend bewertet.
 
 Folgende Tutorials benötigen konkrete, nicht mitgelieferte Erweiterungseffekte:
@@ -107,9 +107,9 @@ Folgende Tutorials benötigen konkrete, nicht mitgelieferte Erweiterungseffekte:
 | 29 | Oil Painting+ | 308 | Normales Ölgemälde ist vorhanden; das „+“-Plugin wird nicht mitgeliefert. |
 | 30 | Pastel | 311 | Kein entsprechender eingebauter Effekt registriert. |
 
-Vergleich: [Korrekturen](../../../lib/fx/adj.rs#L688),
-[künstlerische Effekte](../../../lib/fx/artistic.rs#L140),
-[Registrierung der Effektgruppen](../../../lib/fx/lib.rs#L543).
+Vergleich: [Korrekturen](https://github.com/JFLibrary/JFLib/blob/main/lib/fx/adj.rs#L688),
+[künstlerische Effekte](https://github.com/JFLibrary/JFLib/blob/main/lib/fx/artistic.rs#L140),
+[Registrierung der Effektgruppen](https://github.com/JFLibrary/JFLib/blob/main/lib/fx/lib.rs#L543).
 
 Weitere Erweiterungen aus Funktionskapiteln und Anhang sind ebenfalls nicht enthalten:
 Feather/Bevel/Inner Shadow für Auswahl oder Objekte, Content Aware Fill, TR's
@@ -119,7 +119,7 @@ ist kein Nachweis für den jeweiligen Plugin-Ablauf.
 
 **PSD:** Das Buch führt Photoshop-Dateien ausdrücklich über ein Plugin ein
 (gedruckte Seite 314 / PDF-Seite 327). Ein PSD-Codec ist in
-[der vollständigen Codec-Registrierung](../../../lib/img_all/lib.rs#L25) nicht
+[der vollständigen Codec-Registrierung](https://github.com/JFLibrary/JFLib/blob/main/lib/img_all/lib.rs#L25) nicht
 enthalten. PDN mit Ebenen ist vorhanden und wurde getestet; PSD-Kompatibilität
 folgt daraus nicht.
 
@@ -189,7 +189,7 @@ oder mit einem nachgewiesenen Laufzeitfehler verwechselt wird.
 | --- | --- | --- |
 | Konfigurierbare Arbeitsfläche | Hintergrund und Schachbrettfarben sind Konstanten, Schatten wird bei geöffnetem Dokument immer gezeichnet. Es gibt keine entsprechenden Benutzeroptionen. | `CANVAS-011..013`; [Farben](../view.rs#L70), [Schatten](../view.rs#L704), [persistierte Ansichtseinstellungen](../settings.rs#L419). |
 | Neues Bild mit transparentem/farbigem Hintergrund | Die interne Dokumentfunktion nimmt eine Hintergrundfarbe an, der Neu-Dialog übergibt fest Weiß und bietet keine Farbauswahl. Nachträgliches Löschen/Füllen bleibt möglich. | `DOC-010/011`; [Dialogaktion](../dlg_new.rs#L344). Das Buch verlangt hier nur ein weißes Standardbild. |
-| Vollständige Unicode-Typografie | UTF-8, Systemfonts und Color-Fonts existieren. Automatischer Font-Fallback, GSUB/komplexe Schriftformung fehlen; fehlende Zeichen landen im Ersatzglyph. | `TEXT-017`; [codepunktweise Ausgabe](../../../lib/text/lib.rs#L228), [Glyphwahl](../../../lib/text/registry.rs#L223), [bekannte Grenzen](TEXT.md#L82). Keine neue internationale Schrift-Testmatrix in diesem Lauf. |
+| Vollständige Unicode-Typografie | UTF-8, Systemfonts und Color-Fonts existieren. Automatischer Font-Fallback, GSUB/komplexe Schriftformung fehlen; fehlende Zeichen landen im Ersatzglyph. | `TEXT-017`; [codepunktweise Ausgabe](https://github.com/JFLibrary/JFLib/blob/main/lib/text/lib.rs#L228), [Glyphwahl](https://github.com/JFLibrary/JFLib/blob/main/lib/text/registry.rs#L223), [bekannte Grenzen](TEXT.md#L82). Keine neue internationale Schrift-Testmatrix in diesem Lauf. |
 | Feine Textbedienung | Schriftgrößen sind ganzzahlig; Wortnavigation per Strg+Pfeil und eine IME-Kompositionsanzeige fehlen laut Implementierung/Dokumentation. | [Größenbereich](../t_text.rs#L104), [bestehende Einschränkungen](TEXT.md#L73). Die Aussage „Paint.NET hat keine Textselektion“ dort ist als unbestätigt markiert und wurde hier nicht als Befund übernommen. |
 | GPU / erweiterte Displayausgabe | CPU/SIMD und mehrere Threads sind vorhanden. Keine GPU-Auswahl/-Berechnung, kein HDR-Ausgabepfad. ICC-Zuweisung, Konvertierung und Monitorprofile dürfen damit nicht gleichgesetzt werden: deren vorhandene Tests bestehen. | `PERF-003/004`, Inventur 2.12; [Grafikseite](../dlg_settings.rs#L489), [HDR-Hinweis](../dlg_settings.rs#L516). Bewusste bisherige Architekturgrenze. |
 | Weitere UI-Sprachen | Nur Deutsch; Sprachwahl deaktiviert. | [UI-Einstellungen](../dlg_settings.rs#L365). Bereits als allgemeines Vorhaben in `Todo.md` vorhanden. |

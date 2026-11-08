@@ -1,7 +1,7 @@
 # JFPainter mit den Fingern
 
 Was die Finger in JFPainter tun, warum, und was sich nur auf einem echten Gerät prüfen lässt. Die
-Bibliothek dazu: [`lib/ui/touch.rs`](../../../lib/ui/touch.rs), [GUIDE §37](../../../docs/GUIDE.md).
+Bibliothek dazu: [`lib/ui/touch.rs`](https://github.com/JFLibrary/JFLib/blob/main/lib/ui/touch.rs), [GUIDE §37](https://github.com/JFLibrary/JFLib/blob/main/docs/GUIDE.md).
 
 ## Was die Finger tun
 

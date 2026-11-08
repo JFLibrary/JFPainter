@@ -48,7 +48,7 @@ Die vom Nutzer zusätzlich gewünschte DLL-Ausführung ist für klassische
 `PaintDotNet.Effects.Effect`-Plugins, `BitmapEffect`, `GpuEffect` und `FileType`/`IFileTypeFactory` umgesetzt. Der native Windows-Pfad benötigt eine vorhandene
 Paint.NET-5.1-Installation und nutzt deren Laufzeit, ein eigenes .NET ist nicht nötig; Linux nutzt den separaten Host unter Wine mit dem unten
 beschriebenen Paint.NET-on-Wine-Paket. Paint.NET-Assemblies werden nicht
-mitgeliefert. [Build, Benutzung und Kompatibilitätsmatrix](pdn-host/README.md).
+mitgeliefert. [Build, Benutzung und Kompatibilitätsmatrix](../pdn-host/README.md).
 
 Die Ausführung übernimmt Auswahl, Farben und Pinselbreite; Ergebnisse werden
 erst nach vollständiger Prüfung mit einem Undo-Schritt übernommen. Für
@@ -117,7 +117,7 @@ JFPainter startet dafür einen separaten Windows-Host unter Wine.
 Das [Paint.NET-on-Wine-Projekt des Paint.NET-Entwicklers](https://github.com/paintdotnet/Paint.NET-on-Wine)
 ist experimentell und nennt ComputeSharp-GPU-Plugins weiterhin als nicht unterstützt.
 Die implementierte Brücke und ihre Prüfungen sind im neuen Abschnitt weiter unten
-beschrieben. [Die Host-Anleitung](pdn-host/README.md#linuxwine-setup)
+beschrieben. [Die Host-Anleitung](../pdn-host/README.md#linuxwine-setup)
 erklärt Einrichtung, getestete Versionen und verbleibende Grenzen.
 G’MIC arbeitet über seine native Standalone-Anwendung und braucht diese Brücke nicht.
 
@@ -215,7 +215,7 @@ Farbprofilinitialisierung. Der Helper lässt sich mit dem neuen
 `pdn-host/deploy_wine.py` in ein privates entpacktes Wine-Paket
 einrichten. Der Windows-EXE-Launcher benötigt dort kein separat installiertes
 `dotnet.exe`. Details und Versionsgrenzen stehen in der
-[Host-Anleitung](pdn-host/README.md#linuxwine-setup).
+[Host-Anleitung](../pdn-host/README.md#linuxwine-setup).
 
 Die unveränderte BoltBait-`Pastel.dll` erzeugte im direkten Windows-/Wine-Vergleich
 identische, gegenüber der Eingabe veränderte Pixel. Vier Prüfungen im nativen

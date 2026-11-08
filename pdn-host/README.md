@@ -270,7 +270,7 @@ heartbeats and exited about five seconds after they stopped in Windows and Wine
 tests, without publishing image bytes. Isolation is not a security sandbox.
 
 The native G’MIC integration works independently of this Windows host; see
-[its setup guide](../../apps/PaintCraft/docs/CREATIVE_TOOLS.md).
+[its setup guide](../docs/CREATIVE_TOOLS.md).
 
 ## Tests and protocol
 
