@@ -1,3 +1,4 @@
 # Cargo's output and what the test scripts write (shot, dump, --config)
 /target/
 /build/
+/plugins/target/

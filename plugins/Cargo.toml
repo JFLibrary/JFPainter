@@ -1,0 +1,43 @@
+# JFPainter's plugins written in Rust: their own workspace, because a plugin links unlike the
+# program (.cargo/config.toml here: no entry point, no C runtime, position independent).
+# python tools/plugins.py builds them (README.md).
+[workspace]
+resolver = "3"
+members = [
+    "plugin",
+    "badinfo",
+    "crash",
+    "crashpf",
+    "crashq",
+    "prepcheck",
+    "pshapes",
+    "qoi",
+    "rsdemo",
+    "sepiastr",
+    "swapchan",
+    "toonew",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.98"
+license = "MIT"
+
+[workspace.dependencies]
+plugin = { package = "jfpainter-plugin", path = "plugin" }
+
+[workspace.lints.rust]
+unexpected_cfgs = "warn"
+
+# a plugin is always optimised: one codegen unit and fat LTO keep only the parts of core it uses
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+opt-level = 3
+codegen-units = 1
+lto = "fat"
+debug = 0
+strip = "symbols"

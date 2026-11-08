@@ -1,0 +1,15 @@
+# How a plugin links (as JFLib's build_rs.py did, section "rust-plugin"; README.md): linked
+# against nothing, pn_plugin_query its only export.
+#   Windows: lld-link /NOENTRY /NODEFAULTLIB: no entry point, no imports.
+#   Linux:   ld.lld -shared -Bsymbolic --no-undefined, position independent: no DT_NEEDED, only
+#            R_X86_64_RELATIVE relocations.
+# memcpy, memset and the other C symbols core needs come from plugin/mem.rs.
+[target.x86_64-pc-windows-msvc]
+linker = "rust-lld"
+rustflags = ["-C", "link-arg=/NOENTRY", "-C", "link-arg=/NODEFAULTLIB", "-C", "link-arg=/DEBUG:NONE", "-C", "link-arg=/Brepro"]
+
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "linker=rust-lld", "-C", "linker-flavor=ld.lld", "-C", "relocation-model=pic",
+             "-C", "link-arg=-Bsymbolic", "-C", "link-arg=--no-undefined", "-C", "link-arg=--hash-style=both",
+             "-C", "link-arg=-z", "-C", "link-arg=noexecstack", "-C", "link-arg=-z", "-C", "link-arg=now",
+             "-C", "link-arg=--build-id=none"]
