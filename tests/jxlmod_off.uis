@@ -1,5 +1,5 @@
 #!args --open tests/fixtures/a6_photo.png --jxlenc=off
-# jxlmod_off.uis (jxl-module) -- without the JPEG XL writer module (--jxlenc=off: as if
+# jxlmod_off.uis -- without the new JPEG XL writer (--jxlenc=off; in JFLib: as if the module
 # jxlenc.dll / jxlenc.so were missing next to the exe) JPEG XL is saved with the
 # assembly-compatible writer: the save dialog says so, Bemühung and Filmkörnung are off,
 # Qualität and Verlustfrei work; the files are the compatible writer's (their sizes: lossy

@@ -224,11 +224,18 @@ impl Default for Fio {
 /// first fio_states: every module is initialised then)
 pub(crate) fn fio_init(p: &mut Pn, _ui: &mut Ui) {
     img_all::use_all_codecs();
-    // jxl-module: JPEG XL is saved by the writer module next to the exe (jxlenc.dll / .so,
-    // loaded on the first JPEG XL save); --jxlenc=FILE another file, --jxlenc=off none (then
-    // the assembly-compatible writer; the save dialog says so)
+    // JPEG XL is saved by the writer linked into the program (jflib::img_jxl_enc; in JFLib it
+    // was the module jxlenc.dll / .so next to the exe); --jxlenc=FILE loads such a writer module
+    // from FILE instead, --jxlenc=off none (then the assembly-compatible writer; the save dialog
+    // says so).  The browser has the compatible writer only.
     let jxlenc = plat::args().iter().skip(1).find_map(|a| a.strip_prefix("--jxlenc=").map(String::from));
-    img_jxl::writer::use_module(jxlenc.as_deref());
+    match jxlenc {
+        Some(file) => img_jxl::writer::use_module(Some(&file)),
+        #[cfg(not(target_arch = "wasm32"))]
+        None => jflib::img_jxl_enc::use_static(),
+        #[cfg(target_arch = "wasm32")]
+        None => img_jxl::writer::use_module(None),
+    }
     build_filters(&mut p.fio);
     let f = &mut p.fio;
     f.recent.clear();

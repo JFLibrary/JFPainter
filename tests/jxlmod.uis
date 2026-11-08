@@ -1,9 +1,9 @@
 #!args --open tests/fixtures/a6_photo.png
-# jxlmod.uis (jxl-module) -- JPEG XL is saved by the writer module next to the exe (jxlenc.dll /
-# jxlenc.so, which `python build_rs.py app PaintCraft` builds into the app's folder; loaded on
-# the first JPEG XL save): no note in the save dialog, Bemühung and Filmkörnung on, the files
-# are the new writer's (their sizes: lossy quality 90 effort 7, lossless effort 7 -- the same
-# as saveopt.uis's; jxlmod_off.uis has the compatible writer's).  Window 24595 = the save dialog.
+# jxlmod.uis -- JPEG XL is saved by the new writer linked into the program (jflib::img_jxl_enc;
+# in JFLib it was the module jxlenc.dll / jxlenc.so next to the exe): no note in the save
+# dialog, Bemühung and Filmkörnung on, the files are the new writer's (their sizes: lossy
+# quality 90 effort 7, lossless effort 7 -- the same as saveopt.uis's; jxlmod_off.uis has the
+# compatible writer's).  Window 24595 = the save dialog.
 size 1280 800
 theme light
 shot build/tests/jxlmod/mod_start.png
