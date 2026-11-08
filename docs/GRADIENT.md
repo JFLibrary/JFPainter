@@ -5,8 +5,8 @@ Spec §2.6 (Gradienten), DRAW-009/010/011/012/013/014.  One file: `src/t_gradien
 `grad_span` / `grad_alpha_span` of `legacy/ASMLIB/src/gfx/gradient.s` (docs/modules/RESAMPLE.md).
 
 ```
-python build.py app PaintCraft --target both --out build/t3
-build/t3/win/PaintCraft.exe --script apps/PaintCraft/tests/tools_gradient.uis [--verify-dirty]
+python build.py app JFPainter --target both --out build/t3
+build/t3/win/JFPainter.exe --script apps/PaintCraft/tests/tools_gradient.uis [--verify-dirty]
 python tools/pn_gradient_check.py --target both --out build/t3      # bit-exact vs. Python
 ```
 

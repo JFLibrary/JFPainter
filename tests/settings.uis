@@ -103,7 +103,7 @@ type "3"
 key enter
 expect #5914 value 3
 click #5505
-expect text:"Die Farbdarstellung von PaintCraft erfolgt in sRGB." exists
+expect text:"Die Farbdarstellung von JFPainter erfolgt in sRGB." exists
 click #5506
 expect #5570 enabled
 expect #5571 enabled

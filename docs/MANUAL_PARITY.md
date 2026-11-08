@@ -1,4 +1,4 @@
-# PaintCraft: Umsetzung des Handbuchabgleichs
+# JFPainter: Umsetzung des Handbuchabgleichs
 
 Stand: 12. Oktober 2026. Quellen und Builds liegen im **JFLib**-Repository.
 Der [ursprüngliche Audit](MANUAL_FEATURE_AUDIT.md) bleibt als Ausgangsbefund erhalten.
@@ -48,7 +48,7 @@ Die vom Nutzer zusätzlich gewünschte DLL-Ausführung ist für klassische
 `PaintDotNet.Effects.Effect`-Plugins, `BitmapEffect`, `GpuEffect` und `FileType`/`IFileTypeFactory` umgesetzt. Der native Windows-Pfad benötigt eine vorhandene
 Paint.NET-5.1-Installation und nutzt deren Laufzeit, ein eigenes .NET ist nicht nötig; Linux nutzt den separaten Host unter Wine mit dem unten
 beschriebenen Paint.NET-on-Wine-Paket. Paint.NET-Assemblies werden nicht
-mitgeliefert. [Build, Benutzung und Kompatibilitätsmatrix](../../../tools/paintcraft-pdn-host/README.md).
+mitgeliefert. [Build, Benutzung und Kompatibilitätsmatrix](pdn-host/README.md).
 
 Die Ausführung übernimmt Auswahl, Farben und Pinselbreite; Ergebnisse werden
 erst nach vollständiger Prüfung mit einem Undo-Schritt übernommen. Für
@@ -63,7 +63,7 @@ BoltBaits Pack 6.11, die 20 GPU-Samples und WebP lesend und schreibend, mit Stan
 Ergebnisse sind nicht pixelgenau gegen paint.net selbst verglichen.
 
 Der Startscan berücksichtigt Effects/FileTypes/Shapes im nativen/portablen Root,
-Dokumente/PaintCraft App Files, Dokumente/Paint.NET App Files, die lokale Paint.NET-
+Dokumente/JFPainter App Files, Dokumente/Paint.NET App Files, die lokale Paint.NET-
 Installation sowie freigeschaltete AdditionalPluginDirectoryRoots mit expandierten
 Umgebungsvariablen. Archive müssen entpackt werden, neue Plugins benötigen einen
 Neustart. Die Suche läuft bei einem normalen Start im Hintergrund und liest auch Unterordner;
@@ -97,7 +97,7 @@ Photoshop-Texte, Smart Objects und nicht-destruktive Masken werden nicht erhalte
 auf 8 Bit gerundet. 32-Bit-Fließkommawerte werden für die SDR-Anzeige auf 0–1 begrenzt
 und aus linearem RGB nach sRGB übertragen; Alpha bleibt linear. Das ist kein
 HDR-Tonemapping und keine Garantie für die Profiltreue beliebiger 32-Bit-Dateien.
-Auch andere Codecs, die höhere Präzision/HDR melden, importiert PaintCraft mit einem
+Auch andere Codecs, die höhere Präzision/HDR melden, importiert JFPainter mit einem
 neuen Dokumentpfad. Die Originaldatei behält ihre ursprünglichen Daten.
 
 Für echte 16-/32-Bit-Bearbeitung müssen Ebenenspeicher, Historie, Auswahl-/Pinsel-
@@ -113,11 +113,11 @@ verwaltete .NET-Assemblies können plattformunabhängig sein. Die originalen
 Paint.NET-Plugins hängen aber zusätzlich an Paint.NET und dessen Windows-Diensten.
 Der native Linux-Lader kann sie nicht als `.so` verwenden.
 
-PaintCraft startet dafür einen separaten Windows-Host unter Wine.
+JFPainter startet dafür einen separaten Windows-Host unter Wine.
 Das [Paint.NET-on-Wine-Projekt des Paint.NET-Entwicklers](https://github.com/paintdotnet/Paint.NET-on-Wine)
 ist experimentell und nennt ComputeSharp-GPU-Plugins weiterhin als nicht unterstützt.
 Die implementierte Brücke und ihre Prüfungen sind im neuen Abschnitt weiter unten
-beschrieben. [Die Host-Anleitung](../../../tools/paintcraft-pdn-host/README.md#linuxwine-setup)
+beschrieben. [Die Host-Anleitung](pdn-host/README.md#linuxwine-setup)
 erklärt Einrichtung, getestete Versionen und verbleibende Grenzen.
 G’MIC arbeitet über seine native Standalone-Anwendung und braucht diese Brücke nicht.
 
@@ -149,9 +149,9 @@ Photoshop-Dateien und sämtliche fremden G’MIC-Dialoge sind damit nicht abgeno
 Reproduktion im Repository-Root (Python 3, Rust/Cargo und LLVM/LLD):
 
 ```text
-python build_rs.py app PaintCraft --target both --out build/paintcraft-next -j 6
-python build_rs.py app PaintCraft --target both --release --out build/paintcraft-next-release -j 6
-python build_rs.py app PaintCraft --target web --web-mode scalar --out build/paintcraft-next-web -j 4
+python build_rs.py app JFPainter --target both --out build/paintcraft-next -j 6
+python build_rs.py app JFPainter --target both --release --out build/paintcraft-next-release -j 6
+python build_rs.py app JFPainter --target web --web-mode scalar --out build/paintcraft-next-web -j 4
 python tools/paintcraft_psd_check.py --out build/paintcraft-next --target both
 python tools/paintcraft_creative_check.py --out build/paintcraft-next --target both --gmic
 python tools/paintcraft_text_language_check.py --out build/paintcraft-next --target both
@@ -173,7 +173,7 @@ keine interaktive Browser-Abnahme der neuen Funktionen.
 
 ## Modulare Rust-Struktur und erneute Prüfung (12.10.2026)
 
-PaintCraft liegt vollständig unter `src/`, gegliedert in `app`, `document`,
+JFPainter liegt vollständig unter `src/`, gegliedert in `app`, `document`,
 `tools`, `effects`, `workspace`, `integrations`, `preferences` und `diagnostics`.
 Die [Architekturübersicht](ARCHITECTURE.md) beschreibt Zuständigkeiten und
 Build-Einstiege. Das Text-Shaping-Crate verwendet `lib/text_shape/src/lib.rs`;
@@ -212,10 +212,10 @@ WineHQ 11.21 unter Fedora 44 mit 5.200.9793.3533; Fedoras Paket wine 11.20 Stagi
 (Einzelheiten in der Host-Anleitung).
 Die normale Windows-Installation 5.1 scheiterte unter Wine an der Direct2D-
 Farbprofilinitialisierung. Der Helper lässt sich mit dem neuen
-`tools/paintcraft-pdn-host/deploy_wine.py` in ein privates entpacktes Wine-Paket
+`pdn-host/deploy_wine.py` in ein privates entpacktes Wine-Paket
 einrichten. Der Windows-EXE-Launcher benötigt dort kein separat installiertes
 `dotnet.exe`. Details und Versionsgrenzen stehen in der
-[Host-Anleitung](../../../tools/paintcraft-pdn-host/README.md#linuxwine-setup).
+[Host-Anleitung](pdn-host/README.md#linuxwine-setup).
 
 Die unveränderte BoltBait-`Pastel.dll` erzeugte im direkten Windows-/Wine-Vergleich
 identische, gegenüber der Eingabe veränderte Pixel. Vier Prüfungen im nativen

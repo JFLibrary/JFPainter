@@ -1,4 +1,4 @@
-# languages: de en fr (PaintCraft reads this catalogue itself: preferences/localization.rs)
+# languages: de en fr (JFPainter reads this catalogue itself: preferences/localization.rs)
 &Datei	&File	&Fichier
 &Bearbeiten	&Edit	&Édition
 &Ansicht	&View	&Affichage
@@ -160,7 +160,7 @@ Hilfe	Help	Aide
 Do&kumentation	&Documentation	&Documentation
 &Lernprogramme	&Tutorials	&Tutoriels
 &Plug-Ins	&Plugins	&Plugins
-PaintCraft-&Webseite	PaintCraft &website	Site &web de PaintCraft
+JFPainter-&Webseite	JFPainter &website	Site &web de JFPainter
 &Spenden	&Donate	Faire un &don
 Fehler melden oder Feedback geben…	Send feedback or report a bug…	Envoyer un avis ou signaler un problème…
 &Info	&About	À &propos
@@ -295,10 +295,10 @@ Plugins sind abgeschaltet	Plugins are turned off	Les plugins sont désactivés
 Plugins werden gesucht …	Looking for plugins …	Recherche des plugins …
 Die Plugin-Suche ist fehlgeschlagen	The plugin search failed	La recherche de plugins a échoué
 Keine Effekte geladen, siehe Einstellungen > Plugin-Fehler	No effects loaded, see Settings > Plugin errors	Aucun effet chargé, voir Paramètres > Erreurs des plugins
-PaintCraft wurde unerwartet beendet	PaintCraft quit unexpectedly	PaintCraft s’est arrêté de manière inattendue
+JFPainter wurde unerwartet beendet	JFPainter quit unexpectedly	JFPainter s’est arrêté de manière inattendue
 In die Zwischenablage kopieren	Copy to clipboard	Copier dans le presse-papiers
 Ordner der Absturzberichte öffnen	Open crash reports folder	Ouvrir le dossier des rapports d’incident
-PaintCraft neu starten	Restart PaintCraft	Redémarrer PaintCraft
+JFPainter neu starten	Restart JFPainter	Redémarrer JFPainter
 Beenden	Quit	Quitter
 Leinwand nicht ändern	Keep the canvas size	Ne pas modifier le canevas
 Drag & Drop	Drag and drop	Glisser-déposer
@@ -352,7 +352,7 @@ Optionen	Options	Options
 Gammakorrektur anwenden	Apply gamma correction	Appliquer la correction gamma
 Anker	Anchor	Ancre
 Name	Name	Nom
-PaintCraft	PaintCraft	PaintCraft
+JFPainter	JFPainter	JFPainter
 Neu	New	Nouveau
 Rotationszoom	Rotate/Zoom	Rotation/Zoom
 Kippen / Rotieren	Tilt / rotate	Incliner / pivoter
@@ -377,7 +377,7 @@ Resampling	Resampling	Rééchantillonnage
 Zeilensprung	Interlacing	Entrelacement
 Standard folgt der Einstellung des Betriebssystems (heller oder dunkler App-Modus).	Default follows the operating system’s setting (light or dark app mode).	Par défaut suit le réglage du système d’exploitation (mode d’application clair ou sombre).
 Sechs Hexadezimalziffern (RRGGBB), leer = Standardakzentfarbe.	Six hexadecimal digits (RRGGBB), empty = default accent color.	Six chiffres hexadécimaux (RRVVBB), vide = couleur d’accentuation par défaut.
-Hier legen Sie fest, mit welchem Werkzeug PaintCraft startet und welche Werte die Werkzeugleiste anfangs zeigt.	Choose the tool PaintCraft starts with and the values the tool bar shows at first.	Choisissez l’outil de démarrage de PaintCraft et les valeurs affichées au début par la barre d’outils.
+Hier legen Sie fest, mit welchem Werkzeug JFPainter startet und welche Werte die Werkzeugleiste anfangs zeigt.	Choose the tool JFPainter starts with and the values the tool bar shows at first.	Choisissez l’outil de démarrage de JFPainter et les valeurs affichées au début par la barre d’outils.
 Standardtool:	Default tool:	Outil par défaut :
 Standardeinstellungen der Symbolleiste	Tool bar defaults	Réglages par défaut de la barre d’outils
 Aktuelle Werkzeugleiste übernehmen	Use the current tool bar	Reprendre la barre d’outils actuelle
@@ -386,18 +386,18 @@ Speicherbudget (MB):	Memory budget (MB):	Budget de mémoire (Mo) :
 Ordner der Auslagerungsdatei:	Swap file folder:	Dossier du fichier d’échange :
 Leer = Temp-Ordner des Systems. Ein anderer Ordner gilt, sobald die Auslagerungsdatei angelegt wird (spätestens nach einem Neustart).	Empty = the system’s temp folder. Another folder applies once the swap file is created (after a restart at the latest).	Vide = dossier temporaire du système. Un autre dossier s’applique dès la création du fichier d’échange (au plus tard après un redémarrage).
 Rendering-Gerät:	Rendering device:	Périphérique de rendu :
-PaintCraft berechnet Werkzeuge, Korrekturen und Effekte auf der CPU (SIMD-Kernel auf mehreren Threads); eine GPU wird nicht verwendet.	PaintCraft computes tools, adjustments and effects on the CPU (SIMD kernels on several threads); no GPU is used.	PaintCraft calcule les outils, corrections et effets sur le processeur (noyaux SIMD sur plusieurs threads) ; aucun GPU n’est utilisé.
+JFPainter berechnet Werkzeuge, Korrekturen und Effekte auf der CPU (SIMD-Kernel auf mehreren Threads); eine GPU wird nicht verwendet.	JFPainter computes tools, adjustments and effects on the CPU (SIMD kernels on several threads); no GPU is used.	JFPainter calcule les outils, corrections et effets sur le processeur (noyaux SIMD sur plusieurs threads) ; aucun GPU n’est utilisé.
 Befehlssätze:	Instruction sets:	Jeux d’instructions :
 Die Kernel werden beim Start nach dem Prozessor gewählt; --simd sse2 auf der Kommandozeile erzwingt die Basis-Kernel.	The kernels are chosen by processor at start; --simd sse2 on the command line forces the base kernels.	Les noyaux sont choisis selon le processeur au démarrage ; --simd sse2 sur la ligne de commande force les noyaux de base.
 Worker-Threads:	Worker threads:	Threads de travail :
 Status	Status	État
-Die Farbdarstellung von PaintCraft erfolgt in sRGB.	PaintCraft displays colors in sRGB.	PaintCraft affiche les couleurs en sRGB.
-Erweiterte Farben von Windows (HDR, großer Farbraum) nutzt PaintCraft nicht; die Anzeige erfolgt immer in sRGB. Farbprofile von Bildern: Bild > Farbprofil…	PaintCraft does not use Windows’ advanced color (HDR, wide gamut); it always displays in sRGB. Color profiles of images: Image > Color Profile…	PaintCraft n’utilise pas les couleurs avancées de Windows (HDR, gamut étendu) ; l’affichage est toujours en sRGB. Profils de couleur des images : Image > Profil de couleur…
+Die Farbdarstellung von JFPainter erfolgt in sRGB.	JFPainter displays colors in sRGB.	JFPainter affiche les couleurs en sRGB.
+Erweiterte Farben von Windows (HDR, großer Farbraum) nutzt JFPainter nicht; die Anzeige erfolgt immer in sRGB. Farbprofile von Bildern: Bild > Farbprofil…	JFPainter does not use Windows’ advanced color (HDR, wide gamut); it always displays in sRGB. Color profiles of images: Image > Color Profile…	JFPainter n’utilise pas les couleurs avancées de Windows (HDR, gamut étendu) ; l’affichage est toujours en sRGB. Profils de couleur des images : Image > Profil de couleur…
 Beim Programmstart prüfen, ob es eine neuere Version gibt	Check for a newer version at start	Rechercher une version plus récente au démarrage
-Auch Testversionen (Beta) von PaintCraft anbieten	Also offer test versions (beta) of PaintCraft	Proposer aussi les versions de test (bêta) de PaintCraft
+Auch Testversionen (Beta) von JFPainter anbieten	Also offer test versions (beta) of JFPainter	Proposer aussi les versions de test (bêta) de JFPainter
 Jetzt prüfen	Check now	Vérifier maintenant
 Veröffentlichungen öffnen	Open releases	Ouvrir les publications
-Die Prüfung benötigt Python 3 und fragt GitHub über HTTPS nach PaintCraft-Veröffentlichungen ab. Automatische Prüfung ist standardmäßig aus. Installation erfolgt von Hand.	The check needs Python 3 and asks GitHub over HTTPS for PaintCraft releases. Automatic checking is off by default. Installation is done by hand.	La vérification nécessite Python 3 et interroge GitHub en HTTPS sur les publications de PaintCraft. La vérification automatique est désactivée par défaut. L’installation se fait à la main.
+Die Prüfung benötigt Python 3 und fragt GitHub über HTTPS nach JFPainter-Veröffentlichungen ab. Automatische Prüfung ist standardmäßig aus. Installation erfolgt von Hand.	The check needs Python 3 and asks GitHub over HTTPS for JFPainter releases. Automatic checking is off by default. Installation is done by hand.	La vérification nécessite Python 3 et interroge GitHub en HTTPS sur les publications de JFPainter. La vérification automatique est désactivée par défaut. L’installation se fait à la main.
 Windows-Tinte	Windows Ink	Windows Ink
 Damit werten Stifte und Grafiktabletts den Andruck aus und werden mit hoher Rate abgetastet. Macht ein Gerät Probleme, hilft es oft, die Option auszuschalten.	With it, pens and graphics tablets report pressure and are sampled at a high rate. If a device has problems, turning the option off often helps.	Avec cette option, les stylets et tablettes graphiques transmettent la pression et sont échantillonnés à haute fréquence. Si un périphérique pose problème, désactiver l’option aide souvent.
 Unten stehen die Angaben zur Diagnose.	The diagnostic details are below.	Les informations de diagnostic figurent ci-dessous.
@@ -405,8 +405,8 @@ Native DLL-/SO-Plugins sind im Browser nicht verfügbar.	Native DLL/SO plugins a
 Integrierte Effekte, Dateiformate und Formen sind weiterhin verfügbar.	Built-in effects, file formats and shapes remain available.	Les effets, formats de fichier et formes intégrés restent disponibles.
 Alle Plugins wurden fehlerfrei geladen.	All plugins loaded without errors.	Tous les plugins ont été chargés sans erreur.
 Diese Plugins ließen sich nicht laden oder wurden nach einem Fehler abgeschaltet:	These plugins could not be loaded or were turned off after an error:	Ces plugins n’ont pas pu être chargés ou ont été désactivés après une erreur :
-Plugins werden beim Start aus den Ordnern Effects, FileTypes und Shapes neben PaintCraft geladen (Windows: *.dll, Linux: *.so).	Plugins are loaded at start from the folders Effects, FileTypes and Shapes next to PaintCraft (Windows: *.dll, Linux: *.so).	Les plugins sont chargés au démarrage depuis les dossiers Effects, FileTypes et Shapes à côté de PaintCraft (Windows : *.dll, Linux : *.so).
-Originale Paint.NET-DLLs werden unter Windows zusätzlich aus Dokumente/PaintCraft App Files, Dokumente/Paint.NET App Files und der Paint.NET-Installation erkannt, auch in Unterordnern von Effects und FileTypes. Dafür muss Paint.NET 5.1 installiert sein. Nach dem Kopieren neu starten. ZIP-Dateien zuerst entpacken; Abhängigkeiten neben der DLL belassen.	Original Paint.NET DLLs are also found on Windows in Documents/PaintCraft App Files, Documents/Paint.NET App Files and the Paint.NET installation, including subfolders of Effects and FileTypes. This needs Paint.NET 5.1 to be installed. Restart after copying. Extract ZIP files first; keep dependencies next to the DLL.	Sous Windows, les DLL d’origine de Paint.NET sont aussi trouvées dans Documents/PaintCraft App Files, Documents/Paint.NET App Files et l’installation de Paint.NET, y compris les sous-dossiers de Effects et FileTypes. Paint.NET 5.1 doit être installé. Redémarrez après la copie. Décompressez d’abord les fichiers ZIP ; laissez les dépendances à côté de la DLL.
+Plugins werden beim Start aus den Ordnern Effects, FileTypes und Shapes neben JFPainter geladen (Windows: *.dll, Linux: *.so).	Plugins are loaded at start from the folders Effects, FileTypes and Shapes next to JFPainter (Windows: *.dll, Linux: *.so).	Les plugins sont chargés au démarrage depuis les dossiers Effects, FileTypes et Shapes à côté de JFPainter (Windows : *.dll, Linux : *.so).
+Originale Paint.NET-DLLs werden unter Windows zusätzlich aus Dokumente/JFPainter App Files, Dokumente/Paint.NET App Files und der Paint.NET-Installation erkannt, auch in Unterordnern von Effects und FileTypes. Dafür muss Paint.NET 5.1 installiert sein. Nach dem Kopieren neu starten. ZIP-Dateien zuerst entpacken; Abhängigkeiten neben der DLL belassen.	Original Paint.NET DLLs are also found on Windows in Documents/JFPainter App Files, Documents/Paint.NET App Files and the Paint.NET installation, including subfolders of Effects and FileTypes. This needs Paint.NET 5.1 to be installed. Restart after copying. Extract ZIP files first; keep dependencies next to the DLL.	Sous Windows, les DLL d’origine de Paint.NET sont aussi trouvées dans Documents/JFPainter App Files, Documents/Paint.NET App Files et l’installation de Paint.NET, y compris les sous-dossiers de Effects et FileTypes. Paint.NET 5.1 doit être installé. Redémarrez après la copie. Décompressez d’abord les fichiers ZIP ; laissez les dépendances à côté de la DLL.
 Geladene Plugins	Loaded plugins	Plugins chargés
 (keine)	(none)	(aucun)
 Paletten	Palettes	Palettes
@@ -486,7 +486,7 @@ Mit gedrückter Maustaste eine Form aufziehen. Umschalt hält die Proportionen f
 Am Anfasser lässt sich der Text verschieben. Mit gedrückter Strg-Taste verschwinden Anfasser und Schreibmarke.	Drag the handle to move the text. Hold Ctrl to hide the handle and the cursor.	La poignée déplace le texte. En maintenant Ctrl, la poignée et le curseur disparaissent.
 # the English UI pass (2026-11-08): texts the code shows through tr / tf / list
 (Fehler)	(error)	(erreur)
-(keine: Testlauf ohne --config / PaintCraft_CONFIG_DIR)	(none: test run without --config / PaintCraft_CONFIG_DIR)	(aucun : exécution de test sans --config / PaintCraft_CONFIG_DIR)
+(keine: Testlauf ohne --config / JFPainter_CONFIG_DIR)	(none: test run without --config / JFPainter_CONFIG_DIR)	(aucun : exécution de test sans --config / JFPainter_CONFIG_DIR)
 (wird berechnet)	(calculating)	(calcul en cours)
 0 = automatisch ({} MB: 40 % des Arbeitsspeichers, höchstens 4 GB).	0 = automatic ({} MB: 40 % of the memory, at most 4 GB).	0 = automatique ({} Mo : 40 % de la mémoire, 4 Go au plus).
 0 = automatisch ({} logische Prozessoren). Aktuell {} Threads; Änderungen werden nach einem Neustart wirksam.	0 = automatic ({} logical processors). Currently {} threads; changes take effect after a restart.	0 = automatique ({} processeurs logiques). Actuellement {} threads ; les modifications prennent effet après un redémarrage.
@@ -788,7 +788,7 @@ In Farbprofil umrechnen	Convert to color profile	Convertir vers un profil de cou
 In Pixel auflösen	Pixelate	Pixelliser
 In der Zwischenablage liegt kein Bild, aus dem ein neues entstehen kann.	The clipboard holds no image to create a new one from.	Le presse-papiers ne contient aucune image à partir de laquelle en créer une nouvelle.
 In der Zwischenablage liegt kein Bild.	The clipboard holds no image.	Le presse-papiers ne contient aucune image.
-In diesem Format kann PaintCraft nicht speichern.	PaintCraft cannot save in this format.	PaintCraft ne peut pas enregistrer dans ce format.
+In diesem Format kann JFPainter nicht speichern.	JFPainter cannot save in this format.	JFPainter ne peut pas enregistrer dans ce format.
 In dieses Farbprofil lässt sich nicht umrechnen.	The image cannot be converted to this color profile.	Impossible de convertir l’image vers ce profil de couleur.
 Info	About	À propos
 Inhaltsbasiert füllen	Content-aware fill	Remplissage d’après le contenu
@@ -876,10 +876,10 @@ PSD-Import	PSD import	Importation PSD
 PackBits	PackBits	PackBits
 Paint.NET-Dateiformat	Paint.NET file format	Format de fichier Paint.NET
 Paint.NET-Plugin	Paint.NET plugin	Plugin Paint.NET
-PaintCraft Absturz	PaintCraft crash	Plantage de PaintCraft
-PaintCraft ist eine Bildbearbeitung in Rust auf Basis von JFLib. Ebenen, Auswahlwerkzeuge, Bildformate, Schriften, Effekte und Oberfläche werden von JFLib bereitgestellt. Die Anwendung unterstützt Windows, Linux und WebAssembly.	PaintCraft is an image editor in Rust built on JFLib. Layers, selection tools, image formats, fonts, effects and the user interface are provided by JFLib. The application supports Windows, Linux and WebAssembly.	PaintCraft est un éditeur d’images en Rust basé sur JFLib. Les calques, les outils de sélection, les formats d’image, les polices, les effets et l’interface sont fournis par JFLib. L’application prend en charge Windows, Linux et WebAssembly.
-PaintCraft musste wegen eines unerwarteten Fehlers beendet werden. Was seit dem letzten Speichern geändert wurde, ist leider verloren.	PaintCraft had to close because of an unexpected error. Unfortunately, changes made since the last save are lost.	PaintCraft a dû se fermer à cause d’une erreur inattendue. Les modifications apportées depuis le dernier enregistrement sont malheureusement perdues.
-PaintCraft-Hilfe	PaintCraft help	Aide de PaintCraft
+JFPainter Absturz	JFPainter crash	Plantage de JFPainter
+JFPainter ist eine Bildbearbeitung in Rust auf Basis von JFLib. Ebenen, Auswahlwerkzeuge, Bildformate, Schriften, Effekte und Oberfläche werden von JFLib bereitgestellt. Die Anwendung unterstützt Windows, Linux und WebAssembly.	JFPainter is an image editor in Rust built on JFLib. Layers, selection tools, image formats, fonts, effects and the user interface are provided by JFLib. The application supports Windows, Linux and WebAssembly.	JFPainter est un éditeur d’images en Rust basé sur JFLib. Les calques, les outils de sélection, les formats d’image, les polices, les effets et l’interface sont fournis par JFLib. L’application prend en charge Windows, Linux et WebAssembly.
+JFPainter musste wegen eines unerwarteten Fehlers beendet werden. Was seit dem letzten Speichern geändert wurde, ist leider verloren.	JFPainter had to close because of an unexpected error. Unfortunately, changes made since the last save are lost.	JFPainter a dû se fermer à cause d’une erreur inattendue. Les modifications apportées depuis le dernier enregistrement sont malheureusement perdues.
+JFPainter-Hilfe	JFPainter help	Aide de JFPainter
 Palette	Palette	Palette
 Palettenordner: {}	Palette folder: {}	Dossier des palettes : {}
 Pastell	Pastel	Pastel
@@ -1069,7 +1069,7 @@ free	free	free
 gewünschte Teil auf der Leinwand liegt.	the part you want lies on the canvas.	se trouve sur le canevas.
 keine (statisches ELF, nur Systemaufrufe)	none (static ELF, system calls only)	aucun (ELF statique, appels système uniquement)
 kernel32.dll, user32.dll, gdi32.dll (keine weiteren Bibliotheken)	kernel32.dll, user32.dll, gdi32.dll (no other libraries)	kernel32.dll, user32.dll, gdi32.dll (aucune autre bibliothèque)
-paint.net ist eine Marke von dotPDN LLC. PaintCraft ist ein unabhängiges Projekt und steht in keiner Verbindung zu dotPDN LLC.	paint.net is a trademark of dotPDN LLC. PaintCraft is an independent project and is not affiliated with dotPDN LLC.	paint.net est une marque de dotPDN LLC. PaintCraft est un projet indépendant sans lien avec dotPDN LLC.
+paint.net ist eine Marke von dotPDN LLC. JFPainter ist ein unabhängiges Projekt und steht in keiner Verbindung zu dotPDN LLC.	paint.net is a trademark of dotPDN LLC. JFPainter is an independent project and is not affiliated with dotPDN LLC.	paint.net est une marque de dotPDN LLC. JFPainter est un projet indépendant sans lien avec dotPDN LLC.
 parallel_for	parallel_for	parallel_for
 pn_plugin_query	pn_plugin_query	pn_plugin_query
 png,bmp,tif,tiff=Bild-Pinselspitzen	png,bmp,tif,tiff=Image brush tips	png,bmp,tif,tiff=Pointes de pinceau en image

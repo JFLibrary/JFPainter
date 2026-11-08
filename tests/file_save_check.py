@@ -1,6 +1,6 @@
-"""Small file-save regressions using ordinary files and real PaintCraft binaries.
+"""Small file-save regressions using ordinary files and real JFPainter binaries.
 
-Run from RustLib: python apps/PaintCraft/tests/file_save_check.py --out build/PaintCraft-review/after
+Run from RustLib: python apps/PaintCraft/tests/file_save_check.py --out build/JFPainter-review/after
 No crash injection, fuzzing, links, or resource stress. Artifacts are retained.
 """
 import argparse
@@ -20,7 +20,7 @@ SENTINEL = b'Existing temporary file from another save.\n'
 def native_cases(exe, base):
     base.mkdir(parents=True, exist_ok=True)
     work = Path(tempfile.mkdtemp(prefix='files-', dir=base))
-    env = dict(os.environ, PaintCraft_CONFIG_DIR=str(work / 'config'))
+    env = dict(os.environ, JFPainter_CONFIG_DIR=str(work / 'config'))
     results = []
 
     def run(args, label):
@@ -91,14 +91,14 @@ def main():
     output = (ROOT / args.out).resolve()
     if args.linux_case:
         work = Path(tempfile.mkdtemp(prefix='jfgui-file-review-'))
-        rows = native_cases(output / 'linux/PaintCraft', work)
+        rows = native_cases(output / 'linux/JFPainter', work)
         saved = output / 'file-save-cases' / work.name
         shutil.copytree(work, saved)
         for row in rows:
             row['artifacts'] = str(saved / Path(row['artifacts']).name)
         print(json.dumps(rows))
         return 0
-    results = native_cases(output / 'win/PaintCraft.exe', output / 'file-save-cases')
+    results = native_cases(output / 'win/JFPainter.exe', output / 'file-save-cases')
     for row in results:
         row['platform'] = 'win'
     def linux_path(path):

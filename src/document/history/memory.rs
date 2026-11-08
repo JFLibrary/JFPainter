@@ -1,4 +1,4 @@
-// hist_mem -- PaintCraft history memory: the tile records, the 16 KB tile store, tile kernels,
+// hist_mem -- JFPainter history memory: the tile records, the 16 KB tile store, tile kernels,
 // deflate on the worker pool, the spill file and the parallel entry loader
 //                                                              [apps/PaintCraft/src/hist_mem.s]
 //

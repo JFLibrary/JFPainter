@@ -1,6 +1,6 @@
-# PaintCraft mit den Fingern
+# JFPainter mit den Fingern
 
-Was die Finger in PaintCraft tun, warum, und was sich nur auf einem echten Gerät prüfen lässt. Die
+Was die Finger in JFPainter tun, warum, und was sich nur auf einem echten Gerät prüfen lässt. Die
 Bibliothek dazu: [`lib/ui/touch.rs`](../../../lib/ui/touch.rs), [GUIDE §37](../../../docs/GUIDE.md).
 
 ## Was die Finger tun
@@ -60,7 +60,7 @@ Gemessen mit echten Kontakten (`InjectTouchInput`, 60 px breit wie ein Finger, o
   (dafür ist das Band im Fenster da), verborgene Fenster anderer Programme in der Z-Reihenfolge zählen nicht mehr, ein
   Kontakt, dessen Mitte nicht im Fenster liegt, das ihn bekam, geht an das Fenster unter seiner Mitte, und knapp über der
   Statusleiste meint ein Finger den Regler, nicht die Leinwand.
-- **Wie es weitergeht, wenn es noch hakt:** `set jfgui_TOUCH_LOG=1`, dann `build\win\PaintCraft.exe 2> finger.txt`. In der
+- **Wie es weitergeht, wenn es noch hakt:** `set jfgui_TOUCH_LOG=1`, dann `build\win\JFPainter.exe 2> finger.txt`. In der
   Datei steht je Finger, wo er aufkam, wem er gehört (`ht` ist der Bereich des Fensterrahmens, 0 das Fensterinnere) und
   was Windows meldete: Position, Rohposition, Kontaktrechteck, rohes Kontaktrechteck.
 - **Weiße Fenster:** nachgestellt, die GPU-Ausgabe (`docs/GPU.md`, „Aus- und Einblenden“).
@@ -71,7 +71,7 @@ Gemessen mit echten Kontakten (`InjectTouchInput`, 60 px breit wie ein Finger, o
 
 | Was | Wo | Was es beweist |
 | --- | --- | --- |
-| `tests/touch.uis` (Windows, Linux) | Skript auf der virtuellen Uhr | Die Entscheidungen des Erkenners und von PaintCraft: alle Gesten oben, Handballen, Einstellung |
+| `tests/touch.uis` (Windows, Linux) | Skript auf der virtuellen Uhr | Die Entscheidungen des Erkenners und von JFPainter: alle Gesten oben, Handballen, Einstellung |
 | `apps/plattest/tests/touch.uis` | Attrappen der Zeiger-API (Windows), eingespeiste Ereignisse (`wl_touch`, XInput 2.2) | Der Weg vom System zum Finger: Ids, Verlauf, Abbruch, keine Doppelereignisse |
 | `python tools/touchcheck.py` (Windows) | Echtes Fenster, echte Kontakte über `InjectTouchInput`, ohne Touchscreen | Was Windows selbst entscheidet: Zahnrad, Regler unter dem Rahmen, Halten und Ziehen, kein Strg + Rad. Überspringt mit Meldung, wenn der Bildschirm gesperrt oder das Fenster verdeckt ist |
 
@@ -83,7 +83,7 @@ Tablet-Verhalten von Windows und die Bildschirmtastatur.
 Bauen und starten, im Ordner des Repositories:
 
 ```
-python build_rs.py run PaintCraft
+python build_rs.py run JFPainter
 ```
 
 Mit dem Finger, ohne Stift:
@@ -119,5 +119,5 @@ Im Tablet-Betrieb (Tastatur ab):
     Tippen landet im Feld. Ein anderes Bedienelement antippen: Sie geht wieder zu.
 13. Vom Rand nach innen wischen (Windows-Gesten): Eine angefangene Geste bricht sauber ab, kein Strich bleibt hängen.
 
-Was nicht passt, bitte mit der Nummer melden. Dazu hilft `build\win\PaintCraft.exe --log-events > ereignisse.txt`: In der
+Was nicht passt, bitte mit der Nummer melden. Dazu hilft `build\win\JFPainter.exe --log-events > ereignisse.txt`: In der
 Datei steht jedes Ereignis; bei einem Finger steht in `data` an der fünften Stelle von rechts eine 3 (`data=30000`).

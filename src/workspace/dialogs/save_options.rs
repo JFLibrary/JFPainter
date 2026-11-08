@@ -1,4 +1,4 @@
-// dlg_saveopt -- PaintCraft: "Speicheroptionen" (paint.net's Save
+// dlg_saveopt -- JFPainter: "Speicheroptionen" (paint.net's Save
 // Configuration dialog).  Left: "Einstellungen" with exactly the options the format's encoder
 // honours (IFI_IOM: Bit-Tiefe, Dithering-Level, Schwelle für Transparenz, Qualität,
 // Verlustfrei, Chroma-Subsampling, Preset, Bemühung / Tempo der Kompression, RLE,

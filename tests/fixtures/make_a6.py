@@ -7,7 +7,7 @@
 a6_photo.png  320 x 240 RGBA: colour gradients, a noise texture, a white disc, a dark bar and a
               half transparent band (alpha 128) with a fully transparent hole -- deterministic.
 Reference hashes = FNV-1a 64 over the rows (w * 4 bytes B, G, R, A) of efftest's result
-(`efftest --shot - --in a6_photo.png --out x.raw --fx NAME --p k=v`), exactly what PaintCraft's
+(`efftest --shot - --in a6_photo.png --out x.raw --fx NAME --p k=v`), exactly what JFPainter's
 test hook `cmd 995` prints (0 layer, 2 preview).  efftest: python build.py app efftest --out
 build/a6 (the --efftest option chooses another binary).
 """

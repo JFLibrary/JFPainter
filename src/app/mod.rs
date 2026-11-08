@@ -1,4 +1,4 @@
-//! PaintCraft application entry and adapter for JFLib's UI runtime.
+//! JFPainter application entry and adapter for JFLib's UI runtime.
 
 use jflib::{style, ui};
 
@@ -16,7 +16,7 @@ use lifecycle::{pn_cmd, pn_frame, pn_init};
 use ui::*;
 
 const DESC: AppDesc = AppDesc {
-    title: "Unbenannt - PaintCraft",
+    title: "Unbenannt - JFPainter",
     flags: AF_RESIZABLE | AF_CUSTOM_TITLEBAR | AF_SINGLE_INSTANCE, // later starts open their files here
     w: 1280,
     h: 800,
@@ -27,7 +27,7 @@ const DESC: AppDesc = AppDesc {
     menubar: &crate::app::commands::PN_MENUBAR,
 };
 
-/// the ui::App of PaintCraft: Pn behind an Rc<RefCell> (render-time callbacks borrow it)
+/// the ui::App of JFPainter: Pn behind an Rc<RefCell> (render-time callbacks borrow it)
 struct PnApp {
     p: Rc<RefCell<Pn>>,
 }

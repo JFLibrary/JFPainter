@@ -117,7 +117,7 @@ internal sealed class HostServices(bool software):IServiceProvider
     // Paint.NET's own files stay as they are: a plugin's settings land here.
     static string DataFolder(string name)
     {
-        var dir=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"PaintCraft","pdn-host",name);
+        var dir=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"JFPainter","pdn-host",name);
         Directory.CreateDirectory(dir);
         return dir;
     }
@@ -208,8 +208,8 @@ internal sealed class HostServices(bool software):IServiceProvider
     static List<string> PluginRoots()
     {
         var docs=Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        var roots=new List<string> {Path.Combine(docs,"PaintCraft App Files"),Path.Combine(docs,"Paint.NET App Files"),Program.Install};
-        // The running plugin's own root first, wherever PaintCraft found it.
+        var roots=new List<string> {Path.Combine(docs,"JFPainter App Files"),Path.Combine(docs,"Paint.NET App Files"),Program.Install};
+        // The running plugin's own root first, wherever JFPainter found it.
         var folder=Path.GetDirectoryName(PluginCatalog.LoadedFrom);
         while(folder!=null && Path.GetFileName(folder) is not ("Effects" or "FileTypes"))folder=Path.GetDirectoryName(folder);
         if(folder!=null)roots.Insert(0,Path.GetDirectoryName(folder)!);
@@ -232,7 +232,7 @@ internal sealed class HostServices(bool software):IServiceProvider
     {
         var text=string.Join("\n\n",a.Skip(1).Select(x=>x is Exception e ? e.GetBaseException().Message : x as string).Where(x=>!string.IsNullOrEmpty(x)));
         Console.Error.WriteLine(text);
-        if(Dialogs.Interactive)System.Windows.Forms.MessageBox.Show(a[0] as System.Windows.Forms.IWin32Window,text,"PaintCraft – Plugin",System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Error);
+        if(Dialogs.Interactive)System.Windows.Forms.MessageBox.Show(a[0] as System.Windows.Forms.IWin32Window,text,"JFPainter – Plugin",System.Windows.Forms.MessageBoxButtons.OK,System.Windows.Forms.MessageBoxIcon.Error);
         return null;
     }
 
@@ -291,7 +291,7 @@ internal sealed class HostServices(bool software):IServiceProvider
         if(cacheReady)return;
         var service=framework.GetType("PaintDotNet.Gpu.GpuInfoCacheService",true)!;
         var initialize=service.GetMethod("Initialize",BindingFlags.Public|BindingFlags.Static) ?? throw new MissingMethodException(service.FullName,"Initialize");
-        var dir=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"PaintCraft","pdn-host");
+        var dir=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"JFPainter","pdn-host");
         Directory.CreateDirectory(dir);
         initialize.Invoke(null,[ClosedInterface.Implement(initialize.GetParameters()[0].ParameterType,(_,_)=>dir)]);
         cacheReady=true;
@@ -339,7 +339,7 @@ internal static class ClosedInterface
     {
         var names=Directory.GetFiles(Program.Install,"PaintDotNet*.dll").Select(Path.GetFileNameWithoutExtension);
         var attribute=typeof(System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute).GetConstructor([typeof(string)])!;
-        var assembly=AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("PaintCraft.PdnHost.Shims"),AssemblyBuilderAccess.Run,
+        var assembly=AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("JFPainter.PdnHost.Shims"),AssemblyBuilderAccess.Run,
             names.Select(n=>new CustomAttributeBuilder(attribute,[n])));
         return assembly.DefineDynamicModule("Shims");
     }

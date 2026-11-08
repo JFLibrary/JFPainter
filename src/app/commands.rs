@@ -1,4 +1,4 @@
-// cmds -- PaintCraft: command table (German labels, icons, accelerators) and the menu bar
+// cmds -- JFPainter: command table (German labels, icons, accelerators) and the menu bar
 //                                                                    [apps/PaintCraft/src/cmds.s]
 //
 // PN_CMDS is the initial command table (AppDesc::cmds); app::state keeps a mutable copy
@@ -7,7 +7,7 @@
 // are reserved (hidden).  Records with an id that appeared before are alternative
 // accelerators (state and label come from the first one).
 //
-// Labels are PaintCraft's own German wording; '&' marks the mnemonic.  Every command
+// Labels are JFPainter's own German wording; '&' marks the mnemonic.  Every command
 // whose module does not exist yet starts disabled (CF_DISABLED); modules enable their
 // commands from their X_states function every frame (pn_cmd_set).
 
@@ -196,7 +196,7 @@ pub(crate) static PN_CMDS: [Command; 331] = [
     Command::new(CMD_HELP_FORUM, "&Forum", 0, 0, 0, CF_DISABLED),
     Command::new(CMD_HELP_TUTORIALS, "&Lernprogramme", 0, 0, 0, CF_DISABLED),
     Command::new(CMD_HELP_PLUGINS, "&Plug-Ins", 0, 0, 0, CF_DISABLED),
-    Command::new(CMD_HELP_WEBSITE, "PaintCraft-&Webseite", IC_GLOBE, 0, 0, CF_DISABLED),
+    Command::new(CMD_HELP_WEBSITE, "JFPainter-&Webseite", IC_GLOBE, 0, 0, CF_DISABLED),
     Command::new(CMD_HELP_DONATE, "&Spenden", IC_HEART, 0, 0, CF_DISABLED),
     Command::new(CMD_HELP_FEEDBACK, "Fehler melden oder Feedback geben…", IC_MAIL, 0, 0, CF_DISABLED),
     Command::new(CMD_HELP_ABOUT, "&Info", IC_INFO, 0, 0, CF_DISABLED),

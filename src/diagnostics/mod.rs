@@ -116,7 +116,7 @@ pub(crate) fn diag_hook(_p: &Pn) -> Option<Box<dyn CompHook + '_>> {
 //                      (0, 0) -> #9900 text
 //   909 on             live tool hook (comp_set_tool): 1 = the current layer shows opaque
 //                      yellow in [0, 10) x [0, 10), 0 = removed
-//   910 -              every PaintCraft cursor at 100 / 150 / 200 % -> build/tests/cursors.png
+//   910 -              every JFPainter cursor at 100 / 150 / 200 % -> build/tests/cursors.png
 //                      (cursors.rs pn_cursor_shot); #9900 text "ok" / "err"
 //   911 -              crash now (crash.rs crash_test) -- with --crash-dir DIR the protocol goes
 //                      there (tools/pn_crash_check.py)
@@ -132,7 +132,7 @@ pub(crate) fn diag_hook(_p: &Pn) -> Option<Box<dyn CompHook + '_>> {
 //   9918 text message of the error bar (fileio)
 //   9919 text window title
 //   9920 value the canvas cursor of the tool (tool_cursor: 15 = CUR_CUSTOM, its own cursor),
-//        text "tool N" / "rotate" / "" -- which PaintCraft cursor ui.cursor_custom names
+//        text "tool N" / "rotate" / "" -- which JFPainter cursor ui.cursor_custom names
 
 // a1_sem(id, label, value) -- a hidden K_TEXT record (empty rectangle)
 fn a1_sem(ui: &mut Ui, id: u32, label: &str, value: i32) {
@@ -171,7 +171,7 @@ fn a1_diag_frame(p: &mut Pn, ui: &mut Ui) {
     let (ox, oy) = crate::workspace::view::view_origin(&p.view);
     let t = fmt_cap(format!("{},{}", ox, oy), 64);
     a1_sem(ui, ID_A1_PROBE + 9, &t, crate::workspace::view::view_zoom(p) as i32);
-    // 9920: the canvas cursor and which PaintCraft cursor it shows
+    // 9920: the canvas cursor and which JFPainter cursor it shows
     let cur = crate::tools::tool_cursor(p, ui);
     let mut t = String::new();
     if cur == CUR_CUSTOM {

@@ -1,6 +1,6 @@
 #!args --config build/tests/pn_menu_icons --open tests/fixtures/p1_plugin.png
 # menu_icons.uis -- the colourful icons of the menus (tools/gen_pn_icons.py, workspace/icons/mod.rs):
-# PaintCraft's own code points have no glyph in the icon font, so the hook has to draw them on
+# JFPainter's own code points have no glyph in the icon font, so the hook has to draw them on
 # enabled rows in colour and on disabled rows in greys; the last icon of the table is complete.
 size 1100 820
 theme light

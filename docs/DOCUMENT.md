@@ -1,4 +1,4 @@
-# A1 – PaintCraft document core (M1, Strang A)
+# A1 – JFPainter document core (M1, Strang A)
 
 Multi-document model, layers, compositing, canvas view, rulers, image tabs, file open/save,
 "Neu" dialog, Ebenen basics, test hooks.  Builds on both targets; `docs.uis`, `view.uis`,
@@ -7,10 +7,10 @@ Multi-document model, layers, compositing, canvas view, rulers, image tabs, file
 walks only).
 
 ```
-python build.py app PaintCraft --out build/a1
-build/a1/win/PaintCraft.exe --script apps/PaintCraft/tests/docs.uis [--verify-dirty]
-build/a1/win/PaintCraft.exe --open apps/PaintCraft/tests/fixtures/a1_rgba.png --script apps/PaintCraft/tests/files.uis
-wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a1/linux/PaintCraft --script apps/PaintCraft/tests/view.uis
+python build.py app JFPainter --out build/a1
+build/a1/win/JFPainter.exe --script apps/PaintCraft/tests/docs.uis [--verify-dirty]
+build/a1/win/JFPainter.exe --open apps/PaintCraft/tests/fixtures/a1_rgba.png --script apps/PaintCraft/tests/files.uis
+wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a1/linux/JFPainter --script apps/PaintCraft/tests/view.uis
 ```
 
 ## 1. Files
@@ -199,7 +199,7 @@ path.
   IMGMETA (per-metre PNG / cm → unit cm), ICC → DOC_ICC, EXIF / XMP → DOC_META (IMGMETA).
   Paths are made absolute and canonical; an open file is only activated. Linux and browser
   paths keep case distinctions; Windows paths compare ASCII case-insensitively. Errors → error bar
-  (ID_FIO_FIRST + 40, title = file name) with PaintCraft's German messages.  Tests of a HEIC
+  (ID_FIO_FIRST + 40, title = file name) with JFPainter's German messages.  Tests of a HEIC
   and an AVIF (lossless 4:4:4, alpha item, irot): tests/heic.uis, tests/avif.uis; AVIF is also
   written (avif_enc.s: quality, lossless, chroma subsampling in the save dialog, tests/saveopt.uis).
   JPEG XL is read (jxl*.s, modular and VarDCT, first displayed frame of an animation):
@@ -252,7 +252,7 @@ path.
 * **Zuletzt geöffnet**: in memory, 10 entries, newest first, labels "&1 name" on the
   reserved rows CMD_RECENT0.. (pn_cmd_label); (Keine) hidden / Liste leeren enabled when there
   are entries.
-* Window title "Name – PaintCraft", "*Name – PaintCraft" while modified, "PaintCraft" without images.
+* Window title "Name – JFPainter", "*Name – JFPainter" while modified, "JFPainter" without images.
 * Command line: `--open FILE` and plain file arguments (values of --size, --scale, --theme,
   --accent, --shot, --script, --auto-close, --anim, --threads, --simd, --config,
   --settings-save-at, --plugins, --crash-dir are skipped) open files

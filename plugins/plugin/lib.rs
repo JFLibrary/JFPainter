@@ -1,8 +1,8 @@
-// plugin -- the PaintCraft plugin ABI for plugins written in Rust (no_std cdylib, no imports)
+// plugin -- the JFPainter plugin ABI for plugins written in Rust (no_std cdylib, no imports)
 //                     [ASMLIB/inc/plugin.inc; docs apps/PaintCraft/docs/PLUGINS.md, plugins/README.md]
 //
 // A plugin is a library exporting one function, pn_plugin_query(PNAPI*) -> PLUGININFO*, that
-// PaintCraft (the Rust and the assembly build alike) loads from <root>/Effects, FileTypes or
+// JFPainter (the Rust and the assembly build alike) loads from <root>/Effects, FileTypes or
 // Shapes.  It is linked against nothing: no rt, no plat, no system library -- the host's
 // functions come through the PNAPI table.  This crate is all a plugin depends on (+ core):
 //
@@ -43,7 +43,7 @@
 // ("Absturz in render (ungültiger Befehl ...)"), like any other fault inside plugin code.
 //
 // Build: python build_rs.py plugin [NAME] (section rust-plugin: cdylib, panic=abort, fat LTO,
-// linked against nothing, checked like PaintCraft's loader checks it).
+// linked against nothing, checked like JFPainter's loader checks it).
 
 #![no_std]
 

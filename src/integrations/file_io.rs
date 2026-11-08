@@ -1,4 +1,4 @@
-// fileio -- PaintCraft: Datei menu.  Neu (dlg_new.rs), Öffnen (system file dialog, every
+// fileio -- JFPainter: Datei menu.  Neu (dlg_new.rs), Öffnen (system file dialog, every
 // registered decoder, .pdn with all layers), Zuletzt geöffnet (in memory),
 // Speichern / Speichern unter (format from the extension, "Speichern" question before
 // flattening a layered image, .pdn through pdn_encode), Alles speichern, Schließen and
@@ -570,7 +570,7 @@ fn install_open(p: &mut Pn, ui: &mut Ui, image: LoadedImage, path: &str) -> i32 
             if result == 0 && layered {
                 fio_error(p,Some(crate::preferences::localization::tr("PSD-Import")),"Das gespeicherte PSD-Gesamtbild wurde als neues 8-Bit-Bild importiert. Nicht unterstützte Photoshop-Strukturen und höhere Farbtiefen bleiben in der Originaldatei erhalten. Bitte unter einem neuen Namen speichern.");
             } else if result == 0 && high_depth {
-                fio_error(p,Some(crate::preferences::localization::tr("Farbtiefe / HDR")),"Die Quelldatei wurde in ein neues 8-Bit-Dokument umgewandelt. PaintCraft bearbeitet und zeigt derzeit SDR; höhere Präzision und HDR-Werte bleiben nur in der Originaldatei erhalten. Bitte unter einem neuen Namen speichern.");
+                fio_error(p,Some(crate::preferences::localization::tr("Farbtiefe / HDR")),"Die Quelldatei wurde in ein neues 8-Bit-Dokument umgewandelt. JFPainter bearbeitet und zeigt derzeit SDR; höhere Präzision und HDR-Werte bleiben nur in der Originaldatei erhalten. Bitte unter einem neuen Namen speichern.");
             }
             if result == 0 && external {
                 fio_error(p,Some(crate::preferences::localization::tr("Paint.NET-Dateiformat")),"Als neues Bild geöffnet: nur die vereinten Pixel und die Auflösung. Ebenen und übrige Metadaten stehen weiter nur in der Originaldatei; beim Export nutzt das Plugin seine Vorgaben.");
@@ -837,15 +837,15 @@ fn install_psd(p: &mut Pn, ui: &mut Ui, psd: img_all::psd::document::Document, p
 // modified, and removes the copies.  A copy only counts as complete under its .pdn name: it is
 // written as .tmp and renamed last.
 
-// recovery_dir(ui) -> --config DIR or $PaintCraft_CONFIG_DIR + "/recovery" (like the settings),
+// recovery_dir(ui) -> --config DIR or $JFPainter_CONFIG_DIR + "/recovery" (like the settings),
 // a headless run without them keeps it in memory, else the app's data folder
 fn recovery_dir(ui: &Ui) -> String {
     let dir = plat::arg_value("--config")
         .filter(|v| !v.is_empty())
-        .or_else(|| plat::env("PaintCraft_CONFIG_DIR").filter(|v| !v.is_empty()));
+        .or_else(|| plat::env("JFPainter_CONFIG_DIR").filter(|v| !v.is_empty()));
     match dir {
         Some(d) if d.len() < PATH_CAP - 64 => format!("{}/recovery", d.trim_end_matches(['/', '\\'])),
-        _ if ui.headless() => String::from("mem://paintcraft/recovery"),
+        _ if ui.headless() => String::from("mem://jfpainter/recovery"),
         _ => String::from("data://recovery"),
     }
 }
@@ -1132,7 +1132,7 @@ fn finish_save(p: &mut Pn, ui: &mut Ui, doc: DocId, path: &str, fmt: u32, err: i
     let msg = match err {
         ERR_IO => "Die Datei ließ sich nicht auf den Datenträger schreiben.", // i18n
         ERR_NOMEM => "Zu wenig Arbeitsspeicher, um das Bild zu speichern.", // i18n
-        ERR_UNSUPPORTED => "In diesem Format kann PaintCraft nicht speichern.", // i18n
+        ERR_UNSUPPORTED => "In diesem Format kann JFPainter nicht speichern.", // i18n
         _ => "Das Speichern ist aus unbekanntem Grund fehlgeschlagen.", // i18n
     };
     let t = String::from(file_part(path));
@@ -1206,7 +1206,7 @@ fn request_save(p: &mut Pn, ui: &mut Ui, doc: DocId, path: Option<&str>, fmt: u3
     p.fio.sv_fmt = fmt;
     if !encodable(fmt) {
         let t = String::from(file_part(&p.fio.sv_path));
-        fio_error(p, Some(&t), "In diesem Format kann PaintCraft nicht speichern.");
+        fio_error(p, Some(&t), "In diesem Format kann JFPainter nicht speichern.");
         p.fio.sv_saveas = false;
         return -1;
     }
@@ -1419,7 +1419,7 @@ pub(crate) fn fio_states(p: &mut Pn, ui: &mut Ui) {
     crate::integrations::printing::prt_states(p, ui); // ---- PR1 (print.rs): Drucken… state
 }
 
-// update_title() -- "Name – PaintCraft" ('*' in front while modified), "PaintCraft" without images
+// update_title() -- "Name – JFPainter" ('*' in front while modified), "JFPainter" without images
 fn update_title(p: &mut Pn, ui: &mut Ui) {
     #[cfg(target_arch = "wasm32")]
     {
@@ -1430,12 +1430,12 @@ fn update_title(p: &mut Pn, ui: &mut Ui) {
         }
     }
     let t = match p.doc.active() {
-        None => String::from("PaintCraft"),
+        None => String::from("JFPainter"),
         Some(d) => {
             if d.flags & DF_MODIFIED as u32 != 0 {
-                format!("*{} – PaintCraft", d.name)
+                format!("*{} – JFPainter", d.name)
             } else {
-                format!("{} – PaintCraft", d.name)
+                format!("{} – JFPainter", d.name)
             }
         }
     };
@@ -1584,7 +1584,7 @@ pub(crate) fn fio_cmd(p: &mut Pn, ui: &mut Ui, id: u32, arg: u32) -> bool {
     match id {
         UIC_CLOSE => return exit_request(p, ui),
         UIC_OPEN => {
-            // AF_SINGLE_INSTANCE: a later start of PaintCraft hands its files over
+            // AF_SINGLE_INSTANCE: a later start of JFPainter hands its files over
             for r in ui.open_take() {
                 fio_open_args(p, ui, &r.cwd, &r.args);
             }

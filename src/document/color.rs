@@ -1,4 +1,4 @@
-// colormgmt -- PaintCraft: colour management (agent I1, plan M8, spec 2.12 Farbmanagement)
+// colormgmt -- JFPainter: colour management (agent I1, plan M8, spec 2.12 Farbmanagement)
 //
 // Bild > Farbprofil... (CMD_COLOR_PROFILE): modal dialog "Farbprofil" like paint.net 5.1:
 // Aktuell: (the document's profile) / Neu: (built-in sRGB, A98 RGB, Display P3,

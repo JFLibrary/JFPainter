@@ -1,11 +1,11 @@
-# PaintCraft plugins in Rust
+# JFPainter plugins in Rust
 
-Effects, adjustments, file types and shapes for PaintCraft can be written in Rust. A plugin is a
+Effects, adjustments, file types and shapes for JFPainter can be written in Rust. A plugin is a
 `no_std` library (a `cdylib`) that exports one function, `pn_plugin_query`, and links against
 nothing: no `rt`, no `plat`, no system library. The host's functions come through the PNAPI
 table.
 
-The binaries are the same kind the assembly plugins of PaintCraft's first version were:
+The binaries are the same kind the assembly plugins of JFPainter's first version were:
 - They load in JFPainter on Windows and Linux.
 - The ABI is version 1 of `plugin.inc` of that version (JFLib's `legacy/ASMLIB/inc/plugin.inc`).
 - [`docs/PLUGINS.md`](../docs/PLUGINS.md) describes it: folders, PNAPI, PLUGININFO, validation, threading rules, crash guard.
@@ -168,7 +168,7 @@ fn panic(info: &core::panic::PanicInfo) -> ! {
   - `parallel_for(count, &|index, job| ..)` — on the host's workers; every item is guarded, and nesting is allowed.
   - `hash32(x, y, seed, stream)` — the per-pixel random bits of the built-in effects.
   - `nthreads()`;
-  - `log(msg)` and `log!(..)` — lines in the plugin log (stderr: `PaintCraft: Plugin <file>: …`).
+  - `log(msg)` and `log!(..)` — lines in the plugin log (stderr: `JFPainter: Plugin <file>: …`).
 - `Block` is a PA_ALLOC byte buffer.
 - `PnAlloc` is an opt-in `#[global_allocator]` on PA_ALLOC / PA_FREE / PA_REALLOC, for plugins that use `alloc`:
 

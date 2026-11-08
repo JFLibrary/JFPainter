@@ -1,6 +1,6 @@
 # G’MIC-Qt, Bildpinsel und Dynamik
 
-Stand: 12. Oktober 2026. Diese Funktionen gehören zur nativen PaintCraft-Anwendung
+Stand: 12. Oktober 2026. Diese Funktionen gehören zur nativen JFPainter-Anwendung
 im JFLib-Repository. Sie ersetzen keine vollständige Paint.NET-Plugin-API.
 
 ## G’MIC-Qt einrichten
@@ -9,39 +9,39 @@ im JFLib-Repository. Sie ersetzen keine vollständige Paint.NET-Plugin-API.
    installieren beziehungsweise vollständig entpacken, einschließlich ihrer Qt-
    Bibliotheken und Plugins. Das GIMP-Plugin allein ist nicht ausreichend.
 2. `gmic_qt.exe` unter Windows oder `gmic_qt` unter Linux in den Suchpfad aufnehmen,
-   oder den vollständigen Pfad beim Start von PaintCraft übergeben:
+   oder den vollständigen Pfad beim Start von JFPainter übergeben:
 
    ```powershell
-   .\build\win\PaintCraft.exe --gmic-qt "C:\Tools\gmic-qt\gmic_qt.exe"
+   .\build\win\JFPainter.exe --gmic-qt "C:\Tools\gmic-qt\gmic_qt.exe"
    ```
 
    ```sh
-   ./build/linux/PaintCraft --gmic-qt /opt/gmic/bin/gmic_qt
+   ./build/linux/JFPainter --gmic-qt /opt/gmic/bin/gmic_qt
    ```
 
-   Alternativ gilt die Umgebungsvariable `PAINTCRAFT_GMIC_QT`. Ein Linux-Wrapper
+   Alternativ gilt die Umgebungsvariable `JFPAINTER_GMIC_QT`. Ein Linux-Wrapper
    kann bei einer portablen Installation deren Qt-/Bibliothekspfade setzen.
 3. Ein Bild öffnen und **Effekte > G’MIC-Qt** wählen. Der Filterdialog erscheint
-   als eigenes Qt-Fenster. PaintCraft wartet mit einer Abbrechen-Schaltfläche.
+   als eigenes Qt-Fenster. JFPainter wartet mit einer Abbrechen-Schaltfläche.
 
-PaintCraft übergibt die aktive Ebene als PNG. G’MIC verwendet seinen regulären
+JFPainter übergibt die aktive Ebene als PNG. G’MIC verwendet seinen regulären
 [Standalone-Dateivertrag](https://github.com/c-koi/gmic-qt/blob/master/STANDALONE.md)
 mit `--output output-%l.png`. Ein einzelnes gleich großes Ergebnis wird durch die
 aktuelle Auswahlmaske übernommen und erzeugt einen Undo-Schritt. Mehrere Ergebnisse
 oder geänderte Abmessungen öffnen ein neues Dokument; `%l` wird von G’MICs Reihenfolge
-„oben zuerst“ in PaintCrafts Ebenenreihenfolge übersetzt. Kleinere Ergebnisbilder
+„oben zuerst“ in JFPainters Ebenenreihenfolge übersetzt. Kleinere Ergebnisbilder
 werden transparent auf die gemeinsame Leinwand aufgefüllt.
 
 Abbruch beendet den Kindprozess einschließlich seiner Prozessgruppe. Ein fehlendes
 Programm, fehlerhafter Exit oder ungültige Ergebnisdateien ändern das Quelldokument
 nicht. Die aktive Ebene und deren Dokumentversion werden vor der Übernahme geprüft.
-PaintCraft löscht anschließend nur die eigenen Austauschdateien im temporären
+JFPainter löscht anschließend nur die eigenen Austauschdateien im temporären
 Auftragsordner. Maximal 256 Ergebnisse und insgesamt 100 Millionen Ergebnis-Pixel
 sind erlaubt; eine einzelne Datei darf höchstens 512 MB groß sein.
 
 Die aktuelle Brücke transportiert **8-Bit-Pixel einer aktiven Ebene**, keine
 vollständige mehrlagige G’MIC-Eingabe, ICC-Metadaten oder HDR-Fließkommadaten.
-G’MIC ist eine separate Installation und wird nicht mit PaintCraft ausgeliefert.
+G’MIC ist eine separate Installation und wird nicht mit JFPainter ausgeliefert.
 `--gmic-command "…"` übergibt für Automatisierung zusätzlich `--command` und
 `--apply`; reguläre Benutzer benötigen diese Option nicht.
 
@@ -114,11 +114,11 @@ pixelidentische Nachbildung sämtlicher Brush-Factory-Dynamiken.
 Automatisierung:
 
 ```text
-PaintCraft --brush-presets DynamicDrawSettings.json --brush-preset "Red ink"
+JFPainter --brush-presets DynamicDrawSettings.json --brush-preset "Red ink"
 ```
 
 Ohne `--brush-preset` wird nur die Bibliothek geladen. Für die unveränderte
-Plugin-DLL steht außerdem der [Paint.NET-Host](../../../tools/paintcraft-pdn-host/README.md)
+Plugin-DLL steht außerdem der [Paint.NET-Host](pdn-host/README.md)
 zur Verfügung. Dynamic Draw v4.0 wurde auf Windows und Linux/Wine geladen und mit
 seinem Originaldialog konstruiert; interaktives Zeichnen, Tablets und alle
 Plugin-Funktionen sind damit noch nicht vollständig abgenommen.
@@ -133,7 +133,7 @@ python tools/paintcraft_brush_preset_check.py --out build/paintcraft-next --targ
 Mit `--original-plugin /pfad/zu/DynamicDraw.dll` erzeugt der Preset-Test zusätzlich
 JSON und XML mit den originalen v4.0-Serializer-Typen der DLL. Dazu benötigt der
 Testexporter Windows/.NET; die erzeugten Dateien werden anschließend von beiden
-nativen PaintCraft-Versionen eingelesen und zum Zeichnen benutzt. Die Original-DLL
+nativen JFPainter-Versionen eingelesen und zum Zeichnen benutzt. Die Original-DLL
 wird weder verändert noch ins Repository kopiert.
 
 Der Test erwartet die separat bereitgestellte Standalone-Version 4.0.5 im ignorierten

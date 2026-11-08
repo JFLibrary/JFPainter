@@ -1,6 +1,6 @@
-# PaintCraft
+# JFPainter
 
-PaintCraft is a raster graphics editor inspired by paint.net, written in Rust with
+JFPainter is a raster graphics editor inspired by paint.net, written in Rust with
 [JFLib](../../README.md). It combines a layered canvas, multiple open documents,
 selection tools, image adjustments, effects, and an extensible plugin system.
 
@@ -8,21 +8,21 @@ Use it for drawing, photo editing, compositing, and converting images between
 formats. For a smaller drawing program, see
 [Kritzel](../Kritzel/README.md).
 
-![PaintCraft in its dark theme, with the canvas and Tools, Colors, History, and Layers panels](../../docs/images/readme/paintcraft-dark.png)
+![JFPainter in its dark theme, with the canvas and Tools, Colors, History, and Layers panels](../../docs/images/readme/paintcraft-dark.png)
 
-*PaintCraft with the WinUI style and dark theme. German is the default UI language; English and French catalogs are also available.*
+*JFPainter with the WinUI style and dark theme. German is the default UI language; English and French catalogs are also available.*
 
 ## More styles
 
 ### macOS style
 
-![PaintCraft with the macOS style and dark theme, showing the same image and editing panels](../../docs/images/readme/paintcraft-macos-dark.png)
+![JFPainter with the macOS style and dark theme, showing the same image and editing panels](../../docs/images/readme/paintcraft-macos-dark.png)
 
 *The same image, 75% zoom, and dark theme with JFLib's macOS style.*
 
 ### KDE style
 
-![PaintCraft with the KDE style and dark theme, showing the same image and editing panels](../../docs/images/readme/paintcraft-kde-dark.png)
+![JFPainter with the KDE style and dark theme, showing the same image and editing panels](../../docs/images/readme/paintcraft-kde-dark.png)
 
 *The same image, 75% zoom, and dark theme with JFLib's KDE style.*
 
@@ -48,11 +48,11 @@ changes the app's appearance; the [build target](#build-and-run) selects its pla
 - **Extensibility:** native plugins for effects, adjustments, file types, and
   shapes; standalone G'MIC-Qt integration on Windows/Linux and a Windows host for
   original paint.net effects (classic, v5 CPU and GPU) and FileType factories, including
-  execution from native Linux PaintCraft through Wine.
+  execution from native Linux JFPainter through Wine.
 
 ## Supported file formats
 
-The following formats have both a decoder and an encoder registered by PaintCraft.
+The following formats have both a decoder and an encoder registered by JFPainter.
 The extensions are the aliases recognized by its format registry. Support refers
 to the app's raster-image workflow; it does not imply support for every feature or
 variant of the corresponding file specification.
@@ -73,16 +73,16 @@ variant of the corresponding file specification.
 | JPEG XR | `.jxr`, `.wdp`, `.hdp`, `.wmp` | Yes | Yes | JPEG XR raster images. |
 | paint.net document | `.pdn` | Yes | Yes | Preserves the document's raster layers; see below. |
 | Photoshop PSD | `.psd` | Yes | Yes | Raster layers, names, visibility, opacity and supported blend modes; 8-bit layered RGB(A) export. |
-| Photoshop PSB | `.psb` | Yes | No | Raster import, subject to PaintCraft's size/memory limits; save the converted document as PSD or PDN. |
+| Photoshop PSB | `.psb` | Yes | No | Raster import, subject to JFPainter's size/memory limits; save the converted document as PSD or PDN. |
 
 ### Layers, transparency, and document fidelity
 
-**Use PDN or PSD to keep the supported raster layer stack.** PaintCraft reads and writes layer
+**Use PDN or PSD to keep the supported raster layer stack.** JFPainter reads and writes layer
 pixels, names, visibility, opacity, and supported blend modes. Reading or writing
 a PDN document does not require the paint.net plugin compatibility host.
 
 Formats other than PDN and PSD are saved from the composited image. The file contains the visible
-result, rather than independently editable PaintCraft layers. Text and shapes are
+result, rather than independently editable JFPainter layers. Text and shapes are
 rasterized when committed to a layer.
 
 PSD/PSB input accepts 8-, 16- and 32-bit RGB/grayscale data, using raw, PackBits,
@@ -105,7 +105,7 @@ On Windows a pan of the canvas comes from GPU textures, byte for byte what the
 CPU draws ([GPU.md](../../docs/GPU.md)); everything else draws on the CPU.
 
 The editing canvas uses 8-bit color channels. A codec's ability to read a
-higher-bit-depth source does not make PaintCraft an HDR editor. Animated and
+higher-bit-depth source does not make JFPainter an HDR editor. Animated and
 multi-page formats are used as individual images; the app has no animation or
 multi-page document editor.
 
@@ -123,7 +123,7 @@ dialogs. QOI is an included example plugin, not part of the default codec set.
 ## Build and run
 
 **Run these commands from the JFLib repository root**, where `build_rs.py` is
-located. The app name is case-sensitive: **`PaintCraft`**.
+located. The app name is case-sensitive: **`JFPainter`**.
 
 You need Python 3, Rust/Cargo through rustup, and LLVM/LLD. The repository targets Rust
 1.98.x. The Python script builds the app with `rustc` and the pinned shaping
@@ -136,22 +136,22 @@ platform setup. Use `python3` instead of `python` where required.
 
 ```powershell
 rustup target add x86_64-pc-windows-msvc
-python build_rs.py app PaintCraft --target win
-.\build\win\PaintCraft.exe
+python build_rs.py app JFPainter --target win
+.\build\win\JFPainter.exe
 ```
 
 To build and launch with an image and a dark theme:
 
 ```powershell
-python build_rs.py run PaintCraft --target win -- --open "C:\Pictures\example.png" --theme dark
+python build_rs.py run JFPainter --target win -- --open "C:\Pictures\example.png" --theme dark
 ```
 
 ### Linux
 
 ```sh
 rustup target add x86_64-unknown-linux-gnu
-python3 build_rs.py app PaintCraft --target linux
-./build/linux/PaintCraft
+python3 build_rs.py app JFPainter --target linux
+./build/linux/JFPainter
 ```
 
 Running the desktop app requires a Wayland or X11 session. See the
@@ -162,8 +162,8 @@ Running the desktop app requires a Wayland or X11 session. See the
 ```sh
 rustup target add wasm32-unknown-unknown
 rustup component add rust-src
-python build_rs.py app PaintCraft --target web
-python tools/serve_web.py build/web/PaintCraft
+python build_rs.py app JFPainter --target web
+python tools/serve_web.py build/web/JFPainter
 ```
 
 Open [http://127.0.0.1:8766/](http://127.0.0.1:8766/). LLVM's `wasm-ld` is required.
@@ -175,8 +175,8 @@ the SIMD and worker variants.
 
 ```sh
 rustup target add aarch64-linux-android
-python build_rs.py app PaintCraft --target android
-adb install -r build/android/PaintCraft-arm64-v8a-debug.apk
+python build_rs.py app JFPainter --target android
+adb install -r build/android/JFPainter-arm64-v8a-debug.apk
 ```
 
 For the emulator add `--android-abi x86_64`. This is the desktop interface on a phone: painting,
@@ -193,17 +193,17 @@ are desktop features. Dedicated native macOS and iOS app targets are not current
 ### Release builds and styles
 
 ```sh
-# Optimized Windows build: build/release/win/PaintCraft.exe
-python build_rs.py app PaintCraft --target win --release
+# Optimized Windows build: build/release/win/JFPainter.exe
+python build_rs.py app JFPainter --target win --release
 
-# Separate style variants: build/win/<style>/PaintCraft.exe
-python build_rs.py app PaintCraft --target win --style winui,classic,macos,kde,jfoffice
+# Separate style variants: build/win/<style>/JFPainter.exe
+python build_rs.py app JFPainter --target win --style winui,classic,macos,kde,jfoffice
 ```
 
 JFLib styles are selected when building. Theme and scale can be selected when
 launching, for example `--theme dark --scale 150`.
 
-The build script automatically builds PaintCraft's additional modules, including
+The build script automatically builds JFPainter's additional modules, including
 `jxlenc.dll` on Windows and `jxlenc.so` on Linux. Keep the module beside the
 executable when distributing a native build to retain the enhanced JPEG XL writer.
 A fallback writer is available when the module is absent. Keep the generated
@@ -219,7 +219,7 @@ python build_rs.py app buildManager --target win
 .\build\win\buildManager.exe
 ```
 
-Select the JFLib repository and **PaintCraft**, choose the target and style
+Select the JFLib repository and **JFPainter**, choose the target and style
 under **Development (Entwicklung)**, then select **Prepare jobs (Aufträge
 vorbereiten)** and add the jobs to the queue. The GUI still requires Python, Rust,
 and LLVM. The [Build Manager walkthrough](../../README.md#build-manager) covers
@@ -227,9 +227,9 @@ launch profiles, release builds, and packages.
 
 ## Plugins
 
-### Native PaintCraft plugins
+### Native JFPainter plugins
 
-PaintCraft has its own **PNAPI** plugin interface. Native plugins are `.dll` files
+JFPainter has its own **PNAPI** plugin interface. Native plugins are `.dll` files
 on Windows and `.so` files on Linux, placed in `Effects`, `FileTypes`, or `Shapes`
 beside the executable. They can provide effects, adjustments, file codecs, and
 shapes. See the [native plugin guide](../../plugins/README.md).
@@ -242,7 +242,7 @@ New-Item -ItemType Directory -Force .\build\win\FileTypes
 Copy-Item .\build\win\plugins\qoi.dll .\build\win\FileTypes\qoi.dll
 ```
 
-Restart PaintCraft after installing the plugin. For a release or style-specific
+Restart JFPainter after installing the plugin. For a release or style-specific
 build, use the `FileTypes` directory beside that build's executable.
 
 ### Original paint.net plugins
@@ -255,32 +255,32 @@ are not redistributed. Extract plugins into `Effects` (or a subfolder), `FileTyp
 `Shapes` and restart. The scanner identifies managed assemblies separately from native
 PNAPI plugins and adds compatible entries to menus/file filters in the background;
 **Effekte > Paint.NET-Plugins** says when something is missing. See the
-[host setup and compatibility matrix](../../tools/paintcraft-pdn-host/README.md).
+[host setup and compatibility matrix](pdn-host/README.md).
 
 Paint.NET's slider controls, other application services and complete file-type save
 dialogs are not implemented: parameters appear in a plain property list with the plugin's
 labels. BoltBait's pack, the published GPU samples and WebP were run through the host once
-by hand; see the matrix for what that covers. Native Linux PaintCraft can invoke the same
+by hand; see the matrix for what that covers. Native Linux JFPainter can invoke the same
 host through Wine with explicit configuration, for classic and GPU effects alike. The fully
 tested setup uses WineHQ 11.21 and the experimental Paint.NET-on-Wine package; Fedora's wine
 11.20 Staging package does not work. The regular Windows
 Paint.NET build failed its Direct2D initialization under Wine in this test.
 The bridge includes path translation, catalog discovery, codecs, cancellation
-and a heartbeat watchdog. See the [Linux setup](../../tools/paintcraft-pdn-host/README.md#linuxwine-setup)
+and a heartbeat watchdog. See the [Linux setup](pdn-host/README.md#linuxwine-setup)
 for the required separate installation and precise compatibility boundaries.
 
 ### G'MIC and bitmap brushes
 
 Install **G'MIC-Qt standalone** separately and open **Effects > G'MIC-Qt**. If it
 is not on PATH, launch with `--gmic-qt /path/to/gmic_qt` or set
-`PAINTCRAFT_GMIC_QT`. The active layer is exchanged as 8-bit PNG. A single result
+`JFPAINTER_GMIC_QT`. The active layer is exchanged as 8-bit PNG. A single result
 of the same size is applied through the selection with one Undo step; multiple
 outputs or a changed size open a new layered document. Cancel stops the helper.
 See the [creative tools guide](docs/CREATIVE_TOOLS.md) for setup and limitations.
 
 The brush icon beside the brush-size controls opens **Brush tip and dynamics**.
 Load a PNG/BMP/TIFF tip and configure angle, scatter, size/angle variation, flow
-and movement-direction tracking. PaintCraft also imports Brush Factory / Dynamic
+and movement-direction tracking. JFPainter also imports Brush Factory / Dynamic
 Draw JSON and legacy XML presets for supported
 controls. Active unsupported settings are listed and prevent application. Six
 original MIT-licensed brush images, exact byte flow, stroke opacity caps and

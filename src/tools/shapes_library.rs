@@ -1,4 +1,4 @@
-// shapes_lib -- PaintCraft: shape library of the Formen tool (agent T4).  Built-in shapes
+// shapes_lib -- JFPainter: shape library of the Formen tool (agent T4).  Built-in shapes
 // (paint.net 5.1 list and German names; geometry = path data in a 0..100 box, parsed with
 // gfx/pathdata.s) and custom shapes from paint.net ShapeKit XAML files
 // (<ps:SimpleGeometryShape DisplayName="…" Geometry="…"/>, or PathGeometry Figures="…" inside

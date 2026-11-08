@@ -1,4 +1,4 @@
-// t_move -- PaintCraft: Pixel verschieben, Auswahl verschieben (agent T2).
+// t_move -- JFPainter: Pixel verschieben, Auswahl verschieben (agent T2).
 // Sub-module of sel.s (tmove_init is called from sel_init).
 //                                              [apps/PaintCraft/src/t_move.s]
 //

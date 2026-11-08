@@ -1,4 +1,4 @@
-# v5 effects of tools/paintcraft-pdn-host/tests/EffectFixture.cs through Effekte > Paint.NET-Plugins.
+# v5 effects of pdn-host/tests/EffectFixture.cs through Effekte > Paint.NET-Plugins.
 # The runner names the fixture folder: --pdn-plugins <root> --pdn-isolated --pdn-defaults
 # (tools/paintcraft_manual_check.py --pdn-host). The DLL lies in a subfolder of Effects.
 # Every effect starts a process: on a busy machine that outlasts sync's default 10 seconds.
@@ -76,7 +76,7 @@ cmd 901 65537
 expect #9900 text "FFCDCDCD"
 key ctrl+z
 
-# Both kinds see a selection; PaintCraft keeps its fractional coverage at the edge.
+# Both kinds see a selection; JFPainter keeps its fractional coverage at the edge.
 cmd 982 2621500
 cmd 983 13107460
 cmd 984 0

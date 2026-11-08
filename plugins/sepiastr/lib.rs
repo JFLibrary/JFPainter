@@ -2,7 +2,7 @@
 //                                                 [apps/PaintCraft/plugins/sepiastr/sepiastr.s]
 //
 //   python build_rs.py plugin sepiastr  -> build/<target>/plugins/sepiastr.dll / .so
-//                                             (copy it into <PaintCraft folder>/Effects)
+//                                             (copy it into <JFPainter folder>/Effects)
 //
 // One adjustment (Korrekturen menu, FXF_ADJ) with an integer property "Stärke" 0..100 %:
 // dst = lerp(src, sepia(src), strength); sepia tone t = (77 r + 150 g + 29 b + 128) >> 8,

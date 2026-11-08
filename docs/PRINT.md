@@ -1,7 +1,7 @@
 # Drucken (PR1, Plan M8)
 
 Datei ▸ Drucken… (Strg+P, `CMD_PRINT` 106), aktiv nur mit offenem Bild.  paint.net 5.1 druckt
-das zusammengefügte Bild über den Windows-Fotodruck-Assistenten; PaintCraft zeigt stattdessen
+das zusammengefügte Bild über den Windows-Fotodruck-Assistenten; JFPainter zeigt stattdessen
 einen eigenen modalen Dialog und ruft dann `plat_print` der Bibliothek auf
 (`legacy/ASMLIB/docs/modules/PRINT.md`: Windows-Druckdialog + GDI, Linux-Portal + PDF).
 

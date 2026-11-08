@@ -11,16 +11,16 @@ fn option(flag: &str, env: &str) -> Option<String> {
         .filter(|s| !s.is_empty())
 }
 pub(crate) fn configured() -> bool {
-    cfg!(windows) || option("--pdn-wine", "PAINTCRAFT_PDN_WINE").is_some()
+    cfg!(windows) || option("--pdn-wine", "JFPAINTER_PDN_WINE").is_some()
 }
 pub(crate) fn helper_path() -> String {
     let exe = plat::current_exe().unwrap_or_default();
     let dir = exe.rsplit_once(['/', '\\']).map_or(".", |v| v.0);
-    option("--pdn-host", "PAINTCRAFT_PDN_HOST")
-        .unwrap_or_else(|| format!("{dir}/pdn-host/PaintCraft.PdnHost.dll"))
+    option("--pdn-host", "JFPAINTER_PDN_HOST")
+        .unwrap_or_else(|| format!("{dir}/pdn-host/JFPainter.PdnHost.dll"))
 }
 pub(crate) fn gpu_choice() -> Option<String> {
-    option("--pdn-gpu", "PAINTCRAFT_PDN_GPU")
+    option("--pdn-gpu", "JFPAINTER_PDN_GPU")
 }
 /// paint.net's folder: what the user named, then what its installer recorded, then the default
 #[cfg(windows)]
@@ -47,7 +47,7 @@ pub(crate) fn problem() -> Option<&'static str> {
     }
     None
 }
-/// `PaintCraft --pdn-clr <paint.net folder> <host dll> <host arguments>`: this process is the
+/// `JFPainter --pdn-clr <paint.net folder> <host dll> <host arguments>`: this process is the
 /// plugin host, on the runtime paint.net brings along (Invocation::new starts it)
 #[cfg(windows)]
 pub(crate) fn clr_main() -> Option<i32> {
@@ -90,7 +90,7 @@ impl Invocation {
         {
             let install = install_dir();
             let apphost = helper.to_ascii_lowercase().ends_with(".exe");
-            let dotnet = option("--pdn-dotnet", "PAINTCRAFT_PDN_DOTNET");
+            let dotnet = option("--pdn-dotnet", "JFPAINTER_PDN_DOTNET");
             let mut env = alloc::vec![(String::from("PAINTDOTNET_DIR"), install.clone())];
             // paint.net brings the very runtime its images were compiled for, so a normal
             // user needs no .NET installation and the images stay usable
@@ -117,11 +117,11 @@ impl Invocation {
         #[cfg(target_os = "linux")]
         {
             let mut env = alloc::vec![(String::from("DOTNET_ReadyToRun"), String::from("0"))];
-            let program = option("--pdn-wine", "PAINTCRAFT_PDN_WINE")
+            let program = option("--pdn-wine", "JFPAINTER_PDN_WINE")
                 .ok_or_else(|| String::from("Linux-DLL-Brücke: --pdn-wine und eine Windows-.NET-/Paint.NET-Installation konfigurieren."))?; // i18n
             let cwd = plat::cwd();
             let map = |s: &str| super::paths::to_windows(s, &cwd).map_err(String::from);
-            let dotnet = option("--pdn-dotnet", "PAINTCRAFT_PDN_DOTNET")
+            let dotnet = option("--pdn-dotnet", "JFPAINTER_PDN_DOTNET")
                 .unwrap_or_else(|| String::from("C:/Program Files/dotnet/dotnet.exe"));
             let mut full = if helper.to_ascii_lowercase().ends_with(".exe") {
                 alloc::vec![map(helper)?]
@@ -177,7 +177,7 @@ impl Heartbeat {
             plat::temp_dir().ok_or_else(|| String::from("Temporärverzeichnis nicht verfügbar."))?;
         for _ in 0..16 {
             let path = format!(
-                "{dir}/paintcraft-pdn-{:x}-{:x}.watch",
+                "{dir}/jfpainter-pdn-{:x}-{:x}.watch",
                 plat::time_us(),
                 SEQUENCE.fetch_add(1, Ordering::Relaxed)
             );

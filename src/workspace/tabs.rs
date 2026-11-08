@@ -1,4 +1,4 @@
-// tabs -- PaintCraft: the image list in the title row (paint.net 5): one thumbnail tab per open
+// tabs -- JFPainter: the image list in the title row (paint.net 5): one thumbnail tab per open
 // image, the active one highlighted, a dot for unsaved changes, tooltip = file path (or
 // name), close button on the active / hovered tab, middle click closes, drag to reorder,
 // Strg+Tab / Strg+Umschalt+Tab, and a "Bilderliste" drop-down when the tabs do not fit.

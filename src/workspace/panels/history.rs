@@ -1,4 +1,4 @@
-// wnd_history -- PaintCraft: the "Verlauf" tool window (HIST-005..007): the entries of the
+// wnd_history -- JFPainter: the "Verlauf" tool window (HIST-005..007): the entries of the
 // active document with icons (the first one "Neues Bild" / "Datei öffnen"), the current
 // state selected, redo entries greyed (like paint.net), a click jumps there (keys stay with
 // the main window: Strg+Z / Strg+Y; a tool window only takes the keyboard for text boxes),

@@ -1,4 +1,4 @@
-// End-to-end PaintCraft effect preview benchmarks using its ordinary UI, with saved
+// End-to-end JFPainter effect preview benchmarks using its ordinary UI, with saved
 // output equality across scalar, SIMD128 and SIMD128 + four compute workers.
 // SIZES=2048x2048,4096x3072 REPEATS=3 ENGINES=chromium,firefox node ... BUILD
 import assert from 'node:assert/strict';
@@ -8,7 +8,7 @@ import {resolve,extname,sep} from 'node:path';
 import {loadPlaywright, chromiumOptions} from '../../../tools/tests/playwright.mjs';
 import {execFileSync} from 'node:child_process';
 import {cpus} from 'node:os';
-const build=resolve(process.argv[2]||'build/wasm-compute/after'),artifact=resolve(build,'PaintCraft-compute');
+const build=resolve(process.argv[2]||'build/wasm-compute/after'),artifact=resolve(build,'JFPainter-compute');
 await mkdir(artifact,{recursive:true});
 process.env.PLAYWRIGHT_BROWSERS_PATH ||= resolve('build/browser-engines');
 const pw=loadPlaywright();
@@ -63,7 +63,7 @@ async function savePixels(page,name){
   await until(page,s=>s.widgets.some(w=>w.label==='OK'),'PNG options');await click(page,'OK');
   await until(page,s=>value(s,9905)===0&&!s.widgets.some(w=>w.label==='Das Bild wird im Browserspeicher gesichert …'),'PNG durable');
   return page.evaluate(async name=>{
-    const png=await new Promise((resolve,reject)=>{const r=indexedDB.open('jfgui-files-v1',1);r.onsuccess=()=>{const q=r.result.transaction('files','readonly').objectStore('files').get('PaintCraft:/'+name);q.onsuccess=()=>resolve(q.result.bytes);q.onerror=()=>reject(q.error);};r.onerror=()=>reject(r.error);});
+    const png=await new Promise((resolve,reject)=>{const r=indexedDB.open('jfgui-files-v1',1);r.onsuccess=()=>{const q=r.result.transaction('files','readonly').objectStore('files').get('JFPainter:/'+name);q.onsuccess=()=>resolve(q.result.bytes);q.onerror=()=>reject(q.error);};r.onerror=()=>reject(r.error);});
     if(png.byteLength<=100)throw Error('PNG output missing');
     return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',png)),b=>b.toString(16).padStart(2,'0')).join('');
   },name);
@@ -82,7 +82,7 @@ try{
         const context=await browser.newContext({viewport:{width:1280,height:800}}),page=await context.newPage(),errors=[];
         await page.addInitScript(()=>{addEventListener('jfgui-ready',()=>window.__jfguiReady=true);});
         page.on('pageerror',e=>{errors.push(e.message);console.error(e.message);});page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('404')){errors.push(m.text());console.error(m.text());}});
-        await page.goto(`http://127.0.0.1:${server.address().port}/PaintCraft/?agent=1&theme=light&compute=${mode}&workers=4`);
+        await page.goto(`http://127.0.0.1:${server.address().port}/JFPainter/?agent=1&theme=light&compute=${mode}&workers=4`);
         await page.waitForFunction(()=>window.__jfguiReady,null,{timeout:90000});
         const compute=await page.evaluate(()=>window.__jfguiCompute);assert.equal(compute.mode,mode);
         await command(page,105);await page.locator('#files').setInputFiles({name:'large.bmp',mimeType:'image/bmp',buffer:bmp});

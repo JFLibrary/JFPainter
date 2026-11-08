@@ -1,4 +1,4 @@
-// doc -- PaintCraft: the open documents (up to DOC_MAX images = tabs), the active one, names
+// doc -- JFPainter: the open documents (up to DOC_MAX images = tabs), the active one, names
 // ("Unbenannt", "Unbenannt 2", ...), paths, change marking.  Records: pn_doc.inc.
 //                                                                    [apps/PaintCraft/src/doc.s]
 //

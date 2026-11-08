@@ -1,4 +1,4 @@
-// print -- PaintCraft: Datei > Drucken… (Strg+P, CMD_PRINT; agent PR1).  paint.net 5.1 prints
+// print -- JFPainter: Datei > Drucken… (Strg+P, CMD_PRINT; agent PR1).  paint.net 5.1 prints
 // the flattened image through the Windows photo printing wizard; here an own modal dialog
 // (window WINID_PRINT) with a page preview and the options, then plat_print (library: system
 // print dialog on Windows, xdg-desktop-portal Print on Linux; docs/modules/PRINT.md):

@@ -349,7 +349,7 @@ click button:"OK"
 expect window 24595 closed
 expect #9911 text "a1_files_all.png"
 expect #9905 value 0
-expect #9919 text "a1_files_all.png – PaintCraft"
+expect #9919 text "a1_files_all.png – JFPainter"
 # (eleven images: the tab is behind the "Bilderliste" button)
 click #1392
 click menuitem:"a1_files_out.png"

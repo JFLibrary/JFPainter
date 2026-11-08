@@ -1,4 +1,4 @@
-# T2 – PaintCraft: Auswahl (selection model, selection tools, move tools)
+# T2 – JFPainter: Auswahl (selection model, selection tools, move tools)
 
 The selection of every image, the Bearbeiten selection commands, "Auf Auswahl zuschneiden",
 marching ants, the selection history, the tools Rechteckige Auswahl, Lasso-Auswahl, Elliptische
@@ -10,9 +10,9 @@ command; the text format is here).  Builds on both targets; `sel_basic.uis`, `se
 annotations: loops bounded by n <= 64 / a nubs_hit index).
 
 ```
-python build.py app PaintCraft --out build/t2
-build/t2/win/PaintCraft.exe --script apps/PaintCraft/tests/sel_basic.uis [--verify-dirty]
-wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/t2/linux/PaintCraft --script apps/PaintCraft/tests/sel_move.uis
+python build.py app JFPainter --out build/t2
+build/t2/win/JFPainter.exe --script apps/PaintCraft/tests/sel_basic.uis [--verify-dirty]
+wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/t2/linux/JFPainter --script apps/PaintCraft/tests/sel_move.uis
 ```
 
 ## 1. Files
@@ -92,7 +92,7 @@ Schneiden / Umkehren, SEL-011/012 — the commands belong to the clipboard modul
 sel_geom_text(doc) -> rax text (mem_alloc, NUL-terminated) | 0, rdx length
 sel_geom_parse(text) -> rax POLY | 0      then hist_push_sel + sel_combine(doc, poly, mode, SQ_AA)
 ```
-Text: `PaintCraft Auswahl 1`, then one line `p N x0 y0 ... ` per contour, coordinates in 1/256
+Text: `JFPainter Auswahl 1`, then one line `p N x0 y0 ... ` per contour, coordinates in 1/256
 image px.  A single antialiased op is exported as its polygon (lossless), anything else as
 the traced coverage (pixel edges).  History names (paint.net 5.1 DE): "Auswahl einfügen:
 Ersetzen" … see `PasteSelectionFromClipboardAction.HistoryMemento.*`.

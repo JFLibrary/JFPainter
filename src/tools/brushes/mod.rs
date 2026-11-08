@@ -6,7 +6,7 @@ pub(crate) mod custom;
 mod presets;
 mod preset_ui;
 
-// brush_engine -- PaintCraft: stroke coverage of the brush-like tools (agent T1).  A stroke
+// brush_engine -- JFPainter: stroke coverage of the brush-like tools (agent T1).  A stroke
 // is one A8 coverage TMASK of the image size. Dabs default to max(); imported presets
 // can accumulate coverage up to a separate opacity cap. The colour is blended once
 // through the tool layer (tool.rs TL).

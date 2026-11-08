@@ -1,13 +1,13 @@
 #!args --crash-report tests/fixtures/crash_sample.txt
-# crash_report.uis -- the window "PaintCraft Absturz" (crash.s, report mode: PaintCraft started by
+# crash_report.uis -- the window "JFPainter Absturz" (crash.s, report mode: JFPainter started by
 # its crash handler with --crash-report FILE): message, protocol path, Details anzeigen /
 # ausblenden (the protocol in a read-only text box), In die Zwischenablage kopieren,
-# Ordner der Absturzberichte öffnen, PaintCraft neu starten, Beenden (headless runs only record the
+# Ordner der Absturzberichte öffnen, JFPainter neu starten, Beenden (headless runs only record the
 # last three: probe #6720 value CRF_* = 1 restart, 2 quit, 4 copied, 8 folder).  No other module
 # runs (no image, no menus).  The crash itself: tools/pn_crash_check.py.
 size 680 520
 theme light
-expect text:"PaintCraft wurde unerwartet beendet" exists
+expect text:"JFPainter wurde unerwartet beendet" exists
 expect #6720 text "tests/fixtures/crash_sample.txt"
 expect #6720 value 0
 expect #9901 missing

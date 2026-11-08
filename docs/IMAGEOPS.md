@@ -1,4 +1,4 @@
-# A5 – PaintCraft: Bild menu (image operations, M4)
+# A5 – JFPainter: Bild menu (image operations, M4)
 
 Größe ändern, Leinwandgröße, Horizontal / Vertikal spiegeln, 90° nach rechts / links drehen,
 Um 180° drehen for the whole image (every layer), the two dialogs,
@@ -8,9 +8,9 @@ routed through the Bild module.  IMAGE-001..020.  Both targets; `image_ops.uis`,
 `--verify-dirty`; asmcheck: 0 errors, 0 warnings in `imgops.s` / `dlg_image.s` (no annotations).
 
 ```
-python build.py app PaintCraft --out build/a5
-build/a5/win/PaintCraft.exe --script apps/PaintCraft/tests/image_resize.uis [--verify-dirty]
-wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a5/linux/PaintCraft --script apps/PaintCraft/tests/canvas_size.uis
+python build.py app JFPainter --out build/a5
+build/a5/win/JFPainter.exe --script apps/PaintCraft/tests/image_resize.uis [--verify-dirty]
+wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a5/linux/JFPainter --script apps/PaintCraft/tests/canvas_size.uis
 ```
 
 ## 1. Files
@@ -178,7 +178,7 @@ the main window), Linux `build/a5/dlg_canvas_linux_dark_100.png`, `build/a5/dlg_
 
 ## 7. Compared with paint.net 5.1
 
-The dialogs follow paint.net's layout and options; their texts are PaintCraft's own German
+The dialogs follow paint.net's layout and options; their texts are JFPainter's own German
 (short field labels such as "Breite:", "Höhe:", "Pixeldichte:", "Anker:" are the usual words).
 Checked against paint.net: the set of options, the eight filters, the nine anchors, the five
 fill choices and the size string formats.

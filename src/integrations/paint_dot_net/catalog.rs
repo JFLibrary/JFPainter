@@ -42,7 +42,7 @@ pub(crate) fn managed_found(path: &str) {
             ));
         } else if plat::file_exists(&super::transport::helper_path()) == 0 {
             error(format!(
-                "{path}: Der optionale .NET-Host fehlt (pdn-host/PaintCraft.PdnHost.dll)."
+                "{path}: Der optionale .NET-Host fehlt (pdn-host/JFPainter.PdnHost.dll)."
             ));
         }
     }

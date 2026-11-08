@@ -16,7 +16,7 @@ pub(crate) mod text;
 pub(crate) mod view;
 pub(crate) mod wand;
 
-// tool -- PaintCraft: the tool framework (agent T1).  Contract: inc/pn_tooli.inc, details
+// tool -- JFPainter: the tool framework (agent T1).  Contract: inc/pn_tooli.inc, details
 // docs/TOOLS.md.
 //                                              [apps/PaintCraft/src/tool.s]
 //
@@ -758,7 +758,7 @@ pub(crate) fn tool_input(p: &mut Pn, ui: &mut Ui, doc: DocId, inp: &UiInput, x_f
 }
 
 /// tool_cursor() -> CUR_* for the canvas (TD_CURSOR, default crosshair): a crosshair or arrow
-/// becomes the tool's own cursor, PNC_BASE + kind that PaintCraft cursor (cursors.rs; both as
+/// becomes the tool's own cursor, PNC_BASE + kind that JFPainter cursor (cursors.rs; both as
 /// CUR_CUSTOM with ui.cursor_custom); CUR_CROSS when the cursor cannot be made
 pub(crate) fn tool_cursor(p: &mut Pn, ui: &mut Ui) -> u32 {
     let mut c = CUR_CROSS;

@@ -108,7 +108,7 @@ internal static class PluginCatalog
         for(int i=1;i+1<args.Length;i++) if(args[i]=="--root")roots.Add(args[++i]);
         if(!args.Contains("--isolated")) {
             var docs=Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            roots.Add(Path.Combine(docs,"PaintCraft App Files"));
+            roots.Add(Path.Combine(docs,"JFPainter App Files"));
             roots.Add(Path.Combine(docs,"Paint.NET App Files"));
             roots.Add(install);
             using var machine=Registry.LocalMachine.OpenSubKey(@"Software\Paint.NET");
@@ -163,8 +163,8 @@ internal static class PluginCatalog
             bool dotnet=name.Equals("dotnet",StringComparison.OrdinalIgnoreCase);
             var start=new ProcessStartInfo(executable) {UseShellExecute=false,CreateNoWindow=true,RedirectStandardOutput=true,RedirectStandardError=true,StandardErrorEncoding=Encoding.UTF8};
             if(dotnet) start.ArgumentList.Add(Assembly.GetExecutingAssembly().Location);
-            else if(!name.Equals("PaintCraft.PdnHost",StringComparison.OrdinalIgnoreCase)) {
-                // PaintCraft started this helper on paint.net's own runtime and does so again.
+            else if(!name.Equals("JFPainter.PdnHost",StringComparison.OrdinalIgnoreCase)) {
+                // JFPainter started this helper on paint.net's own runtime and does so again.
                 start.ArgumentList.Add("--pdn-clr");start.ArgumentList.Add(install);start.ArgumentList.Add(Assembly.GetExecutingAssembly().Location);
             }
             start.ArgumentList.Add(full);start.ArgumentList.Add("--inspect");

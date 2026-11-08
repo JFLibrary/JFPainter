@@ -1,4 +1,4 @@
-// consts -- constants shared by the PaintCraft modules  [apps/PaintCraft/inc/*.inc]
+// consts -- constants shared by the JFPainter modules  [apps/PaintCraft/inc/*.inc]
 //
 // Generated from the .inc files (values evaluated; the struct offsets DOC_*, LY_*, CO_*,
 // DV_*, HD_*, HE_*, HT_*, TD_*, TC_*, TL_*, NB_*, BEP_*, SEL_*, PL_*, RP_*, DR_*, ST_*,
@@ -471,7 +471,7 @@ pub(crate) const TILE_PITCH: i32 = 256;
 // ---- nubs (nubs.s: handles of live tools, reusable for move / shape / text tools)
 // ---- brush engine (brush_engine.s; stroke coverage, reusable for clone / recolor)
 // ---- TOOLDESC
-pub(crate) const PNC_BASE: i32 = 0x100; // TD_CURSOR result: PaintCraft cursor `kind` (cursors.s pn_cursor:
+pub(crate) const PNC_BASE: i32 = 0x100; // TD_CURSOR result: JFPainter cursor `kind` (cursors.s pn_cursor:
 pub(crate) const PNC_ROTATE: i32 = 24; // 0..TOOL_COUNT-1 a tool's cursor, PNC_ROTATE rotate arrows)
 pub(crate) const TF_LIVE: i32 = 0x1; // live edit with nubs until Fertigstellen / Enter (button shown)
 pub(crate) const TF_CLIP_SEL: i32 = 0x2; // paints through the selection clip (informational)
@@ -708,7 +708,7 @@ pub(crate) const ID_IOP_PROBE: u32 = 0x1446; // 5190..5199 hidden probe records 
 
 // ====================================================================== pn_set.inc
 // ---- settings.s (persistence)
-pub(crate) const SET_VERSION: i32 = 1; // [PaintCraft] version = 1 (the INI layout)
+pub(crate) const SET_VERSION: i32 = 1; // [JFPainter] version = 1 (the INI layout)
 // ---- commands 850..899 (CMD_SET_FIRST..LAST)
 pub(crate) const CMD_SET_SAVE: u32 = 850; // 850 save the settings file now (test hook)
 pub(crate) const CMD_SET_RELOAD: u32 = 851; // 851 factory state + load the file (round trip)

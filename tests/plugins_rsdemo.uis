@@ -1,5 +1,5 @@
 #!args --plugins=@rsplug --open plugins/tests/rsdemo.png
-# rsdemo.uis -- the Rust-only example plugin plugins/rsdemo in PaintCraft (build_rs.py test
+# rsdemo.uis -- the Rust-only example plugin plugins/rsdemo in JFPainter (build_rs.py test
 # puts every Rust plugin that is not a port of an asm plugin into <exe folder>/rsplug/Effects:
 # prepcheck (record 0), rsdemo (record 1)).
 # Expected hashes: python plugins/tests/rsdemo_model.py (the plugin's math on the fixture).

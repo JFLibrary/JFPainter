@@ -1,13 +1,13 @@
-// crash -- PaintCraft: crash reports, like paint.net's CrashLogDialog (CORE-008 / -009 / -018).
+// crash -- JFPainter: crash reports, like paint.net's CrashLogDialog (CORE-008 / -009 / -018).
 // A crash (the library's crash handler calls crash_hook through plat_crash_hook) writes the
 // protocol "Absturz_<Datum>_<Zeit>.txt" -- exception, address and offset in the program,
 // registers, the return addresses found on the stack, then the diagnostics of the settings
 // dialog -- into the crash folder: `--crash-dir DIR`, else CrashLogs next to settings.ini (no
-// folder, no hook in test runs without a configuration).  With a real window PaintCraft is
+// folder, no hook in test runs without a configuration).  With a real window JFPainter is
 // then started again with `--crash-report FILE` (and the same --config): that instance runs
-// no other module and shows only the window "PaintCraft Absturz" -- the message, the protocol
+// no other module and shows only the window "JFPainter Absturz" -- the message, the protocol
 // (Details anzeigen / ausblenden), In die Zwischenablage kopieren, Ordner der Absturzberichte
-// öffnen, PaintCraft neu starten (a fresh instance) and Beenden.
+// öffnen, JFPainter neu starten (a fresh instance) and Beenden.
 //   crash_mode_init() -> eax 1 = report mode (main.s then skips every module)
 //   crash_mode() -> eax 1 = report mode
 //   crash_setup()       after set_init: the crash folder, plat_crash_hook
@@ -57,7 +57,7 @@ const CRF_COPIED: i32 = 4;
 const CRF_FOLDER: i32 = 8;
 const WIN_W: i32 = 680; // report window (DIP)
 const WIN_H: i32 = 520;
-const S_EXE: &str = if cfg!(windows) { "PaintCraft.exe" } else { "PaintCraft" };
+const S_EXE: &str = if cfg!(windows) { "JFPainter.exe" } else { "JFPainter" };
 /// cr_where(ci, addr) -> (image, offset): the program, or (jxl-module) the loaded JPEG XL
 /// writer module jxlenc.dll / jxlenc.so holding addr (offsets into its own .map)
 fn cr_where(ci: &plat::CrashInfo, a: u64) -> (&'static str, u64) {
@@ -158,25 +158,25 @@ pub(crate) fn crash_cmd(_p: &mut Pn, ui: &mut Ui, id: u32, arg: u32) -> bool {
     false
 }
 
-/// crash_frame() -- the window "PaintCraft Absturz" (the main window, made small and centred on
+/// crash_frame() -- the window "JFPainter Absturz" (the main window, made small and centred on
 /// the first frame)
 pub(crate) fn crash_frame(p: &mut Pn, ui: &mut Ui) {
     let c = &mut p.crash;
     if !c.placed {
         c.placed = true;
         ui.timer(TMR_CRASH, 1); // placed once the window runs (like settings.s)
-        ui.set_title(crate::preferences::localization::tr("PaintCraft Absturz"));
+        ui.set_title(crate::preferences::localization::tr("JFPainter Absturz"));
     }
     ui.next_size(-1, -1);
     ui.box_begin(0, BOX_V | BOX_BG, 0);
-    ui.titlebar_begin(crate::preferences::localization::tr("PaintCraft Absturz"), 0);
+    ui.titlebar_begin(crate::preferences::localization::tr("JFPainter Absturz"), 0);
     ui.titlebar_end();
     ui.next_size(-1, -1);
     ui.box_begin(0, BOX_V | PAD_24, 12);
-    ui.text(TS_SUBTITLE, crate::preferences::localization::tr("PaintCraft wurde unerwartet beendet"));
+    ui.text(TS_SUBTITLE, crate::preferences::localization::tr("JFPainter wurde unerwartet beendet"));
     ui.text(
         TS_BODY | TX_WRAP,
-        crate::preferences::localization::tr("PaintCraft musste wegen eines unerwarteten Fehlers beendet werden. Was seit dem letzten Speichern geändert wurde, ist leider verloren."),
+        crate::preferences::localization::tr("JFPainter musste wegen eines unerwarteten Fehlers beendet werden. Was seit dem letzten Speichern geändert wurde, ist leider verloren."),
     );
     let line = fmt_cap(crate::preferences::localization::tf("Ein Absturzprotokoll wurde gespeichert: {}", &[&c.path]), PATH_CAP + 64);
     ui.text(TS_CAPTION | TX_WRAP | TX_SECONDARY, &line);
@@ -202,10 +202,10 @@ pub(crate) fn crash_frame(p: &mut Pn, ui: &mut Ui) {
     } else {
         ui.spacer(-1);
     }
-    // PaintCraft neu starten / Beenden
+    // JFPainter neu starten / Beenden
     ui.box_begin(0, BOX_H | BOX_END, 8);
     ui.next_flags(ST_ACCENT);
-    if ui.button(ID_CR_RESTART, crate::preferences::localization::tr("PaintCraft neu starten")) & EV_ACT != 0 {
+    if ui.button(ID_CR_RESTART, crate::preferences::localization::tr("JFPainter neu starten")) & EV_ACT != 0 {
         cr_restart(c, ui);
     }
     if ui.button(ID_CR_QUIT, crate::preferences::localization::tr("Beenden")) & EV_ACT != 0 {
@@ -220,7 +220,7 @@ pub(crate) fn crash_frame(p: &mut Pn, ui: &mut Ui) {
     cr_probe(c, ui);
 }
 
-// cr_restart() -- "PaintCraft neu starten": a fresh PaintCraft (with the same --config), then quit
+// cr_restart() -- "JFPainter neu starten": a fresh JFPainter (with the same --config), then quit
 fn cr_restart(c: &mut Crash, ui: &mut Ui) {
     c.done |= CRF_RESTART;
     if ui.headless() {
@@ -369,7 +369,7 @@ pub(crate) fn crash_test() {
 }
 
 // crash_hook(info) -- (in the crash handler) the protocol, written twice: first the crash
-// itself, then again with the diagnostics; with a real window PaintCraft is started again to
+// itself, then again with the diagnostics; with a real window JFPainter is started again to
 // show it
 fn crash_hook(ci: &plat::CrashInfo) {
     // a crash while the state is being updated (or a second one at the same time) must not
@@ -403,8 +403,8 @@ fn crash_hook(ci: &plat::CrashInfo) {
     }
     // the protocol
     let b = &mut h.buf;
-    let _ = b.write_str("PaintCraft ist abgestürzt.\n\nPaintCraft hat diesen Bericht nach einem unerwarteten Fehler geschrieben. Er enthält Angaben, mit denen sich die Ursache finden und beheben lässt.\n\n");
-    let _ = write!(b, "Programm: PaintCraft {}\n", crate::preferences::PN_VERSION);
+    let _ = b.write_str("JFPainter ist abgestürzt.\n\nJFPainter hat diesen Bericht nach einem unerwarteten Fehler geschrieben. Er enthält Angaben, mit denen sich die Ursache finden und beheben lässt.\n\n");
+    let _ = write!(b, "Programm: JFPainter {}\n", crate::preferences::PN_VERSION);
     let _ = write!(b, "Zeitpunkt: {:04}-{:02}-{:02} {:02}:", dt.year, dt.month, dt.day, dt.hour);
     let _ = write!(b, "{:02}:{:02}{}\n", dt.min, dt.sec, if utc { " UTC" } else { "" });
     // the exception
@@ -449,7 +449,7 @@ fn crash_hook(ci: &plat::CrashInfo) {
     if !h.spawn {
         return;
     }
-    // the report window: PaintCraft --crash-report FILE [--config DIR]
+    // the report window: JFPainter --crash-report FILE [--config DIR]
     if h.has_config {
         plat::spawn_self(&["--crash-report", h.path.as_str(), "--config", h.config.as_str()]);
     } else {

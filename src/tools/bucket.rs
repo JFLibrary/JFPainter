@@ -1,4 +1,4 @@
-// t_bucket -- PaintCraft: Farbeimer (paint bucket, agent T1).  Sub-module of tool.rs.
+// t_bucket -- JFPainter: Farbeimer (paint bucket, agent T1).  Sub-module of tool.rs.
 //                                              [apps/PaintCraft/src/t_bucket.s]
 //
 // A click fills the region around the pixel (flood_fill_mask with paint.net's tolerance;

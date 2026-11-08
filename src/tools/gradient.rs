@@ -1,4 +1,4 @@
-// t_gradient -- PaintCraft: Farbverlauf (gradient tool G, agent T3; spec §2.6, DRAW-013/014).
+// t_gradient -- JFPainter: Farbverlauf (gradient tool G, agent T3; spec §2.6, DRAW-013/014).
 //                                              [apps/PaintCraft/src/t_gradient.s]
 //
 // Dragging draws a gradient from the press point to the pointer: left button primary ->

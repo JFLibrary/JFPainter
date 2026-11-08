@@ -1,4 +1,4 @@
-// dlg_misc -- PaintCraft: the Hilfe items.  Info (CMD_HELP_ABOUT) opens the modal window
+// dlg_misc -- JFPainter: the Hilfe items.  Info (CMD_HELP_ABOUT) opens the modal window
 // "Info": version, Rust/JFLib platform information and copyable diagnostics.
 // F1, tutorials and plugin help open the bundled manual. Website and feedback open
 // the JFLib project; no project forum or donation endpoint is configured.
@@ -55,7 +55,7 @@ pub(crate) fn misc_states(_p: &mut Pn, ui: &mut Ui) {
 /// misc_cmd(id, arg) -> 1 handled -- Info opens the window with fresh diagnostics
 pub(crate) fn misc_cmd(p: &mut Pn, ui: &mut Ui, id: u32, _arg: u32) -> bool {
     if id==CMD_HELP_WEBSITE || id==CMD_HELP_FEEDBACK {
-        ui.open_url(if id==CMD_HELP_WEBSITE {"https://github.com/JFLibrary/JFLib"} else {"https://github.com/JFLibrary/JFLib/issues"});
+        ui.open_url(if id==CMD_HELP_WEBSITE {"https://github.com/JFLibrary/JFPainter"} else {"https://github.com/JFLibrary/JFPainter/issues"});
         return true;
     }
     p.misc.help=matches!(id,CMD_HELP_DOCS|CMD_HELP_TUTORIALS|CMD_HELP_PLUGINS);
@@ -74,22 +74,22 @@ pub(crate) fn misc_frame(p: &mut Pn, ui: &mut Ui) {
     let m = &mut p.misc;
     let open = m.open.clone();
     let rect = m.rect.clone();
-    if ui.window_begin(WINID_INFO, if m.help {crate::preferences::localization::tr("PaintCraft-Hilfe")} else {crate::preferences::localization::tr("Info")}, Some(&open), WF_DIALOG | WF_MODAL | WF_AUTOHEIGHT, Some(&rect)) {
+    if ui.window_begin(WINID_INFO, if m.help {crate::preferences::localization::tr("JFPainter-Hilfe")} else {crate::preferences::localization::tr("Info")}, Some(&open), WF_DIALOG | WF_MODAL | WF_AUTOHEIGHT, Some(&rect)) {
         if m.help {
             ui.next_size(-1,420);
             ui.textbox(ID_INFO_DIAG,None,&mut m.diag,32768|TB_MULTI|TB_WRAP|TB_READONLY);
             ui.dialog_buttons(None,None,Some(crate::preferences::localization::tr("Schließen")));
         } else {
-        ui.text(TS_TITLE, crate::preferences::localization::tr("PaintCraft"));
+        ui.text(TS_TITLE, crate::preferences::localization::tr("JFPainter"));
         let v = fmt_cap(format!("Version {} ({})", crate::preferences::PN_VERSION, S_ARCH), 64);
         ui.text(TS_BODY_STRONG, &v);
         ui.text(
             TS_BODY | TX_WRAP,
-            crate::preferences::localization::tr("PaintCraft ist eine Bildbearbeitung in Rust auf Basis von JFLib. Ebenen, Auswahlwerkzeuge, Bildformate, Schriften, Effekte und Oberfläche werden von JFLib bereitgestellt. Die Anwendung unterstützt Windows, Linux und WebAssembly."),
+            crate::preferences::localization::tr("JFPainter ist eine Bildbearbeitung in Rust auf Basis von JFLib. Ebenen, Auswahlwerkzeuge, Bildformate, Schriften, Effekte und Oberfläche werden von JFLib bereitgestellt. Die Anwendung unterstützt Windows, Linux und WebAssembly."),
         );
         ui.text(
             TS_CAPTION | TX_WRAP | TX_SECONDARY,
-            crate::preferences::localization::tr("paint.net ist eine Marke von dotPDN LLC. PaintCraft ist ein unabhängiges Projekt und steht in keiner Verbindung zu dotPDN LLC."),
+            crate::preferences::localization::tr("paint.net ist eine Marke von dotPDN LLC. JFPainter ist ein unabhängiges Projekt und steht in keiner Verbindung zu dotPDN LLC."),
         );
         ui.text(TS_BODY_STRONG, crate::preferences::localization::tr("Diagnose"));
         ui.next_size(-1, 180);

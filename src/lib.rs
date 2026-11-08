@@ -1,4 +1,4 @@
-//! PaintCraft raster editor. See ../docs/ARCHITECTURE.md for module ownership.
+//! JFPainter raster editor. See ../docs/ARCHITECTURE.md for module ownership.
 #![no_std]
 #![deny(unsafe_code)]
 #![allow(dead_code)]

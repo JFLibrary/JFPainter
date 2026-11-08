@@ -1,4 +1,4 @@
-"""Deploy only PaintCraft's helper into a private Paint.NET-on-Wine directory.
+"""Deploy only JFPainter's helper into a private Paint.NET-on-Wine directory.
 Its bundled runtime and dependency manifest avoid mixing Windows .NET/Paint.NET
 versions. No Paint.NET binaries are copied into JFLib or redistributed.
 """
@@ -10,12 +10,12 @@ import shutil
 
 def main():
     parser = argparse.ArgumentParser(__doc__)
-    parser.add_argument('--host', required=True, type=Path, help='Built PaintCraft.PdnHost.dll')
+    parser.add_argument('--host', required=True, type=Path, help='Built JFPainter.PdnHost.dll')
     parser.add_argument('--paintnet', required=True, type=Path, help='Private unpacked Paint.NET-on-Wine directory')
     a = parser.parse_args()
     host, dest = a.host.resolve(), a.paintnet.resolve()
-    if host.name != 'PaintCraft.PdnHost.dll' or not host.is_file():
-        parser.error('--host must name a built PaintCraft.PdnHost.dll')
+    if host.name != 'JFPainter.PdnHost.dll' or not host.is_file():
+        parser.error('--host must name a built JFPainter.PdnHost.dll')
     try:
         configuration = json.loads((dest / 'PaintDotNet.Configuration.json').read_text(encoding='utf-8-sig'))
         runtime = json.loads((dest / 'paintdotnet.runtimeconfig.json').read_text(encoding='utf-8-sig'))
@@ -27,9 +27,9 @@ def main():
     for filename in ['coreclr.dll', 'hostfxr.dll', 'PaintDotNet.Effects.Core.dll']:
         if not (dest / filename).is_file():
             parser.error(f'Incomplete Paint.NET-on-Wine package: {filename}')
-    for source, filename in [(host, 'PaintCraft.PdnHost.dll'),
-            (dest / 'paintdotnet.runtimeconfig.json', 'PaintCraft.PdnHost.runtimeconfig.json'),
-            (dest / 'paintdotnet.deps.json', 'PaintCraft.PdnHost.deps.json')]:
+    for source, filename in [(host, 'JFPainter.PdnHost.dll'),
+            (dest / 'paintdotnet.runtimeconfig.json', 'JFPainter.PdnHost.runtimeconfig.json'),
+            (dest / 'paintdotnet.deps.json', 'JFPainter.PdnHost.deps.json')]:
         target = dest / filename
         if source != target:
             shutil.copyfile(source, target)
@@ -40,7 +40,7 @@ def main():
             shutil.copyfile(apphost, target)
         print(target)
     else:
-        print(dest / 'PaintCraft.PdnHost.dll')
+        print(dest / 'JFPainter.PdnHost.dll')
 
 
 if __name__ == '__main__':

@@ -8,7 +8,7 @@ expect #9901 value 1
 expect tab:"Unbenannt" selected
 expect #9905 value 0
 expect #9917 value 1
-expect #9919 text "Unbenannt – PaintCraft"
+expect #9919 text "Unbenannt – JFPainter"
 
 # ------------------------------------------------------------ Neu: dialog values
 key ctrl+n
@@ -137,7 +137,7 @@ cmd 902 1
 cmd 903 0
 cmd 904 655370
 expect #9905 value 1
-expect #9919 text "*Unbenannt 2 – PaintCraft"
+expect #9919 text "*Unbenannt 2 – JFPainter"
 cmd 900 327685
 expect #9900 text "FFFF0000"
 expect #9917 value 0

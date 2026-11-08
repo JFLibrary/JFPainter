@@ -1,4 +1,4 @@
-// t_shapes -- PaintCraft: Linie / Kurve and Formen (M5, agent T4).  Docs: docs/SHAPES.md
+// t_shapes -- JFPainter: Linie / Kurve and Formen (M5, agent T4).  Docs: docs/SHAPES.md
 //                                              [apps/PaintCraft/src/t_shapes.s]
 //
 // Both tools are LIVE (TF_LIVE): a drag draws, the result stays editable until Fertigstellen /

@@ -1,4 +1,4 @@
-// layer -- PaintCraft: layer model and the Ebenen menu.  A1 (M1): records, add, delete,
+// layer -- JFPainter: layer model and the Ebenen menu.  A1 (M1): records, add, delete,
 // duplicate, merge down, move, go to, visibility.  A4 (M3, second half of this file): Aus
 // Datei importieren (images and .pdn, "larger than the canvas" question), Horizontal /
 // Vertikal spiegeln, Um 180° rotieren, Rotationszoom (dlg_rotzoom.rs), Ebeneneigenschaften

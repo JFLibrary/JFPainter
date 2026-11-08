@@ -1,4 +1,4 @@
-// t_clone -- PaintCraft: Klonen (Stempel) (L) and Neu färben (R) (agent T6).  Both paint with
+// t_clone -- JFPainter: Klonen (Stempel) (L) and Neu färben (R) (agent T6).  Both paint with
 // the brush engine (brush_engine.rs: one coverage mask per stroke; width, hardness, spacing,
 // antialiasing, pen pressure) through one TLK_SOURCE tool layer (tool.rs, the single write
 // path, clipped by the selection).  A stroke is a pending edit from the press to the release

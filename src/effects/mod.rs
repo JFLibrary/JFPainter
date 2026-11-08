@@ -6,7 +6,7 @@ pub(crate) mod controls;
 pub(crate) mod curves;
 pub(crate) mod levels;
 
-// fx -- PaintCraft: Korrekturen und Effekte (agent A6).  The effect runner: menu rows ->
+// fx -- JFPainter: Korrekturen und Effekte (agent A6).  The effect runner: menu rows ->
 // registered effects (fx_use_all), German names and property labels, live preview through
 // the compose tool hook, tiles on the worker pool, debounced restarts, commit through the
 // selection as one history entry, "<Effekt> wiederholen" (Strg+F), remembered parameters.

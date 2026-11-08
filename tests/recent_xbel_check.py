@@ -1,6 +1,6 @@
-"""PaintCraft's files in the system's list of recent files (recently-used.xbel, on every OS through
-jfgui_RECENT): opening a file adds it with PaintCraft as the program, Liste leeren takes only
-PaintCraft's entries away, other programs' bookmarks stay.
+"""JFPainter's files in the system's list of recent files (recently-used.xbel, on every OS through
+jfgui_RECENT): opening a file adds it with JFPainter as the program, Liste leeren takes only
+JFPainter's entries away, other programs' bookmarks stay.
 
 Run from the repository root: python apps/PaintCraft/tests/recent_xbel_check.py [EXE]
 """
@@ -27,7 +27,7 @@ click menuitem:"Liste leeren"
 
 
 def main():
-    exe = sys.argv[1] if len(sys.argv) > 1 else "build/" + ("win/PaintCraft.exe" if os.name == "nt" else "linux/PaintCraft")
+    exe = sys.argv[1] if len(sys.argv) > 1 else "build/" + ("win/JFPainter.exe" if os.name == "nt" else "linux/JFPainter")
     exe = str(Path(exe).resolve())
     fails = 0
 
@@ -53,13 +53,13 @@ def main():
         text = xbel.read_text(encoding="utf-8")
         entry = text.split("a1_rgba.png", 1)[1] if "a1_rgba.png" in text else ""
         check("a1_rgba.png" in text, "open: the file is in the list")
-        check("PaintCraft" in entry.split("</bookmark>", 1)[0], "open: with PaintCraft as the program")
+        check("JFPainter" in entry.split("</bookmark>", 1)[0], "open: with JFPainter as the program")
         check("fremd.txt" in text, "open: the other program's bookmark stays")
 
         r = run("--open", png, "--script", str(script))
         check(r.returncode == 0, f"Liste leeren: exit {r.returncode} {r.stdout[:300]}")
         text = xbel.read_text(encoding="utf-8")
-        check("a1_rgba.png" not in text, "Liste leeren: PaintCraft's entry is gone")
+        check("a1_rgba.png" not in text, "Liste leeren: JFPainter's entry is gone")
         check("fremd.txt" in text and 'name="Fremd"' in text, "Liste leeren: the other program's bookmark stays")
     print("recent_xbel_check: " + ("ok" if not fails else f"{fails} failed"))
     return 1 if fails else 0

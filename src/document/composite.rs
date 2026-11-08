@@ -1,4 +1,4 @@
-// compose -- PaintCraft: the composite image of a document (all visible layers blended
+// compose -- JFPainter: the composite image of a document (all visible layers blended
 // bottom-up with k_bm_row), 64 x 64 tile dirty tracking, the premultiplied display mip chain
 // (view below 100 %) and thumbnails.  Block DOC_COMP (Doc::comp).
 //                                                                [apps/PaintCraft/src/compose.s]

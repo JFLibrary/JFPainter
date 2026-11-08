@@ -1,12 +1,12 @@
-# A3 – colours: colour model, palette, "Farben" window (PaintCraft, M2)
+# A3 – colours: colour model, palette, "Farben" window (JFPainter, M2)
 
 COLOR-001..008, 016..020 (the picker tool items 009..015 belong to the tool agents; they use the
 API below).  Both targets, also with `--verify-dirty`:
 
 ```
-python build.py app PaintCraft --out build/a3
-build/a3/win/PaintCraft.exe --script apps/PaintCraft/tests/colors.uis [--verify-dirty]
-wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a3/linux/PaintCraft --script apps/PaintCraft/tests/colors.uis
+python build.py app JFPainter --out build/a3
+build/a3/win/JFPainter.exe --script apps/PaintCraft/tests/colors.uis [--verify-dirty]
+wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a3/linux/JFPainter --script apps/PaintCraft/tests/colors.uis
 ```
 
 ## 1. Files
@@ -72,7 +72,7 @@ value (FFFFFF, 808080), pastel (A0A0A0, 303030), dim (C0C0C0, 606060).  paint.ne
 slots (its format rule); here those 32 are free slots, so "Farbe hinzufügen" can fill them.
 
 **Palette folder**: Windows `<home>/Documents/paint.net App Files/Palettes` when it exists
-(shared with an installed paint.net), else `<config>/PaintCraft/Palettes`
+(shared with an installed paint.net), else `<config>/JFPainter/Palettes`
 (`plat_config_dir`; Linux `$XDG_CONFIG_HOME` / `~/.config`).  The app never creates it and
 never writes anywhere but the path chosen in the Speichern-unter dialog.
 
@@ -155,7 +155,7 @@ box value), swap / reset icons, colours set from outside, Farbe hinzufügen, sav
 lines, 96 limit), replace mode (left / right click, Esc, second click, free slot), empty file
 error dialog, palette menu (commands, every palette file, loading from the menu),
 Bearbeiten ▸ Palette enabled, screenshots.  Results: Windows and Linux exit 0, both with
-`--verify-dirty`; all other PaintCraft scripts unchanged and passing.  Not in the test yet: the X
+`--verify-dirty`; all other JFPainter scripts unchanged and passing.  Not in the test yet: the X
 key (needs T1's routing of 784 — add `key x` / `expect #9985 …` there).
 
 Screenshots: `build/a3/colors_{less,more}_{light,dark}_100.png`,

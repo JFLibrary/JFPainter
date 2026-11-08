@@ -1,4 +1,4 @@
-// t_text -- PaintCraft: Text (T), agent T5.  Sub-module of the tool framework (tool.s).
+// t_text -- JFPainter: Text (T), agent T5.  Sub-module of the tool framework (tool.s).
 //                                              [apps/PaintCraft/src/t_text.s]
 //
 // paint.net 5.1's text tool: a left click places the text cursor (the anchor is the top of
@@ -17,7 +17,7 @@
 // style / primary colour / blend mode, colour fonts TLK_SOURCE with the glyph colours.  The
 // preview is the result (tl_commit).  Antialiasing off = coverage >= 128 -> 255.
 // Fonts: the system font list (fontdb) is scanned once on the worker pool when the tool is
-// first chosen (cache <config dir>/PaintCraft/fontcache.fdb, not written in headless runs);
+// first chosen (cache <config dir>/JFPainter/fontcache.fdb, not written in headless runs);
 // the UI thread touches fontdb only after the job has finished.  Until then, and when a
 // family cannot be loaded, the embedded JFLib Sans renders (Selawik, identical outlines).
 // Default family: Segoe UI, else DejaVu Sans / Noto Sans / Liberation Sans / Ubuntu /
@@ -654,7 +654,7 @@ fn tx_scan_start(p: &mut Pn, ui: &mut Ui) {
     if let Some(c) = plat::config_dir() {
         if c.len() < PATH_CAP - 64 {
             path = c;
-            path.push_str("/PaintCraft");
+            path.push_str("/JFPainter");
             path2 = path.clone();
             path2.push_str("/fontcache.fdb");
         }

@@ -22,7 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 HOST = ROOT / "pdn-host"
-PROJECT = HOST / "PaintCraft.PdnHost.csproj"
+PROJECT = HOST / "JFPainter.PdnHost.csproj"
 # what the program needs (.dll alone on paint.net's own runtime; the other two let --pdn-dotnet
 # start it on an installed .NET)
 FILES = [PROJECT.stem + e for e in (".dll", ".runtimeconfig.json", ".deps.json")]

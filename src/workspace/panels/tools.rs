@@ -1,4 +1,4 @@
-// wnd_tools -- PaintCraft: the "Werkzeuge" tool window (paint.net 5 look: two columns of
+// wnd_tools -- JFPainter: the "Werkzeuge" tool window (paint.net 5 look: two columns of
 // tool icons in the TOOL_* order, the active tool highlighted, tooltips "Name (Taste)").
 // Owner: agent A2.
 //                                              [apps/PaintCraft/src/wnd_tools.s]

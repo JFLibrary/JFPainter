@@ -1,4 +1,4 @@
-// sel -- PaintCraft: Auswahl (agent T2): the selection model of every image, the Bearbeiten
+// sel -- JFPainter: Auswahl (agent T2): the selection model of every image, the Bearbeiten
 // selection commands, "Auf Auswahl zuschneiden", marching ants, selection history.
 //                                                [apps/PaintCraft/src/sel.s, inc/pn_sel.inc]
 //
@@ -58,7 +58,7 @@ const ANT_EDGES: usize = 256; // outlines with fewer points damage edge by edge
 const ELL_MIN: i32 = 16; // ellipse polygon points
 const ELL_MAX: i32 = 8192;
 const PL_CNT: u64 = 16; // header bytes of a POLY block (PL_REF, PL_NSUB, PL_NPTS, PL_BYTES)
-const GEOM_HDR: &str = "PaintCraft Auswahl 1";
+const GEOM_HDR: &str = "JFPainter Auswahl 1";
 const SF_XF: u32 = SELF_XF as u32;
 const SF_PREVIEW: u32 = SELF_PREVIEW as u32;
 const M_REPLACE: u32 = SM_REPLACE as u32;
@@ -1392,7 +1392,7 @@ pub(crate) fn sel_line(g: &mut Gfx, x0: i32, y0: i32, x1: i32, y1: i32, argb: u3
 
 // ================================================================== selection geometry as text
 // (Auswahl kopieren / Auswahl einfügen of the clipboard module)
-// Format (UTF-8 lines): "PaintCraft Auswahl 1", then one line per contour "p N x0 y0 x1 y1 ..."
+// Format (UTF-8 lines): "JFPainter Auswahl 1", then one line per contour "p N x0 y0 x1 y1 ..."
 // (N points in 1/256 image px, closed implicitly, even-odd).  The geometry is the single
 // antialiased op itself (lossless), else the traced coverage (pixel edges).
 

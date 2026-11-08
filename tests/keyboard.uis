@@ -1,4 +1,4 @@
-# keyboard.uis -- PaintCraft with the keyboard only (ROADMAP §11, lib/ui/kbnav.rs): the Tab
+# keyboard.uis -- JFPainter with the keyboard only (ROADMAP §11, lib/ui/kbnav.rs): the Tab
 # ring of the main window (image tabs, title row buttons and tool bar are one stop each,
 # arrows inside), Ctrl+F6 through the tool windows (F6 itself toggles "Verlauf"), the
 # Werkzeuge grid, the Ebenen window (arrows select, Ctrl+Up / Ctrl+Down move the layer,

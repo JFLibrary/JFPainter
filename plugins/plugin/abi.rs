@@ -45,7 +45,7 @@ pub struct PnApi {
     pub parfor: extern "win64" fn(ItemFn, *const c_void, u64) -> i32,
     /// (x, y, seed, stream) -> deterministic per-pixel random bits (fx_hash32)
     pub hash32: extern "win64" fn(u32, u32, u32, u32) -> u32,
-    /// (msg) a UTF-8 line into the plugin log (stderr, "PaintCraft: Plugin <file>: msg")
+    /// (msg) a UTF-8 line into the plugin log (stderr, "JFPainter: Plugin <file>: msg")
     pub log: extern "win64" fn(*const u8),
     /// (sf, y) -> row y of a SURFACE | 0
     pub row: extern "win64" fn(*const Surface, i32) -> *mut u8,

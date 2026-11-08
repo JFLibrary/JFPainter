@@ -1,4 +1,4 @@
-// palette -- PaintCraft: the colour model (primary / secondary colour) and the palette
+// palette -- JFPainter: the colour model (primary / secondary colour) and the palette
 // (COLOR-001..003, 016..020).  Owner: agent A3 (colours).  The Colors window itself is
 // wnd_colors.rs; the palette grid and the palette buttons it shows are drawn here (widget
 // block 4700-4999).
@@ -18,7 +18,7 @@
 //   pal_save_file(path) -> 0 ok / -1 (paint.net format, atomic write)
 //   pal_folder() -> (exists, path)  Windows: <home>/Documents/paint.net App Files/Palettes
 //                                   (shared with paint.net) when it exists, else
-//                                   <config>/PaintCraft/Palettes.  Never created by the app.
+//                                   <config>/JFPainter/Palettes.  Never created by the app.
 // Colors window parts (called inside its layout): pal_grid(), pal_buttons(), pal_checker().
 // Module contract (app/lifecycle.rs): pal_init, pal_states, pal_frame (file dialog, error dialog),
 //   pal_cmd(id, arg).  Test hooks (diag.rs block A3): pal_diag_cmd (985..994), pal_diag_frame
@@ -72,7 +72,7 @@ const PAL_TDIR_N: u32 = 3; // test palette folders (0 = none)
 
 // the header of saved palette files (paint.net ignores ';' lines)
 static PAL_HDR: [&str; 5] = [
-    "; PaintCraft-Palettendatei (paint.net-Format)",
+    "; JFPainter-Palettendatei (paint.net-Format)",
     "; Mit Semikolon beginnende Zeilen sind Kommentare.",
     "; Jede Zeile hält eine Farbe als AARRGGBB in Hex (8 Ziffern), etwa FF00FF00 für Grün.",
     "; AA steht für die Deckkraft von 00 (unsichtbar) bis FF (deckend).",
@@ -413,7 +413,7 @@ pub(crate) fn pal_folder(pal: &Pal) -> (bool, String) {
     }
     match plat::config_dir().filter(|c| !c.is_empty() && c.len() < PAL_PATH_CAP - 64) {
         Some(c) => {
-            let d = c + "/PaintCraft/Palettes";
+            let d = c + "/JFPainter/Palettes";
             (plat::file_exists(&d) == 2, d)
         }
         None => (false, String::new()),

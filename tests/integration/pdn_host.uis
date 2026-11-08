@@ -17,7 +17,7 @@ key ctrl+y
 cmd 901 65537
 expect #9900 text "FF000000"
 key ctrl+z
-# The original effect receives a selection; PaintCraft retains fractional coverage.
+# The original effect receives a selection; JFPainter retains fractional coverage.
 cmd 982 2621500
 cmd 983 13107460
 cmd 984 0

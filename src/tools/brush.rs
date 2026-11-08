@@ -1,4 +1,4 @@
-// t_brush -- PaintCraft: Farbpinsel, Radierer, Zeichenstift (agent T1).  Sub-module of
+// t_brush -- JFPainter: Farbpinsel, Radierer, Zeichenstift (agent T1).  Sub-module of
 // tool.rs (tool_init calls t_brush_init).  A stroke accumulates its coverage in the brush
 // engine's mask (max of the dabs) and is shown / written through one tool layer (TL):
 //   Farbpinsel   TLK_SOLID: colour of the button (left = primary, right = secondary; its

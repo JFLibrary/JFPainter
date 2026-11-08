@@ -1,4 +1,4 @@
-// hist_diag -- PaintCraft: history test hooks (script `cmd ID ARG`, ids CMD_HIST_TEST0 + k) and
+// hist_diag -- JFPainter: history test hooks (script `cmd ID ARG`, ids CMD_HIST_TEST0 + k) and
 // probe texts; diag.rs routes CMD_HIST_TEST0..CMD_HIST_TEST1 here
 //                                                         [apps/PaintCraft/src/hist_diag.s]
 //

@@ -1,4 +1,4 @@
-// dlg_layerprops -- PaintCraft: "Ebeneneigenschaften" (Ebenen > Ebeneneigenschaften…, F4,
+// dlg_layerprops -- JFPainter: "Ebeneneigenschaften" (Ebenen > Ebeneneigenschaften…, F4,
 // double click on a row of the layers window) as a modal dialog window like paint.net 5:
 //   Allgemein      Name (text box), Sichtbar (check box)
 //   Mischmodus:    the 14 paint.net blend modes (LayerBlendMode.* German names)

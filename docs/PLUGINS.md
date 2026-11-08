@@ -1,14 +1,14 @@
-# PaintCraft plugins
+# JFPainter plugins
 
 This document describes the native PNAPI ABI. Original managed Paint.NET DLLs use
-the separate [Windows host](../../../tools/paintcraft-pdn-host/README.md), including
+the separate [Windows host](pdn-host/README.md), including
 folder discovery, effects menus, FileType factories and diagnostics. Managed DLLs
 may share Effects/FileTypes folders with PNAPI DLLs; the PE CLR header selects
 the loader before execution.
 
 
 Effects, adjustments, file types and shapes can come from plugin libraries.  Spec: PLUGIN-001..020
-(booksAndContext/PaintCraft/paintdotnet_feature_specification.md).  Loader and crash guard:
+(booksAndContext/JFPainter/paintdotnet_feature_specification.md).  Loader and crash guard:
 `legacy/ASMLIB/docs/modules/PLUGIN_LOADER.md`.  Include file: `legacy/ASMLIB/inc/plugin.inc`.
 
 Files: `src/plugins.s` (loading, validation, registration, thunks, PNAPI, error list, hooks),
@@ -18,9 +18,9 @@ Files: `src/plugins.s` (loading, validation, registration, thunks, PNAPI, error 
 
 ## 1. Folders, build
 
-At start-up (`plug_init`, before `fio_init` / `fx_init`) PaintCraft loads every `*.dll` (Windows) /
+At start-up (`plug_init`, before `fio_init` / `fx_init`) JFPainter loads every `*.dll` (Windows) /
 `*.so` (Linux) of `<root>/Effects`, `<root>/FileTypes`, `<root>/Shapes` in name order (at most 32
-files).  `<root>` = the folder of PaintCraft's executable; `--plugins=DIR` (or `$PDN_PLUGIN_DIR`)
+files).  `<root>` = the folder of JFPainter's executable; `--plugins=DIR` (or `$PDN_PLUGIN_DIR`)
 uses DIR instead, `--plugins=@name` the folder `name` next to the executable (tests),
 `--no-plugins` loads nothing.  `--plugins DIR` (two arguments) works too, but fileio.s still
 takes DIR for a file to open ("Datei nicht gefunden.") until "--plugins" and
@@ -69,7 +69,7 @@ is fine; render must not write globals).  Return 0 to refuse loading.
 | PA_REALLOC 24 | `(ptr, size) -> rax` |
 | PA_PARFOR 32 | `(fn, ctx, count) -> eax 0 / ERR_CANCEL / ERR_FAULT`: `fn(ctx, index, job)` for 0..count-1 on the worker threads and the caller; every item runs guarded |
 | PA_HASH32 40 | `(x, y, seed, stream) -> eax` deterministic per-pixel random bits (fx_hash32) |
-| PA_LOG 48 | `(msg)` UTF-8 line to stderr ("PaintCraft: Plugin <file>: msg"), any thread |
+| PA_LOG 48 | `(msg)` UTF-8 line to stderr ("JFPainter: Plugin <file>: msg"), any thread |
 | PA_ROW 56 | `(sf, y) -> rax` pointer to row y of a SURFACE or 0 |
 | PA_SURFALLOC 64 | `(sf, w, h, dec) -> eax 0 / ERR_*`: straight FMT_ARGB surface for decoders (limits of the IMGDEC, may be 0) |
 | PA_CANCELLED 72 | `(job) -> eax` 1 when the job's cancel flag is set |
@@ -103,7 +103,7 @@ file extension), `decode(data, len, sf, dec) -> 0 / ERR_*` (allocate the result 
 `PA_SURFALLOC`, straight or premultiplied ARGB; with `IMGD_PROBE` pixels are optional),
 `encode(sf, opt, &buf, &len) -> 0 / ERR_*` (`sf` is always straight FMT_ARGB; the buffer must
 come from `PA_ALLOC`, the host frees it).  At least a decoder or an encoder.  `exts` = 1..8
-extensions of 1..15 characters [a-z0-9] separated by ';' (no dots); an extension PaintCraft or an
+extensions of 1..15 characters [a-z0-9] separated by ';' (no dots); an extension JFPainter or an
 earlier plugin already knows is rejected.  `caps`: IFC_ALPHA / LOSSY / LOSSLESS / ANIM / PAGES /
 HDR.  The type appears in Öffnen ("Alle Bildtypen" + its own entry) and Speichern unter (with an
 encoder) -- IMGF 14..21 (`img_register_dyn`, at most 8).  No save-options dialog (IOM 0).
@@ -189,5 +189,5 @@ loaded, 2 rejected, 3 crashed; FW_: 0 loader, 1 query, 2 import, 3 prepare, 4 re
 * Windows: plugins must not import anything (not even kernel32) and have no DllMain / TLS.
 * Linux: no DT_NEEDED, no initialisers, no TLS, RELA relocations RELATIVE / 64 / GLOB_DAT /
   JUMP_SLOT against own symbols only.
-* The crash guard is not a sandbox: a plugin runs with the full rights of PaintCraft (see
+* The crash guard is not a sandbox: a plugin runs with the full rights of JFPainter (see
   PLUGIN_LOADER.md §3).

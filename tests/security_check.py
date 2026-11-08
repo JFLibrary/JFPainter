@@ -1,6 +1,6 @@
-"""PaintCraft security regressions against real binaries, using disposable files only.
+"""JFPainter security regressions against real binaries, using disposable files only.
 
-Run from RustLib: python apps/PaintCraft/tests/security_check.py --out build/PaintCraft-security/after
+Run from RustLib: python apps/PaintCraft/tests/security_check.py --out build/JFPainter-security/after
 The original vulnerable build is expected to fail; --label distinguishes its evidence.
 """
 import argparse
@@ -13,7 +13,7 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[3]
-SENTINEL = b'PaintCraft SECURITY REVIEW: UNRELATED FILE MUST SURVIVE\n'
+SENTINEL = b'JFPainter SECURITY REVIEW: UNRELATED FILE MUST SURVIVE\n'
 
 
 def native_cases(exe, base):
@@ -31,7 +31,7 @@ def native_cases(exe, base):
             os.link(sentinel, link)
         else:
             link.symlink_to(sentinel)
-        env = dict(os.environ, PaintCraft_CONFIG_DIR=str(work / 'config'))
+        env = dict(os.environ, JFPainter_CONFIG_DIR=str(work / 'config'))
         command = [str(exe), '--no-plugins', '--shot', str(target), '--size', '1000x600']
         run = subprocess.run(command, cwd=work, env=env, capture_output=True, timeout=45)
         results.append({'test':'atomic-write-preexisting-link', 'ok': sentinel.read_bytes() == SENTINEL,
@@ -51,17 +51,17 @@ def native_cases(exe, base):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--out',default='build/PaintCraft-security/after')
+    parser.add_argument('--out',default='build/JFPainter-security/after')
     parser.add_argument('--label',default='regression')
     parser.add_argument('--linux-case',action='store_true')
     args=parser.parse_args()
     output=(ROOT/args.out).resolve()
     if args.linux_case:
-        with tempfile.TemporaryDirectory(prefix='PaintCraft-security-') as directory:
-            result=native_cases(output/'linux'/'PaintCraft',Path(directory))
+        with tempfile.TemporaryDirectory(prefix='JFPainter-security-') as directory:
+            result=native_cases(output/'linux'/'JFPainter',Path(directory))
         print(json.dumps(result))
         return 0
-    result=native_cases(output/'win'/'PaintCraft.exe',output/'security-cases-win')
+    result=native_cases(output/'win'/'JFPainter.exe',output/'security-cases-win')
     for row in result: row['platform']='win'
     script=subprocess.check_output(['wsl.exe','-d','Ubuntu-24.04','-e','wslpath','-a',str(Path(__file__).resolve())],text=True).strip()
     converted=subprocess.check_output(['wsl.exe','-d','Ubuntu-24.04','-e','wslpath','-a',str(output)],text=True).strip()

@@ -1,4 +1,4 @@
-# A4 – PaintCraft: Ebenen (layers window, layer properties, import, flip, Rotationszoom, flatten)
+# A4 – JFPainter: Ebenen (layers window, layer properties, import, flip, Rotationszoom, flatten)
 
 The layers package of the paint.net 5.1 clone: the "Ebenen" tool window, the
 "Ebeneneigenschaften" and "Rotationszoom" dialog windows, Als Ebene importieren (images and
@@ -7,12 +7,12 @@ Um 180° rotieren, Zusammenfassen (Bild menu) and the test hooks.  LAYER-001..02
 targets (the layer model itself is A1's, see DOCUMENT.md §3).
 
 ```
-python build.py app PaintCraft --out build/a4
-build/a4/win/PaintCraft.exe --script apps/PaintCraft/tests/layers_window.uis [--verify-dirty]
-build/a4/win/PaintCraft.exe --script apps/PaintCraft/tests/layer_props.uis
-build/a4/win/PaintCraft.exe --script apps/PaintCraft/tests/layer_import.uis
-build/a4/win/PaintCraft.exe --script apps/PaintCraft/tests/layer_rotzoom.uis
-wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a4/linux/PaintCraft --script apps/PaintCraft/tests/layer_props.uis
+python build.py app JFPainter --out build/a4
+build/a4/win/JFPainter.exe --script apps/PaintCraft/tests/layers_window.uis [--verify-dirty]
+build/a4/win/JFPainter.exe --script apps/PaintCraft/tests/layer_props.uis
+build/a4/win/JFPainter.exe --script apps/PaintCraft/tests/layer_import.uis
+build/a4/win/JFPainter.exe --script apps/PaintCraft/tests/layer_rotzoom.uis
+wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a4/linux/JFPainter --script apps/PaintCraft/tests/layer_props.uis
 ```
 
 ## 1. Files
@@ -201,7 +201,7 @@ layers window · #4394 value Rotationszoom previews computed, text "angle\|zoom\
   items are enabled; F4 removed from the "disabled accelerators" line because it opens the
   properties now), `layers_basic.uis` (Ebeneneigenschaften… enabled).
 
-Results (2026-09-30, build/a4): the four A4 scripts and every other PaintCraft script pass on
+Results (2026-09-30, build/a4): the four A4 scripts and every other JFPainter script pass on
 Windows and Linux (WSLg), the A4 scripts and layers_basic / flatten / history also with
 `--verify-dirty`.  asmcheck on the four A4 files: 0 errors, 2 BOUNDS warnings (the
 zero-terminated command tables of lay_states), 2 `assume` annotations.

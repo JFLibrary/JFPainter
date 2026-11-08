@@ -17,9 +17,9 @@ cmd 853 5
 expect #5570 unchecked
 click #5572
 sync
-expect text:"Neue PaintCraft-Version verfuegbar: PaintCraft-v0.8" exists
+expect text:"Neue JFPainter-Version verfuegbar: JFPainter-v0.8" exists
 click #5571
 click #5572
 sync
-expect text:"Neue PaintCraft-Version verfuegbar: PaintCraft-v0.9-beta" exists
+expect text:"Neue JFPainter-Version verfuegbar: JFPainter-v0.9-beta" exists
 key esc

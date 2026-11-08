@@ -1,4 +1,4 @@
-# A0 – PaintCraft app skeleton (M0, Strang A)
+# A0 – JFPainter app skeleton (M0, Strang A)
 
 This is the historical assembly-era skeleton. The current Rust module layout is
 documented in [ARCHITECTURE.md](ARCHITECTURE.md).
@@ -10,10 +10,10 @@ a temporary canvas, tests.  Builds on both targets, `skeleton.uis` passes on Win
 terminated table walks).
 
 ```
-python build.py app PaintCraft --out build/a0
-build/a0/win/PaintCraft.exe --shot s.png --size 1280x800 [--theme dark] [--scale 150]
-build/a0/win/PaintCraft.exe --script apps/PaintCraft/tests/skeleton.uis [--verify-dirty]
-wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a0/linux/PaintCraft --script apps/PaintCraft/tests/skeleton.uis
+python build.py app JFPainter --out build/a0
+build/a0/win/JFPainter.exe --shot s.png --size 1280x800 [--theme dark] [--scale 150]
+build/a0/win/JFPainter.exe --script apps/PaintCraft/tests/skeleton.uis [--verify-dirty]
+wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a0/linux/JFPainter --script apps/PaintCraft/tests/skeleton.uis
 ```
 
 ## 1. Files
@@ -159,7 +159,7 @@ UI scale a 100 % image is smaller relative to the chrome.
 ## 5. Labels
 
 The menu structure, the commands and their shortcuts follow paint.net 5.1; the German labels,
-help texts, tooltips and messages are PaintCraft's own wording.  No text is taken over from
+help texts, tooltips and messages are JFPainter's own wording.  No text is taken over from
 paint.net's localisation.  Only short everyday words ("Datei", "Rückgängig", "Ebene löschen")
 and established names of the trade ("Gaußscher Weichzeichner", "Helligkeit / Kontrast",
 "Seitenverhältnis beibehalten", the DDS format names) coincide.  A comparison against an
@@ -201,13 +201,13 @@ verschieben".
 * Tool order (paint.net Tools window, row by row: Rechteckige Auswahl, Pixel verschieben, Lasso, Auswahl verschieben, Ellipse, Zoomen, Zauberstab, Ansicht verschieben,
   Farbeimer, Farbverlauf, Farbpinsel, Radierer, Zeichenstift, Farbauswahl, Klonen, Neu färben, Text,
   Linie/Kurve, Formen) and the default tool (Farbpinsel).
-* Window title "Unbenannt - PaintCraft" (paint.net: "{0} - paint.net 5.1.12"; kept distinct on purpose).
+* Window title "Unbenannt - JFPainter" (paint.net: "{0} - paint.net 5.1.12"; kept distinct on purpose).
 * Look: no reference screenshot (paint.net was running); layout/colours from paint.net 5
   knowledge.  Workspace colours, row heights (title 48, rows 40, status 32 DIP) are guesses.
 
 ## 6. Icons
 
-Appended to `tools/icons.txt` (section "PaintCraft (agent A0)") and regenerated with
+Appended to `tools/icons.txt` (section "JFPainter (agent A0)") and regenerated with
 `python tools/ttf2bin.py --all` — additive only (fonts unchanged, icons.bin 162 → 169 icons):
 `IC_CLEAR_SELECTION` E8E6, `IC_SCAN` E8FE, `IC_RULER` ED5E, `IC_DEV_TOOLS` EC7A, `IC_SAVE_COPY`
 EA35, `IC_MAGIC_SELECT` EB1D, `IC_TOUCH_POINTER` F271.
@@ -222,7 +222,7 @@ Fluent glyphs; paint.net uses coloured icons.
 
 ## 7. Library gaps found (worked around in the app)
 
-1. `ui_cmd_state` keeps only CST_MAX = 128 states and silently drops more → PaintCraft has ~320
+1. `ui_cmd_state` keeps only CST_MAX = 128 states and silently drops more → JFPainter has ~320
    command rows; workaround: command table in `.data` + `pn_cmd_set` writes CMD_FLAGS (the library
    falls back to the table flags).  Suggest: CST_MAX 512 or a documented "table flags are live" rule.
 2. `MI_LIST` (DESIGN §5.3) is not implemented → recent files use 10 reserved hidden CMD rows with

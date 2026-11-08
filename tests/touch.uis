@@ -1,4 +1,4 @@
-# touch.uis -- PaintCraft with fingers (what a Surface showed; lib/ui/touch.rs): the gear and the zoom
+# touch.uis -- JFPainter with fingers (what a Surface showed; lib/ui/touch.rs): the gear and the zoom
 # slider by finger, panels that move after a press and hold in every direction, a pinch around the point
 # between the fingers, two fingers pan in every direction, one finger paints or pans (settings), a palm
 # while the pen is near does nothing.  #9909 text = image origin in the canvas "x,y", value = zoom.

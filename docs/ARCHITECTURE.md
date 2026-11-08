@@ -1,6 +1,6 @@
-# PaintCraft source structure
+# JFPainter source structure
 
-PaintCraft is one `no_std` application crate with domain modules under `src/`.
+JFPainter is one `no_std` application crate with domain modules under `src/`.
 `build_rs.py` discovers `src/main.rs` and all nested Rust modules automatically.
 There are no flat compatibility aliases at the crate root. Cross-domain imports
 name their owner explicitly, for example `crate::document::model::DocId`.
@@ -92,12 +92,12 @@ Run from the JFLib root:
 ```sh
 python build_rs.py check
 python -m unittest discover -s tools/tests -p test_project_sources.py
-python build_rs.py app PaintCraft --target both
-python build_rs.py app PaintCraft --target web --web-mode scalar
+python build_rs.py app JFPainter --target both
+python build_rs.py app JFPainter --target web --web-mode scalar
 cargo test --locked --manifest-path lib/text_shape/Cargo.toml --target-dir build/shaping-tests
 ```
 
-For the shaping tests, set `PAINTCRAFT_SHAPING_FONT` to an installed font with
+For the shaping tests, set `JFPAINTER_SHAPING_FONT` to an installed font with
 Latin, Arabic and Hebrew coverage (for example `C:\Windows\Fonts\arial.ttf`
 on Windows).
 

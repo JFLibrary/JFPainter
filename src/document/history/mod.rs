@@ -5,7 +5,7 @@ use jflib::{gfx, img_core, ui};
 pub(crate) mod diagnostics;
 pub(crate) mod memory;
 
-// hist -- PaintCraft: Verlauf (undo / redo) -- one history per document (DOC_HIST block) with
+// hist -- JFPainter: Verlauf (undo / redo) -- one history per document (DOC_HIST block) with
 // swap semantics: an entry holds the "other" state (pixel tiles, layer properties, the LAYER
 // array + document size, a selection blob); undo and redo exchange it with the document, so
 // every entry costs the changed data once.      [apps/PaintCraft/src/hist.s, inc/pn_hist.inc]

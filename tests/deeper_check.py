@@ -1,8 +1,8 @@
-"""Bounded local regression checks. Run from RustLib after building PaintCraft/codectest.
+"""Bounded local regression checks. Run from RustLib after building JFPainter/codectest.
 
-python apps/PaintCraft/tests/deeper_check.py codecs --out build/PaintCraft-deeper
-python apps/PaintCraft/tests/deeper_check.py files --out build/PaintCraft-deeper
-python apps/PaintCraft/tests/deeper_check.py settings --out build/PaintCraft-deeper
+python apps/PaintCraft/tests/deeper_check.py codecs --out build/JFPainter-deeper
+python apps/PaintCraft/tests/deeper_check.py files --out build/JFPainter-deeper
+python apps/PaintCraft/tests/deeper_check.py settings --out build/JFPainter-deeper
 Decoder mutations run in Linux with 512 MiB address space, 20 CPU seconds and a
 30-second wall limit per batch. Seed and failing batch bytes are retained.
 """
@@ -61,7 +61,7 @@ def codecs(out):
                     'timeout', '--signal=KILL', '30s', 'python3', '-c', limits, linux_exe, *items]
 
         def run(self, args, timeout=40):
-            env = dict(os.environ, PaintCraft_CONFIG_DIR=str(out / 'codec-config'))
+            env = dict(os.environ, JFPainter_CONFIG_DIR=str(out / 'codec-config'))
             command = self.cmd(args)
             try:
                 result = subprocess.run(command, cwd=ROOT, env=env, capture_output=True,
@@ -133,16 +133,16 @@ def native_files(out, platform):
     base = out / 'concurrent-files'
     base.mkdir(exist_ok=True)
     if platform == 'linux':
-        work = Path(tempfile.mkdtemp(prefix='PaintCraft-deeper-'))
+        work = Path(tempfile.mkdtemp(prefix='JFPainter-deeper-'))
         assert work.resolve().parent == Path(tempfile.gettempdir()).resolve()
     else:
         work = Path(tempfile.mkdtemp(prefix=platform + '-', dir=base))
         assert work.resolve().is_relative_to(out.resolve())
-    exe = out / platform / ('PaintCraft.exe' if platform == 'win' else 'PaintCraft')
+    exe = out / platform / ('JFPainter.exe' if platform == 'win' else 'JFPainter')
     rows = []
 
     def run(path, theme, tag):
-        env = dict(os.environ, PaintCraft_CONFIG_DIR=str(work / ('config-' + tag)))
+        env = dict(os.environ, JFPainter_CONFIG_DIR=str(work / ('config-' + tag)))
         result = subprocess.run([str(exe), '--no-plugins', '--theme', theme, '--size', '400x300',
                                  '--shot', str(path)], cwd=work, env=env, capture_output=True, timeout=30)
         (work / (tag + '.log')).write_bytes(result.stdout + result.stderr)
@@ -222,7 +222,7 @@ def settings(out):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=['codecs', 'files', 'settings'])
-    parser.add_argument('--out', default='build/PaintCraft-deeper')
+    parser.add_argument('--out', default='build/JFPainter-deeper')
     parser.add_argument('--linux-child', action='store_true')
     args = parser.parse_args()
     out = (ROOT / args.out).resolve()

@@ -1,4 +1,4 @@
-// plugins -- PaintCraft: plugins (agent P1, M8).  Docs: apps/PaintCraft/docs/PLUGINS.md (API for
+// plugins -- JFPainter: plugins (agent P1, M8).  Docs: apps/PaintCraft/docs/PLUGINS.md (API for
 // plugin authors), ASMLIB/docs/modules/PLUGIN_LOADER.md (loader, crash guard).
 //
 // Module contract (main.s):
@@ -481,7 +481,7 @@ extern "win64" fn pa_hash32(x: u32, y: u32, seed: u32, stream: u32) -> u32 {
     jflib::fx::hash32(x, y, seed, stream)
 }
 
-// pa_log(msg) -- "PaintCraft: Plugin <file>: msg" on stderr (any thread)
+// pa_log(msg) -- "JFPainter: Plugin <file>: msg" on stderr (any thread)
 extern "win64" fn pa_log(msg: u64) {
     let tag = plat::guard_tag();
     let file = if tag >= 1 && tag as usize <= PLUG_MAX {
@@ -490,7 +490,7 @@ extern "win64" fn pa_log(msg: u64) {
         String::from("?")
     };
     let m = cstr(msg, LINE_CAP).unwrap_or_else(|| String::from("(null)"));
-    let line = fmt_cap(format!("PaintCraft: Plugin {}: {}\n", file, m), LINE_CAP);
+    let line = fmt_cap(format!("JFPainter: Plugin {}: {}\n", file, m), LINE_CAP);
     plat::write_stderr(line.as_bytes());
 }
 
@@ -743,7 +743,7 @@ fn plug_crashed(i: usize, whr: u32, info: &GuardInfo) {
         let Some(r) = g.get_mut(i) else { return };
         let (base, span) = r.lib.as_ref().map_or((0, 0), |l| (l.base() as u64, l.span() as u64));
         plug_fault_msg(r, whr, info, base, span);
-        fmt_cap(format!("PaintCraft: Plugin {}: {}\n", r.file, r.msg), LINE_CAP)
+        fmt_cap(format!("JFPainter: Plugin {}: {}\n", r.file, r.msg), LINE_CAP)
     };
     PSTATE[i].store(PS_CRASHED, SeqCst);
     plat::write_stderr(line.as_bytes());
@@ -769,7 +769,7 @@ fn plug_reject(i: usize, msg: String) {
         let mut g = PLUGS.lock();
         let r = &mut g[i];
         r.msg = fmt_cap(msg, PL_MSG_CAP);
-        fmt_cap(format!("PaintCraft: Plugin {}: {}\n", r.file, r.msg), LINE_CAP)
+        fmt_cap(format!("JFPainter: Plugin {}: {}\n", r.file, r.msg), LINE_CAP)
     };
     PSTATE[i].store(PS_REJECTED, SeqCst);
     plat::write_stderr(line.as_bytes());
@@ -779,7 +779,7 @@ fn plug_reject(i: usize, msg: String) {
 fn plug_log(i: usize) {
     let line = {
         let g = PLUGS.lock();
-        fmt_cap(format!("PaintCraft: Plugin {}: {}\n", g[i].file, g[i].msg), LINE_CAP)
+        fmt_cap(format!("JFPainter: Plugin {}: {}\n", g[i].file, g[i].msg), LINE_CAP)
     };
     plat::write_stderr(line.as_bytes());
 }
@@ -1220,7 +1220,7 @@ fn plug_load(p: &mut Pn, folder: usize, name: &str) {
     if i >= PLUG_MAX {
         if !p.plug.full_logged {
             p.plug.full_logged = true;
-            let s = format!("PaintCraft: zu viele Plugins (höchstens {}), der Rest wird nicht geladen\n", PLUG_MAX);
+            let s = format!("JFPainter: zu viele Plugins (höchstens {}), der Rest wird nicht geladen\n", PLUG_MAX);
             plat::write_stderr(s.as_bytes());
         }
         return;

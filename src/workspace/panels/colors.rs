@@ -1,4 +1,4 @@
-// wnd_colors -- PaintCraft: the "Farben" tool window like paint.net 5 (COLOR-001..008, 019).
+// wnd_colors -- JFPainter: the "Farben" tool window like paint.net 5 (COLOR-001..008, 019).
 // Owner: agent A3 (colours).  The colour model and the palette are in palette.rs.
 //                                              [apps/PaintCraft/src/wnd_colors.s]
 //

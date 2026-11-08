@@ -1,4 +1,4 @@
-// t_select -- PaintCraft: Rechteckige Auswahl, Lasso-Auswahl, Elliptische Auswahl (agent T2).
+// t_select -- JFPainter: Rechteckige Auswahl, Lasso-Auswahl, Elliptische Auswahl (agent T2).
 // Sub-module of sel.rs (tsel_init is called from sel_init).
 //                                              [apps/PaintCraft/src/t_select.s]
 //

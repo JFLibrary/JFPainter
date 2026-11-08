@@ -16,7 +16,7 @@ internal static class Program
     [STAThread]
     static int Main(string[] args)
     {
-        // PaintCraft reads diagnostics as UTF-8; without a console .NET would use the ANSI code page.
+        // JFPainter reads diagnostics as UTF-8; without a console .NET would use the ANSI code page.
         Console.SetError(new StreamWriter(Console.OpenStandardError(),new System.Text.UTF8Encoding(false)) {AutoFlush=true});
         var dir = Environment.GetEnvironmentVariable("PAINTDOTNET_DIR") ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "paint.net");
         Install=dir;
@@ -51,7 +51,7 @@ internal static class Program
     [MethodImpl(MethodImplOptions.NoInlining)]
     static int Run(string[] args, byte[] data)
     {
-        if(args.Length<1) throw new ArgumentException("Usage: PaintCraft.PdnHost plugin.dll [effect-type] [--defaults] [--gpu software]");
+        if(args.Length<1) throw new ArgumentException("Usage: JFPainter.PdnHost plugin.dll [effect-type] [--defaults] [--gpu software]");
         Dialogs.Interactive=!args.Contains("--defaults") && !args.Contains("--validate-dialog");
         var assembly=PluginCatalog.Load(args[0]);
         Type[] types;
@@ -65,7 +65,7 @@ internal static class Program
         else if(effects.Length==1) selected=effects[0];
         else {
             Application.EnableVisualStyles();
-            using var form=new Form {Text="PaintCraft – Paint.NET-Effekt wählen",Width=560,Height=400,StartPosition=FormStartPosition.CenterScreen};
+            using var form=new Form {Text="JFPainter – Paint.NET-Effekt wählen",Width=560,Height=400,StartPosition=FormStartPosition.CenterScreen};
             var list=new ListBox {Dock=DockStyle.Fill,DisplayMember="Name",DataSource=effects};
             var ok=new Button {Text="Öffnen",Dock=DockStyle.Bottom,DialogResult=DialogResult.OK};
             form.Controls.Add(list);form.Controls.Add(ok);form.AcceptButton=ok;
@@ -192,7 +192,7 @@ internal static class Dialogs
     internal static bool Properties(string title,PropertyCollection properties,ControlInfo? labels,bool show)
     {
         Application.EnableVisualStyles();
-        using var dialog=new Form {Text="PaintCraft – "+title,Width=580,Height=600,StartPosition=FormStartPosition.CenterScreen};
+        using var dialog=new Form {Text="JFPainter – "+title,Width=580,Height=600,StartPosition=FormStartPosition.CenterScreen};
         var shown=new PluginProperties(properties,labels);
         var grid=new PropertyGrid {Dock=DockStyle.Fill,SelectedObject=shown,ToolbarVisible=false,PropertySort=PropertySort.NoSort};
         // --validate-dialog: each parameter must show its value and take the shown text back.

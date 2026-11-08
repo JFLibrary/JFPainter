@@ -1,4 +1,4 @@
-# A2 – PaintCraft: Verlauf (history), Verlauf window, Werkzeuge window
+# A2 – JFPainter: Verlauf (history), Verlauf window, Werkzeuge window
 
 Per-document undo/redo with **swap semantics** (an entry holds the "other" state; undo and redo
 exchange it with the document), a memory budget over all documents (deflate → spill file →
@@ -6,10 +6,10 @@ drop), the "Verlauf" and "Werkzeuge" tool windows, test hooks and tests.  HIST-0
 covered as far as they do not depend on later tools (see §8).
 
 ```
-python build.py app PaintCraft --out build/a2
-build/a2/win/PaintCraft.exe --script apps/PaintCraft/tests/history.uis [--verify-dirty]
-build/a2/win/PaintCraft.exe --script apps/PaintCraft/tests/toolswnd.uis [--verify-dirty]
-wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a2/linux/PaintCraft --script apps/PaintCraft/tests/history.uis
+python build.py app JFPainter --out build/a2
+build/a2/win/JFPainter.exe --script apps/PaintCraft/tests/history.uis [--verify-dirty]
+build/a2/win/JFPainter.exe --script apps/PaintCraft/tests/toolswnd.uis [--verify-dirty]
+wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a2/linux/JFPainter --script apps/PaintCraft/tests/history.uis
 ```
 
 ## 1. Files
@@ -184,7 +184,7 @@ Done (small, additive):
 * `main.s`: `mod_init` calls `hist_modinit` instead of `hist_init` (the contract's
   `hist_init(doc, name, icon)` is the per-document function).
 * `diag.s`: A2 block routing `CMD_HIST_TEST0..1` to `hist_diag_cmd` (A1 kept it).
-* `tools/icons.txt` section "PaintCraft (agent A2)": `IC_PREVIOUS` E892, `IC_NEXT` E893;
+* `tools/icons.txt` section "JFPainter (agent A2)": `IC_PREVIOUS` E892, `IC_NEXT` E893;
   `legacy/ASMLIB/assets/icons.bin` + `legacy/ASMLIB/inc/icons.inc` regenerated with
   `ttf2bin.py --font SegoeIcons.ttf --icons tools/icons.txt --inc …` (icons only; diff additive).
 

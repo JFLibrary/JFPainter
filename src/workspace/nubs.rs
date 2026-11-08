@@ -1,4 +1,4 @@
-// nubs -- PaintCraft: handles ("nubs") of live tools, reusable by the move / shape / text tools
+// nubs -- JFPainter: handles ("nubs") of live tools, reusable by the move / shape / text tools
 // (contract pn_tooli.inc).  A NUB lives in image coordinates (24.8); it is drawn in screen
 // space at a fixed size (paint.net 5: white disc, dark ring; NK_SQUARE resize handles as white
 // squares with a dark outline; the hovered / dragged one in the accent colour).  Every change

@@ -1,4 +1,4 @@
-// dlg_settings -- PaintCraft: "Einstellungen" (Alt+X, title bar button) like paint.net 5.1
+// dlg_settings -- JFPainter: "Einstellungen" (Alt+X, title bar button) like paint.net 5.1
 // (agent S1, M7; docs/SETTINGS.md): a modal, resizable dialog window with the page list on
 // the left, the page in a scroll view on the right and "Schließen" at the bottom.  Every
 // change applies at once (like paint.net); closing the dialog (Schließen, Esc, close
@@ -416,7 +416,7 @@ fn sd_accent_commit(p: &mut Pn, ui: &mut Ui, commit: bool) {
 
 // Werkzeuge: default tool, summary of the default tool bar options, two buttons
 fn sd_page_tools(p: &mut Pn, ui: &mut Ui) {
-    sd_para(ui, crate::preferences::localization::tr("Hier legen Sie fest, mit welchem Werkzeug PaintCraft startet und welche Werte die Werkzeugleiste anfangs zeigt."));
+    sd_para(ui, crate::preferences::localization::tr("Hier legen Sie fest, mit welchem Werkzeug JFPainter startet und welche Werte die Werkzeugleiste anfangs zeigt."));
     sd_row(ui, crate::preferences::localization::tr("Standardtool:"));
     ui.next_size(CTL_W, 0);
     let mut t = p.st.st.deftool as i32;
@@ -503,7 +503,7 @@ fn sd_page_gfx(p: &mut Pn, ui: &mut Ui) {
     let l = fmt_cap(format!("CPU – {}", p.dset.cpu), LINE_CAP);
     ui.text(TS_BODY, &l);
     ui.box_end();
-    sd_note(ui, crate::preferences::localization::tr("PaintCraft berechnet Werkzeuge, Korrekturen und Effekte auf der CPU (SIMD-Kernel auf mehreren Threads); eine GPU wird nicht verwendet."));
+    sd_note(ui, crate::preferences::localization::tr("JFPainter berechnet Werkzeuge, Korrekturen und Effekte auf der CPU (SIMD-Kernel auf mehreren Threads); eine GPU wird nicht verwendet."));
     sd_row(ui, crate::preferences::localization::tr("Befehlssätze:"));
     ui.text(TS_BODY, &p.dset.feat);
     ui.box_end();
@@ -527,8 +527,8 @@ fn sd_page_gfx(p: &mut Pn, ui: &mut Ui) {
 // Farbmanagement: status only
 fn sd_page_color(ui: &mut Ui) {
     ui.text(TS_BODY_STRONG, crate::preferences::localization::tr("Status"));
-    sd_para(ui, crate::preferences::localization::tr("Die Farbdarstellung von PaintCraft erfolgt in sRGB."));
-    sd_note(ui, crate::preferences::localization::tr("Erweiterte Farben von Windows (HDR, großer Farbraum) nutzt PaintCraft nicht; die Anzeige erfolgt immer in sRGB. Farbprofile von Bildern: Bild > Farbprofil…"));
+    sd_para(ui, crate::preferences::localization::tr("Die Farbdarstellung von JFPainter erfolgt in sRGB."));
+    sd_note(ui, crate::preferences::localization::tr("Erweiterte Farben von Windows (HDR, großer Farbraum) nutzt JFPainter nicht; die Anzeige erfolgt immer in sRGB. Farbprofile von Bildern: Bild > Farbprofil…"));
 }
 
 // HTTPS release lookup through the optional Python 3 system runtime.
@@ -536,14 +536,14 @@ fn sd_page_updates(p: &mut Pn, ui: &mut Ui) {
     let mut automatic = p.st.st.update_auto as i32;
     let mut beta = p.st.st.update_beta as i32;
     ui.checkbox(ID_SET_UPD_AUTO, crate::preferences::localization::tr("Beim Programmstart prüfen, ob es eine neuere Version gibt"), &mut automatic);
-    ui.checkbox(ID_SET_UPD_BETA, crate::preferences::localization::tr("Auch Testversionen (Beta) von PaintCraft anbieten"), &mut beta);
+    ui.checkbox(ID_SET_UPD_BETA, crate::preferences::localization::tr("Auch Testversionen (Beta) von JFPainter anbieten"), &mut beta);
     p.st.st.update_auto = automatic as u32;
     p.st.st.update_beta = beta as u32;
     sd_hrow(ui);
     if ui.button(ID_SET_UPD_NOW, crate::preferences::localization::tr("Jetzt prüfen")) & EV_ACT != 0 {crate::integrations::services::check_updates(p,ui);}
-    if ui.button(5595, crate::preferences::localization::tr("Veröffentlichungen öffnen")) & EV_ACT != 0 {ui.open_url("https://github.com/JFLibrary/JFLib/releases");}
+    if ui.button(5595, crate::preferences::localization::tr("Veröffentlichungen öffnen")) & EV_ACT != 0 {ui.open_url("https://github.com/JFLibrary/JFPainter/releases");}
     ui.box_end();
-    sd_note(ui, crate::preferences::localization::tr("Die Prüfung benötigt Python 3 und fragt GitHub über HTTPS nach PaintCraft-Veröffentlichungen ab. Automatische Prüfung ist standardmäßig aus. Installation erfolgt von Hand."));
+    sd_note(ui, crate::preferences::localization::tr("Die Prüfung benötigt Python 3 und fragt GitHub über HTTPS nach JFPainter-Veröffentlichungen ab. Automatische Prüfung ist standardmäßig aus. Installation erfolgt von Hand."));
     ui.text(TS_BODY|TX_WRAP, &p.services.update_status);
 }
 
@@ -609,8 +609,8 @@ fn sd_page_plugins(p: &mut Pn, ui: &mut Ui) {
     sd_plug_card(p, ui, PKC_LOADED);
     sd_para(ui, &crate::integrations::paint_dot_net::catalog::summary());
     for message in crate::integrations::paint_dot_net::catalog::messages() {sd_para(ui,&message);}
-    sd_note(ui, crate::preferences::localization::tr("Plugins werden beim Start aus den Ordnern Effects, FileTypes und Shapes neben PaintCraft geladen (Windows: *.dll, Linux: *.so)."));
-    sd_note(ui, crate::preferences::localization::tr("Originale Paint.NET-DLLs werden unter Windows zusätzlich aus Dokumente/PaintCraft App Files, Dokumente/Paint.NET App Files und der Paint.NET-Installation erkannt, auch in Unterordnern von Effects und FileTypes. Dafür muss Paint.NET 5.1 installiert sein. Nach dem Kopieren neu starten. ZIP-Dateien zuerst entpacken; Abhängigkeiten neben der DLL belassen."));
+    sd_note(ui, crate::preferences::localization::tr("Plugins werden beim Start aus den Ordnern Effects, FileTypes und Shapes neben JFPainter geladen (Windows: *.dll, Linux: *.so)."));
+    sd_note(ui, crate::preferences::localization::tr("Originale Paint.NET-DLLs werden unter Windows zusätzlich aus Dokumente/JFPainter App Files, Dokumente/Paint.NET App Files und der Paint.NET-Installation erkannt, auch in Unterordnern von Effects und FileTypes. Dafür muss Paint.NET 5.1 installiert sein. Nach dem Kopieren neu starten. ZIP-Dateien zuerst entpacken; Abhängigkeiten neben der DLL belassen."));
 }
 
 // sd_plug_card(which) -- a card with the plug_text lines of the loaded plugins (PKC_LOADED) or
@@ -673,7 +673,7 @@ fn sd_diag_build(p: &mut Pn) {
     sd_statics(p);
     let d = &p.dset;
     let mut lines: Vec<String> = Vec::new();
-    lines.push(format!("PaintCraft {} (JFLib, Rust)", PN_VERSION));
+    lines.push(format!("JFPainter {} (JFLib, Rust)", PN_VERSION));
     lines.push(crate::preferences::localization::tf("Betriebssystem: {}", &[S_OS]));
     lines.push(crate::preferences::localization::tf("Prozessor: {}", &[&d.cpu]));
     lines.push(crate::preferences::localization::tf("Befehlssätze: {}", &[&d.feat]));
@@ -697,7 +697,7 @@ fn sd_diag_build(p: &mut Pn) {
         crate::preferences::localization::tf("{} (nicht lesbar, wird nicht überschrieben)", &[&p.st.file])
     } else if p.st.on {
         p.st.file.clone()
-    } else { String::from(crate::preferences::localization::tr("(keine: Testlauf ohne --config / PaintCraft_CONFIG_DIR)")) };
+    } else { String::from(crate::preferences::localization::tr("(keine: Testlauf ohne --config / JFPainter_CONFIG_DIR)")) };
     lines.push(crate::preferences::localization::tf("Einstellungsdatei: {}", &[&file]));
     let tmp = if p.st.st.tempdir.is_empty() { d.tmpdef.clone() } else { p.st.st.tempdir.clone() };
     lines.push(crate::preferences::localization::tf("Temp-Ordner: {}", &[&tmp]));

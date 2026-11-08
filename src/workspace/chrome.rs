@@ -1,4 +1,4 @@
-// chrome -- PaintCraft: main window chrome like paint.net 5 (title row with menus, image list
+// chrome -- JFPainter: main window chrome like paint.net 5 (title row with menus, image list
 // and window toggles; the two tool bar rows; the status bar)
 //                                                                 [apps/PaintCraft/src/chrome.s]
 //

@@ -4,8 +4,8 @@ use jflib::{base, gfx, plat, ui};
 
 pub(crate) mod localization;
 
-// settings -- PaintCraft: the settings file (docs/SETTINGS.md).
-// settings.ini lives in plat::config_dir()/PaintCraft/; `--config DIR` or $PaintCraft_CONFIG_DIR
+// settings -- JFPainter: the settings file (docs/SETTINGS.md).
+// settings.ini lives in plat::config_dir()/JFPainter/; `--config DIR` or $JFPainter_CONFIG_DIR
 // use DIR/settings.ini instead; headless runs (--shot / --script) without either have no file
 // at all (nothing is read or written).  The INI object stays loaded, so comments and unknown
 // keys survive a save (base::ini; temp file + rename).  The file is input: every value is
@@ -61,7 +61,7 @@ const NOVAL: i32 = i32::MIN; // "missing" marker of st_geti
 const NEED_X: i32 = 48; // px of a window that must be on a monitor
 const NEED_Y: i32 = 24;
 
-const SEC_PN: &str = "PaintCraft";
+const SEC_PN: &str = "JFPainter";
 const SEC_UI: &str = "UI";
 const SEC_MAIN: &str = "MainWindow";
 const SEC_COL: &str = "Colors";
@@ -303,8 +303,8 @@ fn arg_int(name: &str, def: i32) -> i32 {
 
 // ------------------------------------------------------------------ start-up
 
-// st_find_path() -- file / on: --config DIR, $PaintCraft_CONFIG_DIR, else (only with a window)
-// plat::config_dir()/PaintCraft; + "/settings.ini"
+// st_find_path() -- file / on: --config DIR, $JFPainter_CONFIG_DIR, else (only with a window)
+// plat::config_dir()/JFPainter; + "/settings.ini"
 fn st_find_path(s: &mut St, ui: &Ui) {
     s.file.clear();
     s.on = false;
@@ -315,14 +315,14 @@ fn st_find_path(s: &mut St, ui: &Ui) {
             }
             v
         }
-        None => match plat::env("PaintCraft_CONFIG_DIR").filter(|v| !v.is_empty() && v.len() < FILE_CAP - 32) {
+        None => match plat::env("JFPainter_CONFIG_DIR").filter(|v| !v.is_empty() && v.len() < FILE_CAP - 32) {
             Some(v) => v,
             None => {
                 if ui.headless() {
                     return; // tests never touch the user's file
                 }
                 match plat::config_dir().filter(|v| !v.is_empty() && v.len() < FILE_CAP - 32) {
-                    Some(v) => fmt_cap(format!("{}/PaintCraft", v), FILE_CAP),
+                    Some(v) => fmt_cap(format!("{}/JFPainter", v), FILE_CAP),
                     None => return,
                 }
             }

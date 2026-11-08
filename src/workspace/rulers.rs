@@ -1,4 +1,4 @@
-// rulers -- PaintCraft: the horizontal and vertical ruler (paint.net: Ansicht > Lineale) in
+// rulers -- JFPainter: the horizontal and vertical ruler (paint.net: Ansicht > Lineale) in
 // Pixel, Zoll or Zentimeter from the image resolution.  Called by view.rs with an RP record
 // holding the band, the transform and the unit.
 //                                                                 [apps/PaintCraft/src/rulers.s]

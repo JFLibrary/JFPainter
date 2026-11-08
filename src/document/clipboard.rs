@@ -1,4 +1,4 @@
-// clip -- PaintCraft: Zwischenablage and file drops (agent K1).  Docs: apps/PaintCraft/docs/CLIPBOARD.md
+// clip -- JFPainter: Zwischenablage and file drops (agent K1).  Docs: apps/PaintCraft/docs/CLIPBOARD.md
 //                                                         [apps/PaintCraft/src/clip.s]
 //
 // Module contract (app/lifecycle.rs):

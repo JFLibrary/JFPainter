@@ -1,4 +1,4 @@
-// dlg_rotzoom -- PaintCraft: "Rotationszoom" (Ebenen > Rotationszoom…, Strg+Umschalt+Z) as a
+// dlg_rotzoom -- JFPainter: "Rotationszoom" (Ebenen > Rotationszoom…, Strg+Umschalt+Z) as a
 // modal dialog window like paint.net 5's RotateZoomEffect:
 //   Kippen / Rotieren   Winkel: dial + number box (degrees, counter-clockwise, -180..180)
 //   Verschieben         pan control over a thumbnail of the layer: where the centre of the

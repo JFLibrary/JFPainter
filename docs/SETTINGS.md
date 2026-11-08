@@ -1,4 +1,4 @@
-# PaintCraft – Einstellungen und Einstellungsdatei (M7, Agent S1)
+# JFPainter – Einstellungen und Einstellungsdatei (M7, Agent S1)
 
 Dateien: `src/settings.s` (Laden/Speichern), `src/dlg_settings.s` (Dialog, Modulvertrag
 `set_init/states/frame/cmd`), `inc/pn_set.inc` (IDs, Befehle, `g_st`-Layout), Tests
@@ -9,9 +9,9 @@ Dateien: `src/settings.s` (Laden/Speichern), `src/dlg_settings.s` (Dialog, Modul
 | Fall | Datei |
 |---|---|
 | `--config DIR` | `DIR/settings.ini` |
-| sonst `$PaintCraft_CONFIG_DIR` | `$PaintCraft_CONFIG_DIR/settings.ini` |
+| sonst `$JFPainter_CONFIG_DIR` | `$JFPainter_CONFIG_DIR/settings.ini` |
 | sonst headless (`--shot`, `--script`) | **keine** – nichts wird gelesen oder geschrieben |
-| sonst (echtes Fenster) | `plat_config_dir()/PaintCraft/settings.ini` (Windows `%APPDATA%/PaintCraft`, Linux `$XDG_CONFIG_HOME` bzw. `~/.config/PaintCraft`) |
+| sonst (echtes Fenster) | `plat_config_dir()/JFPainter/settings.ini` (Windows `%APPDATA%/JFPainter`, Linux `$XDG_CONFIG_HOME` bzw. `~/.config/JFPainter`) |
 
 Tests übergeben immer `--config build/...`; ohne Angabe bleibt die Konfiguration des Users
 unberührt (`pn_settings_check.py nocfg` prüft, dass sie nicht entsteht).
@@ -40,7 +40,7 @@ ignoriert); Aufzählungen nur über bekannte Namen. `version` > 1 wird gelesen w
 
 | Abschnitt | Schlüssel | Bedeutung / Bereich |
 |---|---|---|
-| PaintCraft | version | 1 |
+| JFPainter | version | 1 |
 | UI | theme, accent, animations, peninput, finger | `light`/`dark`/`system`; `RRGGBB` oder leer; 0/1; (PN1) 0/1 Stifteingabe („Windows-Tinte“, `plat_pen_enable`); 0 ein Finger auf der Leinwand malt, bis ein Stift benutzt wurde, 1 malt immer, 2 verschiebt immer ([TOUCH.md](TOUCH.md)) |
 | MainWindow | x, y, width, height, maximized | Client-Ursprung in Bildschirm-px; Client-Größe in DIP (640..16384 × 400..16384, geklemmt); normale Größe auch wenn maximiert. Nur mit echtem Fenster (headless unverändert) |
 | ToolsWindow, HistoryWindow, LayersWindow, ColorsWindow | visible, x, y (+ width, height bei Verlauf/Ebenen; expanded bei Farben) | WINRECT der wnd_*.s-Module: DIP relativ zum Client-Ursprung des Hauptfensters, ±20000 (sonst Standardplatz); Größe 120..4000 × 80..4000 |
@@ -77,7 +77,7 @@ unten „Schließen“. Änderungen wirken sofort (wie paint.net), Schließen/Es
 | Werkzeuge | Einleitung, Standardtool #5540, Zusammenfassung der Standards (5 Zeilen, Gruppen wie paint.net), Aktuelle Werkzeugleiste übernehmen #5541, Zurücksetzen #5542 |
 | Verlauf (eigene Seite, HIST-012..014) | Speicherbudget MB #5550 (0 = automatisch, Anzeige des Automatikwerts), belegter Speicher RAM/Datei, Ordner der Auslagerungsdatei #5551 |
 | Grafik | Rendering-Gerät „CPU – <Name>“, Befehlssätze (nur Anzeige; SIMD-Wahl nur per `--simd sse2`), Worker-Threads #5560 |
-| Farbmanagement | Status „Die Farbdarstellung von PaintCraft erfolgt in sRGB.“ + Hinweis (kein HDR/WCG) |
+| Farbmanagement | Status „Die Farbdarstellung von JFPainter erfolgt in sRGB.“ + Hinweis (kein HDR/WCG) |
 | Aktualisierung | alle Elemente deaktiviert + Begründung (keine Netzwerk-/TLS-Implementierung) |
 | Diagnose | schreibgeschützter mehrzeiliger Text #5580 (Version, OS, CPU, Befehlssätze, Prozessoren/Threads, RAM, Verlauf, DPI/Theme, Bilder, Pfade: Einstellungsdatei, Temp, Paletten, geladene Module, Effektanzahl), „In die Zwischenablage kopieren“ #5581 |
 | Plugin-Fehler | (P1, M8) „Alle Plugins wurden fehlerfrei geladen.“ oder die Fehlerzeilen (Datei: Meldung), dann „Geladene Plugins“ (Name Version – Autor · Datei: Anzahlen); `plug_errors` / `plug_count` / `plug_text` aus plugins.s, docs/PLUGINS.md.  Effekte ▸ „Plugin-Fehler…“ öffnet diese Seite (sichtbar, solange es Fehler gibt). |
@@ -87,7 +87,7 @@ Seiten und Optionen folgen dem Einstellungsdialog von paint.net, alle Texte sind
 Formulierungen (nur kurze übliche Wörter wie „Schließen“ oder „Sprache“ stimmen überein).
 Ohne Gegenstück in paint.net: Seite Verlauf, Akzentfarbe, Befehlssätze, Worker-Threads,
 Diagnose-Zeilen. Nicht übernommen: Leinwand, Effekte (Standardqualität),
-Farbschema „Blau“, Transparente Fenster, Overscroll u. ä. (keine Entsprechung in PaintCraft).
+Farbschema „Blau“, Transparente Fenster, Overscroll u. ä. (keine Entsprechung in JFPainter).
 
 ## 4. Befehle (850..899) und Timer
 
@@ -125,7 +125,7 @@ Zeile 22: `#710 enabled` statt `disabled`.
   echte Zwei-Prozess-Rundreise (Prozess 1 endet mit Strg+Q), Kommentar/unbekannte Abschnitte
   bleiben, zuletzt geöffnete Bilder; feindliche Datei (NaN, Überlauf, falsches Hex, 2000-Byte-
   Strings, unbekannte Namen); headless ohne Konfiguration schreibt nichts (User-Ordner wird
-  geprüft); `$PaintCraft_CONFIG_DIR`; `--window`: echte Fenster (Hauptfenster bei -50000 → wieder
+  geprüft); `$JFPainter_CONFIG_DIR`; `--window`: echte Fenster (Hauptfenster bei -50000 → wieder
   auf dem Monitor, Werkzeugfenster → Standardplatz, maximiert + normale Größe bleiben;
   Linux mit `jfgui_BACKEND=x11`). Arbeitsordner `build/<out>/pn_settings_check/<target>/`.
 

@@ -3,7 +3,7 @@
 //
 //   python build_rs.py plugin swapchan [--target win|linux] [--out build/x]
 //   -> build/x/win/plugins/swapchan.dll, build/x/linux/plugins/swapchan.so; copy it into
-//      <PaintCraft folder>/Effects
+//      <JFPainter folder>/Effects
 //
 // One effect (Effekte menu, category Farbe) with one choice property: the colour channels are
 // rotated per pixel (straight ARGB, alpha unchanged).  render is pure and thread safe: the

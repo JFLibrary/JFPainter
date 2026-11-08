@@ -1,4 +1,4 @@
-// imgops -- PaintCraft: the Bild menu (agent A5).  Auf Auswahl zuschneiden (sel_crop, T2),
+// imgops -- JFPainter: the Bild menu (agent A5).  Auf Auswahl zuschneiden (sel_crop, T2),
 // Größe ändern… (Strg+R), Leinwandgröße… (Strg+Umschalt+R), Horizontal / Vertikal spiegeln,
 // 90° nach rechts / links drehen (Strg+H / Strg+G), Um 180° drehen (Strg+J),
 // Zusammenfassen (Strg+Umschalt+F: forwarded to A4's lay_flatten_cmd / lay_flat_states).

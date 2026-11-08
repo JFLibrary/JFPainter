@@ -1,12 +1,12 @@
-# T1 – PaintCraft tool framework and painting tools
+# T1 – JFPainter tool framework and painting tools
 
 **Contract frozen** (`inc/pn_tooli.inc`): TOOLDESC, TOOLCFG, TL, NUB, BEP offsets, the
 function names below and `sel_clip_row` do not change; later additions only extend.
 
 ```
-python build.py app PaintCraft --out build/t1
-build/t1/win/PaintCraft.exe --script apps/PaintCraft/tests/tools_brush.uis [--verify-dirty]
-wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/t1/linux/PaintCraft --script apps/PaintCraft/tests/tools_fill.uis
+python build.py app JFPainter --out build/t1
+build/t1/win/JFPainter.exe --script apps/PaintCraft/tests/tools_brush.uis [--verify-dirty]
+wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/t1/linux/JFPainter --script apps/PaintCraft/tests/tools_fill.uis
 ```
 
 ## 1. Files
@@ -58,7 +58,7 @@ Every callback may be 0.  All run on the UI thread:
 | TD_KEY | `fn(vk, mods) -> eax 1 handled` | first unconsumed key of the frame (handled = consumed); Enter / Strg+Z with a pending edit are taken by the framework first |
 | TD_COMMIT | `fn(doc) -> eax 1 step` | Fertigstellen / Enter / tool or image switch / a document command |
 | TD_CANCEL | `fn(doc)` | Esc, Strg+Z, CMD_TOOL_CANCEL (doc 0: the document is gone) |
-| TD_CURSOR | `fn(x_fx, y_fx) -> eax CUR_*` | cursor over the canvas (fn 0 → CUR_CROSS); CUR_CROSS / CUR_ARROW show the tool's own cursor, `PNC_BASE + kind` a PaintCraft cursor (cursors.s: PNC_ROTATE) |
+| TD_CURSOR | `fn(x_fx, y_fx) -> eax CUR_*` | cursor over the canvas (fn 0 → CUR_CROSS); CUR_CROSS / CUR_ARROW show the tool's own cursor, `PNC_BASE + kind` a JFPainter cursor (cursors.s: PNC_ROTATE) |
 | TD_DOCSWITCH | `fn(old, new)` | the active image changed |
 | TD_OVERLAY | `fn(doc, &canvas_rect)` | render time: handles etc. (gfx_* in absolute window px); every change must damage its old and new screen area (`tool_damage`, `nubs_*`), `--verify-dirty` checks it |
 | TD_TICK | `fn(doc)` | start of every frame: poll jobs, react to option / colour / document changes |

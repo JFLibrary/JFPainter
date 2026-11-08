@@ -1,4 +1,4 @@
-# A6 – PaintCraft: Korrekturen und Effekte (effect framework)
+# A6 – JFPainter: Korrekturen und Effekte (effect framework)
 
 The runner of every adjustment and effect of the library's registry (`legacy/ASMLIB/src/fx`, contract
 `legacy/ASMLIB/inc/fx.inc`), the menu mapping with paint.net 5.1's German names, the generic
@@ -8,9 +8,9 @@ wiederholen" (Strg+F), remembered parameters.  All 54 registered effects run fro
 rows and give results bit-identical to `efftest` (tested: `fx_all.uis`).
 
 ```
-python build.py app PaintCraft --out build/a6
-build/a6/win/PaintCraft.exe --script apps/PaintCraft/tests/fx_dialog.uis [--verify-dirty]   (#!args: --open …/a6_photo.png)
-wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a6/linux/PaintCraft --open apps/PaintCraft/tests/fixtures/a6_photo.png --script apps/PaintCraft/tests/fx_all.uis
+python build.py app JFPainter --out build/a6
+build/a6/win/JFPainter.exe --script apps/PaintCraft/tests/fx_dialog.uis [--verify-dirty]   (#!args: --open …/a6_photo.png)
+wsl.exe -d Ubuntu-24.04 --cd <repo> -e ./build/a6/linux/JFPainter --open apps/PaintCraft/tests/fixtures/a6_photo.png --script apps/PaintCraft/tests/fx_all.uis
 ```
 
 ## 1. Files
@@ -64,7 +64,7 @@ primary_color Primärfarbe, secondary_color Sekundärfarbe, blend_mode Mischmodu
 XOR = ContentBlendMode), edge_behavior Kantenverhalten: (Abschneiden, Umlaufend, Spiegeln,
 Primärfarbe, Sekundärfarbe, Transparent, Original), color_scheme Farbschema: (Klassisch,
 Graustufen, Palette, Regenbogen)).  Unknown keys show the key.
-All labels are PaintCraft's own German; most are single words (Helligkeit, Kontrast, Tiefen,
+All labels are JFPainter's own German; most are single words (Helligkeit, Kontrast, Tiefen,
 Lichter, Farbton, Sättigung, Tönung, Pinselgröße, Granularität, Wölbung, Zellgröße, Glättung,
 Kantenlänge, Kachelgröße, Perzentil, Oktaven, …).  Longer ones: Kontur nachzeichnen, Größter
 Streuradius (Frosted Glass scatter_radius), Nur Schatten (Drop Shadow), Automatisch zoomen

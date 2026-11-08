@@ -1,22 +1,22 @@
-# PaintCraft host for original Paint.NET plugins
+# JFPainter host for original Paint.NET plugins
 
 This Windows helper executes **unmodified Paint.NET effect plugins** of both
 generations (the classic `Effect` and the v5 `BitmapEffect` / `GpuEffect` with
-their PropertyBased forms) and `FileType` / `IFileTypeFactory` / `IFileTypeFactory2` plugins. PaintCraft
+their PropertyBased forms) and `FileType` / `IFileTypeFactory` / `IFileTypeFactory2` plugins. JFPainter
 distinguishes managed PE assemblies from native PNAPI DLLs before choosing the
 loader. PropertyBased effects use a typed PropertyGrid editor backed by their
 original PropertySystem values and rules. Other effects may provide their own
 `EffectConfigDialog` or `EffectConfigForm`. There is no live preview in this helper.
-Native Linux PaintCraft can also invoke it through a configured Wine installation.
+Native Linux JFPainter can also invoke it through a configured Wine installation.
 
 ## Use
 
-Install Paint.NET 5.1 and PaintCraft from its Windows setup; nothing else is needed.
+Install Paint.NET 5.1 and JFPainter from its Windows setup; nothing else is needed.
 The setup ships the helper in `pdn-host` beside the program. It is our own assembly:
 Paint.NET's assemblies remain in the user's installation, and the project uses
 references with `Private=false`, so none are redistributed.
 
-PaintCraft runs the helper on the runtime Paint.NET ships (`PaintCraft.exe --pdn-clr
+JFPainter runs the helper on the runtime Paint.NET ships (`JFPainter.exe --pdn-clr
 <paint.net folder> <helper dll> ...` loads its `coreclr.dll`, `lib/plat/win_clr.rs`), so
 the machine needs no .NET installation. The folder comes from `--pdn-install` or
 `PAINTDOTNET_DIR`, then the installer's `HKLM\SOFTWARE\paint.net\TARGETDIR`, then
@@ -31,12 +31,12 @@ a file given to that start can use a plugin's format.
 
 Extract plugin archives first. Copy effect DLLs to `Effects`, file-type DLLs to
 `FileTypes` (a plugin with dependencies in a subfolder of its own), and XAML shapes
-to `Shapes`. Restart PaintCraft afterwards, matching the
+to `Shapes`. Restart JFPainter afterwards, matching the
 [Paint.NET installation workflow](https://paint.net/doc/latest/InstallPlugins.html).
 
 ## Build
 
-`python build_rs.py app PaintCraft --target win` and `tools/package.py` build the helper
+`python build_rs.py app JFPainter --target win` and `tools/package.py` build the helper
 into `<out>/win/pdn-host` when `dotnet` (the SDK) and Paint.NET exist on the machine;
 otherwise they print a note and go on without it. `PaintDotNetDir` names another
 Paint.NET folder. Intermediate SDK files go under the root's `build/paintcraft-pdn-host`.
@@ -46,7 +46,7 @@ without Paint.NET ships no helper. Linux packages never contain it.
 ## Where plugins are found
 
 On Windows the host discovers these folders under the portable/native plugin
-root (`--plugins`, `PDN_PLUGIN_DIR`, or beside the executable), Documents / PaintCraft
+root (`--plugins`, `PDN_PLUGIN_DIR`, or beside the executable), Documents / JFPainter
 App Files, Documents / Paint.NET App Files, and the local Paint.NET installation.
 It also honours Paint.NET's enabled AdditionalPluginDirectoryRoots registry setting,
 including environment expansion. `--pdn-plugins DIR` adds a root; `--pdn-isolated`
@@ -67,7 +67,7 @@ process (15-second limit, four at a time). A catalog has a
 These codec slots are separate from the eight native PNAPI format slots. Native
 formats keep priority when a plugin advertises an already built-in extension.
 
-PaintCraft supplies the active layer, selection, primary/secondary colors and
+JFPainter supplies the active layer, selection, primary/secondary colors and
 brush width. It validates the returned size and document version, blends through
 the original selection coverage, and creates one undo step. Cancel terminates
 the child process tree; a failed or malformed result does not change pixels.
@@ -99,7 +99,7 @@ test suite):
 - **PdnGpuEffectSamples:** all 20 samples render, including those with their own ComputeSharp pixel
   shaders. They target Paint.NET 5.2 and were built for 5.1 with `ComputeSharp.D2D1` 3.1.0, the
   library beside the plugin DLL.
-- **WebPFileType 1.6.0:** catalog, encode and decode with alpha through the helper. PaintCraft's own
+- **WebPFileType 1.6.0:** catalog, encode and decode with alpha through the helper. JFPainter's own
   WebP codec keeps priority in its dialogs, so the plugin is not used for that extension there.
 - **PSFilterPdn 2.0.11:** found in its own folder with its dependencies skipped; its dialog opens,
   searches its folder and cancels. **No 8bf filter has been run**: none was available, so its filter
@@ -131,7 +131,7 @@ Boundaries of the v5 path:
   `IDirectWriteFactory`, `IEnumLocalizerFactory` (a plugin's enum values keep their names),
   `IClipboardService` (Paint.NET's own, given a window it needs), `IPalettesService` (a fixed palette
   of 96 colors, not the user's), `IUserFilesService` (a folder of ours under
-  `%LOCALAPPDATA%/PaintCraft/pdn-host`, so a plugin's settings there are not the ones it has in
+  `%LOCALAPPDATA%/JFPainter/pdn-host`, so a plugin's settings there are not the ones it has in
   Paint.NET), `IFileSystemService` (the plugin folders above), `IExceptionDialogService` (a message
   box), `IShellService` (opens links and folders), `IVisualStylingService` (a fixed light
   checkerboard) and the settings below. A plugin requiring another service (file types) gets `null`
@@ -146,13 +146,13 @@ Boundaries of the v5 path:
   These interfaces are closed with an internal member, so `ModernEffects.cs` generates their
   implementation with `IgnoresAccessChecksTo`. A Paint.NET update can break this: GPU effects then
   report "Diese paint.net-Version passt nicht zum Host", CPU effects do not depend on it. The
-  cache file `GpuInfoCache.ini` goes to `%LOCALAPPDATA%/PaintCraft/pdn-host`; Paint.NET's own
+  cache file `GpuInfoCache.ini` goes to `%LOCALAPPDATA%/JFPainter/pdn-host`; Paint.NET's own
   settings are neither read nor changed.
 - **GPU choice.** The default GPU, as Paint.NET defines it, regardless of the choice made in
   Paint.NET's settings; `--pdn-gpu software` forces WARP, and a failing GPU falls back to it.
-- **Selection.** Effects get a pixelated selection (every pixel with coverage), PaintCraft
+- **Selection.** Effects get a pixelated selection (every pixel with coverage), JFPainter
   applies the fractional coverage to the result. `DisableSelectionClipping` gains nothing,
-  because PaintCraft masks the result anyway. Tiles cover the selection's bounding box.
+  because JFPainter masks the result anyway. Tiles cover the selection's bounding box.
 - **One layer.** The document holds only the active layer: effects reading other layers or
   a composite see this one. No metadata, sRGB assumed.
 - **No preview, no progress.** The dialog comes first, then the result.
@@ -173,7 +173,7 @@ contain portable code. Paint.NET plugins also rely on Paint.NET's Windows APIs,
 WinForms/COM or GPU services, however. They cannot be loaded by the native Linux
 PNAPI `.so` loader or made portable by renaming the file.
 
-PaintCraft now implements and tests that external Wine-helper architecture.
+JFPainter now implements and tests that external Wine-helper architecture.
 An unmodified BoltBait `Pastel.dll` produced identical changed pixels in direct
 Windows and Linux/Wine tests. The native Linux editor also passed catalog/menu,
 effect undo/redo, FileType alpha/DPI round-trip, cancellation and XAML shape tests.
@@ -188,7 +188,7 @@ Use a private Wine prefix and the experimental
 The package replaces what Wine lacks with managed implementations. `paintdotnet.exe` installs them at
 its start when `PaintDotNet.Configuration.json` says `EnableWineMode`; the helper starts instead of that
 program and does the same (`WineMode.cs`: managed imaging and Direct2D, DWriteCore, the alternate WARP
-lookup). As the package's `paintdotnet.sh` does, PaintCraft sets `WINEDLLOVERRIDES=mshtml=;d3dcompiler_47=n`
+lookup). As the package's `paintdotnet.sh` does, JFPainter sets `WINEDLLOVERRIDES=mshtml=;d3dcompiler_47=n`
 unless the variable is already set: Wine's own d3dcompiler cannot reflect the shaders of GPU effects.
 The regular Windows Paint.NET 5.1 package failed its Direct2D color-profile initialization in our Wine
 test. Merely installing Wine around that package is therefore insufficient. The package's minimum of
@@ -209,13 +209,13 @@ Tested on 2026-11-03 with the helper built against the Windows 5.1 API, the pack
     without a difference to see. `Level Horizon` differs in the glyphs it draws. `Calendar`,
     `Meme Maker` and `Text Fun Factory` use other fonts and break their text differently, which shows.
     `From Clipboard` runs with an empty clipboard.
-  - **PaintCraft:** through the menu Drop Shadow+, Transparency, Vignette+ (undo, redo), Pastel (the
+  - **JFPainter:** through the menu Drop Shadow+, Transparency, Vignette+ (undo, redo), Pastel (the
     same checksum as on Windows), Flip Horizontal, and cancelling a GPU effect without leftover
     processes. A catalog takes about 30 s on a Pentium G4560T, in the background on a normal start.
   - **Dialogs**, on a KWin without a screen: Vignette+, Drop Shadow+, Pastel and BBChart open and apply;
     PSFilterPdn opens and cancels, no 8bf filter was run. WebP encodes and decodes through the helper.
 - **Ubuntu 26.04, its Wine 10.0: works** for Pastel (byte-identical), Vignette+ and Transparency
-  (within one step); the host alone, without windows or PaintCraft.
+  (within one step); the host alone, without windows or JFPainter.
 - **Ubuntu 24.04 / WSL, Wine 11.19, Paint.NET-on-Wine 5.200.9775.2252: works** for classic effects
   (an earlier test, before the v5 path).
 - **Fedora's package wine 11.20 Staging: does not work.** It stops with `Cannot get symbol
@@ -226,36 +226,36 @@ Tested on 2026-11-03 with the helper built against the Windows 5.1 API, the pack
 
 The experimental Paint.NET builds expire 12 weeks after they were built;
 follow their release instructions and retest after updating. Neither Wine nor
-Paint.NET is bundled with PaintCraft. Linux packages do not contain the helper either: it is built on
+Paint.NET is bundled with JFPainter. Linux packages do not contain the helper either: it is built on
 Windows against a Paint.NET installation and deployed as below.
 
 After building the Windows helper, deploy its files into your **private unpacked**
-Paint.NET-on-Wine directory. This copies only `PaintCraft.PdnHost.dll`, its optional
+Paint.NET-on-Wine directory. This copies only `JFPainter.PdnHost.dll`, its optional
 Windows `.exe` launcher, and two helper-named runtime/dependency manifests derived
 from that exact Paint.NET package. Existing Paint.NET binaries and settings are
 left intact.
 
 ```sh
-python3 tools/paintcraft-pdn-host/deploy_wine.py \
-  --host /path/to/built/PaintCraft.PdnHost.dll \
+python3 pdn-host/deploy_wine.py \
+  --host /path/to/built/JFPainter.PdnHost.dll \
   --paintnet "$HOME/opt/paintnet-wine"
 
-./build/linux/PaintCraft \
+./build/linux/JFPainter \
   --pdn-wine /usr/bin/wine \
   --pdn-wine-prefix "$HOME/.wine-paintcraft" \
-  --pdn-host "$HOME/opt/paintnet-wine/PaintCraft.PdnHost.exe" \
+  --pdn-host "$HOME/opt/paintnet-wine/JFPainter.PdnHost.exe" \
   --pdn-install "$HOME/opt/paintnet-wine" \
-  --plugins "$HOME/PaintCraft Plugins"
+  --plugins "$HOME/JFPainter Plugins"
 ```
 
 The `.exe` launcher uses the package's bundled runtime and needs no separate
-`dotnet.exe`. If deploying only the helper DLL, use `--pdn-host .../PaintCraft.PdnHost.dll`
+`dotnet.exe`. If deploying only the helper DLL, use `--pdn-host .../JFPainter.PdnHost.dll`
 and `--pdn-dotnet 'C:/Program Files/dotnet/dotnet.exe'` for an installed Windows
 .NET launcher inside the prefix. The native Linux `dotnet` executable cannot run
 this Windows/WinForms host.
 
-Environment alternatives: `PAINTCRAFT_PDN_WINE`, `WINEPREFIX`,
-`PAINTCRAFT_PDN_HOST`, `PAINTCRAFT_PDN_DOTNET`, and `PAINTDOTNET_DIR`.
+Environment alternatives: `JFPAINTER_PDN_WINE`, `WINEPREFIX`,
+`JFPAINTER_PDN_HOST`, `JFPAINTER_PDN_DOTNET`, and `PAINTDOTNET_DIR`.
 Command-line options take precedence. Wine is only invoked when explicitly
 configured. Paths are passed as individual arguments, preserving spaces and
 Unicode. The mapping assumes the standard Wine `Z:` → `/` and `C:` →
@@ -301,7 +301,7 @@ capability flags, and hex UTF-8 extensions. Kinds E/F/S/U/X mean effect (flags: 
 reads encoded bytes and returns PCIM: six little-endian UInt32 values (magic
 0x4D494350, width, height, horizontal/vertical DPI in 16.16, original layer count),
 then straight BGRA. `--encode` consumes PCIM and returns encoded bytes. Both paths
-publish results only after success; the PaintCraft file layer performs the atomic
+publish results only after success; the JFPainter file layer performs the atomic
 write. Codec calls have a two-minute limit and honour save/decode cancellation.
 
 Additional checks:
@@ -315,7 +315,7 @@ The Linux suite takes explicit paths and never downloads dependencies:
 ```sh
 python3 tools/paintcraft_wine_check.py --out build/paintcraft-next \
   --wine /usr/bin/wine --prefix "$HOME/.wine-paintcraft" \
-  --host "$HOME/opt/paintnet-wine/PaintCraft.PdnHost.exe" \
+  --host "$HOME/opt/paintnet-wine/JFPainter.PdnHost.exe" \
   --paintnet "$HOME/opt/paintnet-wine" \
   --pastel /path/to/original/Pastel.dll \
   --fixture /path/to/built/Fixture.dll

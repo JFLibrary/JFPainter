@@ -1,4 +1,4 @@
-// adj_levels -- PaintCraft: Korrekturen > Manuelle Anpassung... (Levels, agent A6), paint.net
+// adj_levels -- JFPainter: Korrekturen > Manuelle Anpassung... (Levels, agent A6), paint.net
 // 5.1's Levels dialog as a modal dialog window:
 //   Eingabehistogramm | Eingabe (white / black number boxes, a vertical slider with two
 //   triangles) | Ausgabe (white / black number boxes, a slider with three triangles: white,

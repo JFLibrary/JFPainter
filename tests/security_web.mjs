@@ -1,10 +1,10 @@
-// Real PaintCraft browser regressions. Run from RustLib; profiles and files are disposable.
+// Real JFPainter browser regressions. Run from RustLib; profiles and files are disposable.
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
 import {readFile, mkdir, writeFile} from 'node:fs/promises';
 import {resolve, extname, sep} from 'node:path';
 import {loadPlaywright, chromiumOptions} from '../../../tools/tests/playwright.mjs';
-const root=resolve('.'), build=resolve(process.argv[2]||'build/PaintCraft-security/after');
+const root=resolve('.'), build=resolve(process.argv[2]||'build/JFPainter-security/after');
 const deeper=process.argv.includes('--deeper');
 const artifact=resolve(build,deeper?'deeper-browser':'security-browser'); await mkdir(artifact,{recursive:true});
 process.env.PLAYWRIGHT_BROWSERS_PATH ||= resolve(root,'build/browser-engines');
@@ -17,7 +17,7 @@ const server=createServer(async(req,res)=>{try{
   res.writeHead(200,{'content-type':{'.js':'text/javascript','.html':'text/html','.wasm':'application/wasm','.css':'text/css'}[extname(filename)]||'application/octet-stream','cache-control':'no-store',...(process.argv.includes('--isolated')?{'cross-origin-opener-policy':'same-origin','cross-origin-embedder-policy':'require-corp'}:{})}).end(bytes);
 }catch(e){res.writeHead(404).end(String(e));}});
 await new Promise(r=>server.listen(0,'127.0.0.1',r));
-const url=`http://127.0.0.1:${server.address().port}/PaintCraft/`;
+const url=`http://127.0.0.1:${server.address().port}/JFPainter/`;
 let id=0;const results=[];
 async function rpc(page,method,params={}){
   const r=await page.evaluate(r=>window.jfguiAgent.request(r),{jsonrpc:'2.0',id:++id,method,params});
@@ -33,7 +33,7 @@ async function click(page,match){const s=await state(page),w=s.widgets.slice().r
 async function key(page,key){await page.locator('#input').focus();await page.keyboard.press(key);await new Promise(r=>setTimeout(r,100));}
 async function filename(page,name){await click(page,81932);await key(page,'Control+a');await page.keyboard.insertText(name);await new Promise(r=>setTimeout(r,100));}
 async function openDocument(page,name){await action(page,'ui.command',{id:101});await click(page,65548);await key(page,'Control+a');await page.keyboard.insertText(name);await key(page,'Tab');await click(page,'Öffnen');}
-async function storage(page){return page.evaluate(()=>new Promise((resolve,reject)=>{const r=indexedDB.open('jfgui-files-v1',1);r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result,q=db.transaction('files').objectStore('files').getAll();q.onsuccess=()=>{db.close();resolve(q.result.filter(x=>x.app==='PaintCraft').map(x=>({path:x.path,size:x.bytes.byteLength})));};q.onerror=()=>reject(q.error);};}));}
+async function storage(page){return page.evaluate(()=>new Promise((resolve,reject)=>{const r=indexedDB.open('jfgui-files-v1',1);r.onerror=()=>reject(r.error);r.onsuccess=()=>{const db=r.result,q=db.transaction('files').objectStore('files').getAll();q.onsuccess=()=>{db.close();resolve(q.result.filter(x=>x.app==='JFPainter').map(x=>({path:x.path,size:x.bytes.byteLength})));};q.onerror=()=>reject(q.error);};}));}
 for(const engine of ['chromium','firefox']){
   const browser=await pw[engine].launch({headless:true,...(engine==='chromium'?chromiumOptions():{})});
   const context=await browser.newContext({viewport:{width:1280,height:850},acceptDownloads:true});

@@ -1,4 +1,4 @@
-// t_picker -- PaintCraft: Farbauswahl (colour picker, agent T1).  Sub-module of tool.rs.
+// t_picker -- JFPainter: Farbauswahl (colour picker, agent T1).  Sub-module of tool.rs.
 // Left click / drag = primary colour, right = secondary (COLOR-009..015).  Probennahme:
 // Einzelne Pixel, 3 × 3, 5 × 5, 11 × 11, 31 × 31, 51 × 51 Pixel (averaged over the pixels
 // inside the image, weighted by alpha = premultiplied average, then straight again), Ebene /

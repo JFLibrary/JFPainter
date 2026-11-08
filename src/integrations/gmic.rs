@@ -69,7 +69,7 @@ fn start(p: &mut Pn, ui: &mut Ui) {
     let mask = crate::document::selection::sel_mask(d).filter(|_| crate::document::selection::sel_active(d));
     p.gmic.mask = (0..h).flat_map(|y| (0..w).map(move |x| mask.map_or(255, |m| m.get(x, y)))).collect();
     p.gmic.doc = Some(d.id); p.gmic.uid = layer.uid; p.gmic.version = d.ver_px; p.gmic.w = w; p.gmic.h = h;
-    let program = plat::arg_value("--gmic-qt").or_else(|| plat::env("PAINTCRAFT_GMIC_QT"))
+    let program = plat::arg_value("--gmic-qt").or_else(|| plat::env("JFPAINTER_GMIC_QT"))
         .unwrap_or_else(|| String::from(if cfg!(windows) { "gmic_qt.exe" } else { "gmic_qt" }));
     let filter = plat::arg_value("--gmic-command");
     let job = Arc::new(Job { stop: AtomicBool::new(false), result: SpinLock::new(None) });
@@ -105,7 +105,7 @@ fn run(program: &str, filter: Option<&str>, pixels: gfx::Surface, job: &Job) -> 
     let fail = |s: &str| String::from(s);
     let root = plat::temp_dir().ok_or_else(|| fail("Kein temporärer Ordner verfügbar."))?; // i18n
     // unpredictable name, owner-only directory: other users cannot pre-create or read it
-    let folder = format!("{root}/paintcraft-gmic-{:016x}", plat::random_u64());
+    let folder = format!("{root}/jfpainter-gmic-{:016x}", plat::random_u64());
     if plat::file_exists(&folder) != 0 || !plat::fs::mkdir_private(&folder) { return Err(fail("Der temporäre G’MIC-Ordner ließ sich nicht anlegen.")); } // i18n
     let temp = Temp(folder);
     let input = format!("{}/input.png", temp.0);
@@ -119,7 +119,7 @@ fn run(program: &str, filter: Option<&str>, pixels: gfx::Surface, job: &Job) -> 
     if let Some(filter) = filter { args.extend_from_slice(&["--command", filter, "--apply"]); }
     args.push(&input);
     let mut child = (plat::process::Command { program, args: &args, cwd: None, env: &[] }).spawn()
-        .map_err(|e| format!("G’MIC-Qt konnte nicht gestartet werden ({e}). Bitte die Standalone-Version einrichten und ihren Pfad mit --gmic-qt oder PAINTCRAFT_GMIC_QT angeben."))?;
+        .map_err(|e| format!("G’MIC-Qt konnte nicht gestartet werden ({e}). Bitte die Standalone-Version einrichten und ihren Pfad mit --gmic-qt oder JFPAINTER_GMIC_QT angeben."))?;
     child.close_stdin();
     let mut errors = Vec::new(); let mut buf = [0u8; 16384];
     loop {
@@ -165,7 +165,7 @@ fn commit(p: &mut Pn, mut images: Vec<gfx::Surface>) {
         let h = images.iter().map(|s| s.h).max().unwrap_or(1);
         if w as u64 * h as u64 * images.len() as u64 > 100_000_000 { crate::integrations::file_io::fio_error(p, Some("G’MIC-Qt"), "Die Ergebnis-Leinwände überschreiten die Speichergrenze."); return; } // i18n
         let Some(id) = crate::document::model::doc_new(p, w, h, 0, crate::app::constants::DNF_EMPTY as u32) else { return; };
-        // %l is top-first; PaintCraft stores bottom-first. Pad smaller images with alpha.
+        // %l is top-first; JFPainter stores bottom-first. Pad smaller images with alpha.
         for (i, image) in images.into_iter().rev().enumerate() {
             let Ok(mut sf) = img_core::meta::surf_alloc(w as u32, h as u32, gfx::FMT_ARGB, &Default::default()) else { crate::document::model::doc_close(p, id); return; };
             for y in 0..image.h as usize { let n = image.w as usize * 4; sf.px[y * sf.stride as usize..y * sf.stride as usize+n].copy_from_slice(&image.px[y * image.stride as usize..y * image.stride as usize+n]); }

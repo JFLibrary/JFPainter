@@ -1,4 +1,4 @@
-# PaintCraft – Code-Review mit regulären Tests
+# JFPainter – Code-Review mit regulären Tests
 
 Stand: 11. Oktober 2026. Ausgangscommit: `00ac0a03cab182dc5f34ea0ffd38eec22a38eeaa` plus lokale Änderungen.
 
@@ -12,7 +12,7 @@ die unten getrennt dokumentierte vertiefte Prüfung mit begrenzten Mutations- un
 Der ursprüngliche Plan eines vollständigen Sicherheitsaudits ist damit **nicht als
 abgeschlossen oder als Sicherheitsnachweis zu verstehen**.
 
-Alle 59 Rust-Dateien der PaintCraft-App wurden inventarisiert und den Funktionsbereichen
+Alle 59 Rust-Dateien der JFPainter-App wurden inventarisiert und den Funktionsbereichen
 zugeordnet. Vertieft verfolgt wurden die Datenflüsse für Öffnen/Speichern/Schließen,
 Dokumente und Ebenen, Zwischenablage, Verlauf, Werkzeuge, Effekte, Parser, Plugins,
 Diagnose und den Browserhost. Die Dateimatrix unterscheidet Durchsicht relevanter
@@ -22,7 +22,7 @@ einbezogen. Andere Apps, Legacy-Assembler und eingebettete Referenzprojekte sind
 eigenständig geprüft.
 
 Die ursprünglichen Quellkopien, Hashes und Logs liegen unter
-`build/PaintCraft-security/baseline/` und `build/PaintCraft-security/logs/`.
+`build/JFPainter-security/baseline/` und `build/JFPainter-security/logs/`.
 Die 59 App-Dateien waren bei Wiederaufnahme gegenüber dieser Baseline unverändert.
 Der Erstbericht wurde **vor Änderungen am Produktivcode** gespeichert. Die ergänzenden
 Abschlussabschnitte dokumentieren anschließend Korrekturen und Nachtests.
@@ -35,13 +35,13 @@ Abschlussabschnitte dokumentieren anschließend Korrekturen und Nachtests.
   `lib/plat/web_files.rs:214` und `lib/plat/web.rs:190`.
 - Auslöser: regulär ein Bild importieren, bearbeiten und als PDN oder Bildformat speichern.
 - `plat::write_file` schreibt im Browser absichtlich nur in das virtuelle Dateisystem.
-  PaintCraft wertet dessen Erfolg unmittelbar als dauerhaften Speichererfolg und löscht
+  JFPainter wertet dessen Erfolg unmittelbar als dauerhaften Speichererfolg und löscht
   `DF_MODIFIED`, ohne `plat::web::persist` anzufordern und dessen Ergebnis abzuwarten.
 - Auswirkung: Nach Neuladen der Seite fehlt die vermeintlich gespeicherte Datei;
   auch „Speichern und schließen“ kann ungesicherte Arbeit verwerfen.
 - Nachweis: bestehende normale Chromium-/Firefox-Szenarien, jeweils `dirty=0` bei
   leerem IndexedDB-Dateispeicher. Ergebnis:
-  `build/PaintCraft-security/before/security-browser/results.json`.
+  `build/JFPainter-security/before/security-browser/results.json`.
 - Korrektur: Speichern asynchron abschließen, erst nach bestätigter Persistenz das
   Dokument als sauber markieren und eine Schließen-/Speichern-alle-Kette fortsetzen.
   Währenddessen konkurrierende Bearbeitungen und Speicherketten verhindern.
@@ -114,7 +114,7 @@ Abschlussabschnitte dokumentieren anschließend Korrekturen und Nachtests.
   `--config`-Parameter und mit isolierter Umgebungskonfiguration scheitern nur diese drei
   Positionsprüfungen auf beiden Plattformen; die Einstellungswerte selbst bestehen.
 - Ein kleiner Starttest mit den vier Optionswerten bestätigt den Fehler auf Windows und
-  Linux: `build/PaintCraft-security/after/normal-before-options.json`, jeweils `options.log`.
+  Linux: `build/JFPainter-security/after/normal-before-options.json`, jeweils `options.log`.
 - Korrektur: Unterstützte Optionswerte beim Öffnen von Bildern überspringen;
   die UI-Erwartungen auf das Layout ohne Fehlerleiste setzen und das Fehlen einer
   Fehlermeldung ausdrücklich prüfen. Es werden keine Plugins geladen oder Abstürze ausgelöst.
@@ -134,13 +134,13 @@ Aus dem vorherigen Chat übernommene, protokollierte Ergebnisse:
 Neue kleine Baselineprüfung:
 
 ```text
-python apps/PaintCraft/tests/file_save_check.py --out build/PaintCraft-security/before --label normal-before
+python apps/PaintCraft/tests/file_save_check.py --out build/JFPainter-security/before --label normal-before
 ```
 
 PNG-Ausgabe funktioniert auf beiden nativen Plattformen. Die Erwartungen zur unveränderten
 Zwischendatei scheitern auf beiden Plattformen; Linux-Dateirechte und Dateiunterscheidung
 scheitern ebenfalls. Ergebnisse und UI-Logs:
-`build/PaintCraft-security/before/normal-before.json` und `before/file-save-cases/`.
+`build/JFPainter-security/before/normal-before.json` und `before/file-save-cases/`.
 
 Die separate Datei `REVIEW_COVERAGE.csv` hält Verantwortung, Schwerpunkt und Prüftiefe
 pro App-Datei fest: 41 Dateien mit durchgesehenen Implementierungspfaden, 18 mit
@@ -174,13 +174,13 @@ Auswahl, Bildoperationen, Effekte, Dialoge, Speichern und Verlauf.
 Beim abschließenden Abgleich der Aufrufer wurde die gleiche Ursache von PN-02 und PN-03
 zusätzlich in `lib/base/ini.rs:200–214` bestätigt: `Ini::save` implementiert eine eigene
 Schreibfolge über `<Pfad>.tmp~`, ignoriert das Synchronisationsergebnis und verwendet
-`plat::write_file` bisher nicht. PaintCraft ruft dies in `settings.rs:839` auf.
+`plat::write_file` bisher nicht. JFPainter ruft dies in `settings.rs:839` auf.
 Ein regulärer Speichervorgang in einem isolierten Konfigurationsordner überschreibt die
 gewöhnliche Datei `settings.ini.tmp~` auf Windows und Linux; Linux ändert `0600` in `0644`.
 Die drei Erwartungen scheitern vor Änderung dieses Aufrufers, während das Speichern
-selbst funktioniert. Nachweis: `build/PaintCraft-security/after/normal-before-ini.json`.
+selbst funktioniert. Nachweis: `build/JFPainter-security/after/normal-before-ini.json`.
 Dieser Zusatz ist vor der INI-Korrektur gespeichert; die ursprüngliche Erstfassung bleibt
-unter `build/PaintCraft-security/INITIAL_NORMAL_REVIEW.md` erhalten.
+unter `build/JFPainter-security/INITIAL_NORMAL_REVIEW.md` erhalten.
 
 ### Umgesetzte Korrekturen
 
@@ -199,7 +199,7 @@ unter `build/PaintCraft-security/INITIAL_NORMAL_REVIEW.md` erhalten.
 | --- | --- |
 | Entwicklungsbuild, Windows/Linux/WASM | 3/3 bestanden, mit INI- und Optionskorrektur. |
 | Release-Build, Windows/Linux/WASM | 3/3 bestanden, mit INI- und Optionskorrektur. |
-| Reguläre PaintCraft-UI-Suite | 118/118 bestanden: 59 Skripte je nativer Plattform, mit `--verify-dirty` und isolierten Einstellungen. Die beiden Skripte mit absichtlich fehlerhaften Plugins wurden ausgeschlossen. |
+| Reguläre JFPainter-UI-Suite | 118/118 bestanden: 59 Skripte je nativer Plattform, mit `--verify-dirty` und isolierten Einstellungen. Die beiden Skripte mit absichtlich fehlerhaften Plugins wurden ausgeschlossen. |
 | Einstellungstest nach INI- und Optionskorrektur | 2/2 bestanden, Windows und Linux. |
 | Kleine Datei-/Starttests nach allen Korrekturen | 13/13 bestanden: Bildspeicherung, INI-Speicherung, bestehende Zwischendateien, private Linux-Rechte, getrennte Dateinamen und Optionswerte. |
 | Browserabläufe nach allen Korrekturen | 14/14 bestanden, je sieben in Chromium und Firefox. |
@@ -228,10 +228,10 @@ vorgesehenen Skriptargumente und den korrigierten, fehlerfreien Startzustand.
 Aus `RustLib/`:
 
 ```text
-python build_rs.py app PaintCraft --target all --out build/PaintCraft-security/after -j 4
-python build_rs.py app PaintCraft --target all --release --out build/PaintCraft-security/after-release -j 4
-python apps/PaintCraft/tests/file_save_check.py --out build/PaintCraft-security/after
-node apps/PaintCraft/tests/security_web.mjs build/PaintCraft-security/after
+python build_rs.py app JFPainter --target all --out build/JFPainter-security/after -j 4
+python build_rs.py app JFPainter --target all --release --out build/JFPainter-security/after-release -j 4
+python apps/PaintCraft/tests/file_save_check.py --out build/JFPainter-security/after
+node apps/PaintCraft/tests/security_web.mjs build/JFPainter-security/after
 python build_rs.py check
 python tools/gendoc.py --check
 ```
@@ -244,16 +244,16 @@ Konfigurationen, der lokale HTTP-Server und Browserkontexte gehören zur Testumg
 
 Ergebnisdateien relativ zu `RustLib/`:
 
-- `build/PaintCraft-security/after/file-save-results.json`: 13 finale Erwartungen mit Artefaktpfaden.
-- `build/PaintCraft-security/after/security-browser/results.json`: 14 finale Browserergebnisse;
+- `build/JFPainter-security/after/file-save-results.json`: 13 finale Erwartungen mit Artefaktpfaden.
+- `build/JFPainter-security/after/security-browser/results.json`: 14 finale Browserergebnisse;
   nebenan Bildschirmaufnahmen und Zustände nach erfolgreichem Speichern.
-- `build/PaintCraft-security/logs/after-isolated-*.log`: 118 UI-Läufe.
-- `build/PaintCraft-security/logs/after-options-{win,linux}-settings.log`: finale Einstellungsprüfungen.
-- `build/PaintCraft-security/logs/normal-final-{dev,release}-build.log`: letzte Buildausgaben.
-- `build/PaintCraft-security/normal-review-baseline.json` und `normal-review-final.json`:
+- `build/JFPainter-security/logs/after-isolated-*.log`: 118 UI-Läufe.
+- `build/JFPainter-security/logs/after-options-{win,linux}-settings.log`: finale Einstellungsprüfungen.
+- `build/JFPainter-security/logs/normal-final-{dev,release}-build.log`: letzte Buildausgaben.
+- `build/JFPainter-security/normal-review-baseline.json` und `normal-review-final.json`:
   Quellhashes zur Wiederaufnahme und zum Abschluss. Die zusätzliche INI-Ausgangskopie
   liegt unter `baseline/ini-before-normal-fix.rs`.
-- `build/PaintCraft-security/INITIAL_NORMAL_REVIEW.md` und die beiden Dateien
+- `build/JFPainter-security/INITIAL_NORMAL_REVIEW.md` und die beiden Dateien
   `NORMAL_REVIEW_WITH_*_ADDENDUM.md`: vor der jeweiligen Korrektur gesicherte Befunde.
 
 Die sechs bestätigten Ursachen sind im Quelltext korrigiert. Die offenen Prüfgrenzen
@@ -264,13 +264,13 @@ oben bleiben bestehen; dieser Bericht ist kein vollständiges Sicherheitsaudit.
 Am 11. Oktober 2026 wurden auf ausdrücklichen Wunsch zusätzliche lokale Tests ausgeführt.
 Die 146 zuvor erfassten Quelldateien waren gegenüber dem letzten Review unverändert.
 Für den neuen Durchlauf wurden 416 App-, Bibliotheks- und Browserhostdateien erfasst und
-frische Entwicklungsbuilds von PaintCraft (Windows, Linux, WASM) sowie codectest (Windows,
-Linux) unter `build/PaintCraft-deeper/` erstellt. Für diese Vertiefung wurden keine
+frische Entwicklungsbuilds von JFPainter (Windows, Linux, WASM) sowie codectest (Windows,
+Linux) unter `build/JFPainter-deeper/` erstellt. Für diese Vertiefung wurden keine
 Produktivquellen geändert; Änderungen betreffen Testtreiber und diesen Bericht.
 
 Während des Durchlaufs wurden allerdings sieben gemeinsame Dateien parallel bearbeitet:
 `lib/ui/{basic,consts,edit,lib,ribbon,style}.rs` und `lib/doc_view/src/lib.rs`. Ihre
-Änderungszeiten liegen nach den PaintCraft-Testbuilds vom 11.10.2026 um 20:59 Uhr.
+Änderungszeiten liegen nach den JFPainter-Testbuilds vom 11.10.2026 um 20:59 Uhr.
 Diese späteren Änderungen sind nicht durch die hier gemeldeten Ergebnisse abgedeckt.
 Die Ergebnisse sind deshalb an die gespeicherten Binaries und deren SHA-256-Hashes
 gebunden. Die 146 Dateien des vorherigen Reviews blieben beim Abschlussabgleich unverändert.
@@ -307,8 +307,8 @@ Prüfwerkzeuge enthielten Erwartungen, die nicht mehr zum aktuellen Verhalten pa
    (`dock=0`) und entfernt `x/y` absichtlich. Die Prüfung verlangt nun bei diesem Modus
    das Entfernen beider Koordinaten; ältere Referenzbuilds ohne `dock` behalten ihre
    bisherige Erwartung. Die vier Szenarien wurden anschließend neu ausgeführt.
-2. `tools/pn_crash_check.py` erwartete ausschließlich `PaintCraft::diag::…`, während
-   `build_rs.py` den Rust-Crate-Namen zu `PaintCraft` normalisiert. Die Prüfung akzeptiert
+2. `tools/pn_crash_check.py` erwartete ausschließlich `JFPainter::diag::…`, während
+   `build_rs.py` den Rust-Crate-Namen zu `JFPainter` normalisiert. Die Prüfung akzeptiert
    beide historischen Schreibweisen, verlangt weiterhin exakt dieselbe Funktionsfolge
    und prüft weiterhin jede Rücksprungadresse gegen den tatsächlichen Aufruf im Binary.
    Die Aufrufketten wurden an den bereits erzeugten Berichten und den zugehörigen
@@ -334,14 +334,14 @@ Prüfwerkzeuge enthielten Erwartungen, die nicht mehr zum aktuellen Verhalten pa
 Aus `RustLib/`, nach den oben beschriebenen Builds:
 
 ```text
-python apps/PaintCraft/tests/deeper_check.py codecs --out build/PaintCraft-deeper
-python apps/PaintCraft/tests/deeper_check.py files --out build/PaintCraft-deeper
-python apps/PaintCraft/tests/deeper_check.py settings --out build/PaintCraft-deeper
-python apps/PaintCraft/tests/security_check.py --out build/PaintCraft-deeper --label links
-node apps/PaintCraft/tests/security_web.mjs build/PaintCraft-deeper --deeper
+python apps/PaintCraft/tests/deeper_check.py codecs --out build/JFPainter-deeper
+python apps/PaintCraft/tests/deeper_check.py files --out build/JFPainter-deeper
+python apps/PaintCraft/tests/deeper_check.py settings --out build/JFPainter-deeper
+python apps/PaintCraft/tests/security_check.py --out build/JFPainter-deeper --label links
+node apps/PaintCraft/tests/security_web.mjs build/JFPainter-deeper --deeper
 ```
 
-Die Ergebnisse liegen unter `build/PaintCraft-deeper/`: `deeper-codecs.json`,
+Die Ergebnisse liegen unter `build/JFPainter-deeper/`: `deeper-codecs.json`,
 `deeper-files.json`, `links-security.json`, `deeper-settings.json`,
 `deeper-browser/results.json` und `deeper-crash-reports.json`. Die ursprünglichen
 Fehlmeldungen der Testwerkzeuge sind in `*-before-checker-fix.json` und den Logs erhalten;

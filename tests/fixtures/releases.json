@@ -1,6 +1,6 @@
 [
   {"tag_name":"jfWord-v99.0","name":"jfWord","draft":false,"prerelease":false},
-  {"tag_name":"PaintCraft-v0.9-beta","name":"PaintCraft Preview","draft":false,"prerelease":true},
-  {"tag_name":"PaintCraft-v0.8","name":"PaintCraft","draft":false,"prerelease":false},
-  {"tag_name":"PaintCraft-v99.0","name":"Draft","draft":true,"prerelease":false}
+  {"tag_name":"JFPainter-v0.9-beta","name":"JFPainter Preview","draft":false,"prerelease":true},
+  {"tag_name":"JFPainter-v0.8","name":"JFPainter","draft":false,"prerelease":false},
+  {"tag_name":"JFPainter-v99.0","name":"Draft","draft":true,"prerelease":false}
 ]

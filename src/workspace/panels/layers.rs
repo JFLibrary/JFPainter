@@ -1,4 +1,4 @@
-// wnd_layers -- PaintCraft: the "Ebenen" tool window like paint.net 5 (LAYER-007, 011..013,
+// wnd_layers -- JFPainter: the "Ebenen" tool window like paint.net 5 (LAYER-007, 011..013,
 // 019): one row per layer of the active image, the top layer first: thumbnail over a
 // checkerboard (image aspect), name, visibility check box.  The current layer is selected
 // (accent pill + shade); a click selects it (CMD_LAYER_SELECT), a double click opens

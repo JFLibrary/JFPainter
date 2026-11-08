@@ -1,12 +1,12 @@
-# PaintCraft: Abgleich mit dem Paint.NET-Handbuch
+# JFPainter: Abgleich mit dem Paint.NET-Handbuch
 
 > **Historischer Ausgangsbefund vor der Umsetzung.** Der unten beschriebene Stand
 > wurde inzwischen erweitert. Den aktuellen, nachgetesteten Erledigungsstand und
 > die noch offenen Grenzen beschreibt [MANUAL_PARITY.md](MANUAL_PARITY.md).
 
-Stand: 12. Oktober 2026. Geprüft: **JFLib / PaintCraft 0.7**, Commit
+Stand: 12. Oktober 2026. Geprüft: **JFLib / JFPainter 0.7**, Commit
 `d3f8d682498d74ab54d59977ee7deb212b87e071` plus vorhandener Arbeitsstand.
-Die PaintCraft-Quellen waren beim Prüfabschluss gegenüber diesem Commit unverändert.
+Die JFPainter-Quellen waren beim Prüfabschluss gegenüber diesem Commit unverändert.
 jfguiLib wurde ausschließlich als Ablage der Referenzunterlagen gelesen.
 
 ## Ergebnis
@@ -50,7 +50,7 @@ die Liste ist deshalb keine Behauptung, alle Befunde seien neu entstanden.
 ### PC-MAN-01: Zwei Text-Rendering-Modi haben dieselbe Wirkung
 
 **Teilimplementierung; mittlere Priorität.** Das Buch nennt Glatt, Scharf (Modern)
-und Scharf (Klassisch), gedruckte Seite 106 / PDF-Seite 123. PaintCraft bietet alle
+und Scharf (Klassisch), gedruckte Seite 106 / PDF-Seite 123. JFPainter bietet alle
 drei an, setzt aber für beide scharfen Varianten denselben Schalter `FS_SHARP`.
 
 Belege: [Optionsliste](../t_text.rs#L109),
@@ -72,7 +72,7 @@ Modi und ist dadurch weniger streng als die drei Optionen des Buches und der UI.
 
 **Teilimplementierung; mittlere Priorität.** Abbildung 2-9 auf gedruckter Seite 48 /
 PDF-Seite 66 zeigt drei Roll-/Rotationsparameter und die räumliche Steuerung.
-PaintCraft zeigt zwar „Kippen / Rotieren“, besitzt dort aber nur einen Winkel.
+JFPainter zeigt zwar „Kippen / Rotieren“, besitzt dort aber nur einen Winkel.
 Die Parameter enthalten Winkel, Zoom und Verschiebung; berechnet wird eine
 zweidimensionale affine Transformation.
 
@@ -88,10 +88,10 @@ Vorschau, Auswahlbegrenzung, Abbrechen und einem gemeinsamen Undo-Schritt.
 ### PC-MAN-03: Die Plugin-basierten Buchabläufe sind nicht direkt verfügbar
 
 **Kompatibilitäts- und Umfangslücke; mittlere Priorität, Architekturentscheidung.**
-PaintCraft hat ein eigenes natives Plugin-System. Es erwartet `pn_plugin_query`
+JFPainter hat ein eigenes natives Plugin-System. Es erwartet `pn_plugin_query`
 und PNAPI; es implementiert keinen Loader für die Paint.NET-Plugin-API.
 Die Installation der im Buch genannten Paint.NET-DLLs ist deshalb kein verfügbarer
-Weg, diese Funktionen in PaintCraft zu ergänzen.
+Weg, diese Funktionen in JFPainter zu ergänzen.
 
 Belege: [Loader-Vertrag](../plugins.rs#L1206),
 [Rust-Plugin-Vertrag](../../../plugins/README.md#L1).
@@ -169,7 +169,7 @@ Hilfeseite beziehungsweise lokale Hilfe. Das Hilfe-Menü und „Info“ selbst f
 ### PC-MAN-07: Info und kopierbare Diagnose nennen noch Assembly und jfguiLib
 
 **Bestätigter UI-/Dokumentationsfehler; niedrige Priorität.**
-Im tatsächlich gerenderten Infofenster steht weiterhin, PaintCraft sei vollständig
+Im tatsächlich gerenderten Infofenster steht weiterhin, JFPainter sei vollständig
 in x86-64-Assembler auf jfguiLib geschrieben. Die kopierbare Diagnose wiederholt
 dies. Das beschreibt nicht den geprüften Rust-/JFLib-Stand.
 
@@ -240,7 +240,7 @@ dass sich kein ähnliches Bild mit anderen Arbeitsschritten erzeugen lässt.
 Die Einleitungen von Tutorial 6 und 7 sagen „Soft Light“. Die konkreten Schritte
 verlangen jedoch **Overlay**, ebenso die dazugehörige Ebenenabbildung
 (gedruckte Seiten 136-137 und 142 / PDF-Seiten 152-153 und 158).
-Overlay ist in [PaintCrafts Ebenenmodi](../dlg_layerprops.rs#L32) implementiert.
+Overlay ist in [JFPainters Ebenenmodi](../dlg_layerprops.rs#L32) implementiert.
 Ein fehlender Soft-Light-Modus wird deshalb nicht als Blocker dieser Tutorials gezählt.
 
 ## Ausgeführte Prüfungen und Reproduktion
@@ -248,7 +248,7 @@ Ein fehlender Soft-Light-Modus wird deshalb nicht als Blocker dieser Tutorials g
 Im Repository-Root:
 
 ```text
-python build_rs.py app PaintCraft --target both --out build/paintcraft-manual-audit -j 6
+python build_rs.py app JFPainter --target both --out build/paintcraft-manual-audit -j 6
 python build/paintcraft-manual-audit/run_baseline.py
 python build/paintcraft-manual-audit/check_features.py
 ```

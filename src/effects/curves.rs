@@ -1,4 +1,4 @@
-// adj_curves -- PaintCraft: Korrekturen > Kurven... (agent A6), paint.net 5.1's Curves dialog
+// adj_curves -- JFPainter: Korrekturen > Kurven... (agent A6), paint.net 5.1's Curves dialog
 // as a modal dialog window: "Transferzuordnung" Leuchtkraft / RGB, a 256 x 256 curve editor
 // (click adds a control point, drag moves it, right click or dragging it out of the graph
 // removes it, the pointer position shows as "(x, y)"), R / G / B check boxes in RGB mode,

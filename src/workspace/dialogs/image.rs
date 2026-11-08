@@ -1,4 +1,4 @@
-// dlg_image -- PaintCraft: the Bild dialogs (agent A5, sub-module of imgops.rs) as modal
+// dlg_image -- JFPainter: the Bild dialogs (agent A5, sub-module of imgops.rs) as modal
 // dialog windows with the layout of paint.net 5.1:
 //   "Größe ändern" (Strg+R):   Aktuelle Bildgröße / Neue Größe (memory of all layers),
 //       Prozentual: n % | Absolut: (Seitenverhältnis beibehalten, Pixelgröße Breite / Höhe /

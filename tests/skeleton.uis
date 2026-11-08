@@ -1,6 +1,6 @@
-# skeleton.uis -- PaintCraft skeleton (agent A0): window chrome, all seven menus with their
+# skeleton.uis -- JFPainter skeleton (agent A0): window chrome, all seven menus with their
 # items and states, accelerators, tool keys, tool bar tooltips, status bar combo boxes,
-# theme switch.  Run: build/win/PaintCraft.exe --script tests/skeleton.uis
+# theme switch.  Run: build/win/JFPainter.exe --script tests/skeleton.uis
 theme light
 size 1280 800
 
@@ -258,7 +258,7 @@ expect menuitem:"Suchen…" disabled
 expect menuitem:"Forum" disabled
 expect menuitem:"Lernprogramme" enabled
 expect menuitem:"Plug-Ins" enabled
-expect menuitem:"PaintCraft-Webseite" enabled
+expect menuitem:"JFPainter-Webseite" enabled
 expect menuitem:"Spenden" disabled
 expect menuitem:"Fehler melden oder Feedback geben…" enabled
 expect menuitem:"Info" enabled

@@ -1,4 +1,4 @@
-// cursors -- PaintCraft's own pointer cursors (like paint.net's tool cursors): a small black
+// cursors -- JFPainter's own pointer cursors (like paint.net's tool cursors): a small black
 // crosshair with a white rim at the hot spot and the tool's colourful icon (pn_icons.rs)
 // below right with a white halo, so it reads on light and dark images; plus a rotate cursor
 // for the move tools outside the selection.  The library draws them at the window's dpi

@@ -1,4 +1,4 @@
-// view -- PaintCraft: the canvas view (workspace, image with checkerboard and drop shadow,
+// view -- JFPainter: the canvas view (workspace, image with checkerboard and drop shadow,
 // zoom 1 %..6400 %, Ganzes Bild, scrolling, panning, pixel grid, rulers, status bar values,
 // coordinate transforms and hooks for the tools).  Per-document state: Doc::view (DV_*).
 //                                                                   [apps/PaintCraft/src/view.s]
@@ -79,8 +79,8 @@ const GRID_COLOR: u32 = 0x55808080;
 const OVL_MAX: usize = 8;
 /// how the canvas's moves use the GPU (lib/ui/canvas.rs, docs/GPU.md "Leinwände"): a pan comes from
 /// tiles, byte for byte what the CPU draws.  A zoom step goes the CPU's way at once: it costs 6 ms, a
-/// scaled tile would be softer for a moment; jfgui_GPU_CANVAS_ZOOM=paintcraft scales them all the
-/// same, jfgui_GPU_CANVAS_CPU=paintcraft keeps all of it on the CPU
+/// scaled tile would be softer for a moment; jfgui_GPU_CANVAS_ZOOM=jfpainter scales them all the
+/// same, jfgui_GPU_CANVAS_CPU=jfpainter keeps all of it on the CPU
 const CANVAS_GPU: CanvasGpu = CanvasGpu::Pan;
 const BAND_ROWS: i32 = 32; // rows per render work item
 const BAND_MAX: i32 = 64;
@@ -867,7 +867,7 @@ fn canvas_register(p: &mut Pn, ui: &mut Ui, doc: Option<DocId>) {
     }
     let view = CanvasView { scale: v.vz as f64 / ZOOM_100 as f64, ox: v.vox as f64, oy: v.voy as f64 };
     let rect = [v.vox, v.voy, v.viw, v.vih];
-    ui.canvas_gpu(CanvasDesc { id: ID_CANVAS, name: "paintcraft", rect, view, ver, content: draw, gpu: CANVAS_GPU, exact_pan: true });
+    ui.canvas_gpu(CanvasDesc { id: ID_CANVAS, name: "jfpainter", rect, view, ver, content: draw, gpu: CANVAS_GPU, exact_pan: true });
 }
 
 // a tile: the workspace, the image through view t (no grid, no overlays: canvas_register)

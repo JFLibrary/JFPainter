@@ -92,7 +92,7 @@ gpu expect same
 gpu print
 gpu off
 # ---- the switch: a zoom from scaled tiles, then the CPU's picture
-system env jfgui_GPU_CANVAS_ZOOM paintcraft
+system env jfgui_GPU_CANVAS_ZOOM jfpainter
 gpu on
 gpu expect gpu
 gpu expect same

@@ -55,7 +55,7 @@ tool-row button or nothing has the focus (not the size box / search box).
 * Fonts: `fontdb_load(family, 400/700, italic)` (+ `font_style` FS_SHARP for Scharf);
   all text / font / glyph-cache calls on the UI thread.  The fontdb scan runs once as a
   worker job when the tool is first activated (`fontdb_load_cache` → `fontdb_scan` →
-  `fontdb_save_cache`, cache `<plat_config_dir>/PaintCraft/fontcache.fdb`, not written in
+  `fontdb_save_cache`, cache `<plat_config_dir>/JFPainter/fontcache.fdb`, not written in
   headless runs); fontdb is not touched by the UI thread before the job finished.  Until
   then (or when loading fails) the embedded JFLib Sans (Selawik; FONT_REG / FONT_BOLD,
   synthetic italic) renders – identical outlines to Selawik's TTF files.  Default family after the scan:
@@ -124,12 +124,12 @@ tool's custom preedit overlay.
 ## Tests
 
 ```powershell
-$env:PAINTCRAFT_SHAPING_FONT = 'C:\Windows\Fonts\arial.ttf'
+$env:JFPAINTER_SHAPING_FONT = 'C:\Windows\Fonts\arial.ttf'
 cargo test --locked --manifest-path lib/text_shape/Cargo.toml --target-dir build/paintcraft-next/cargo-shaping-tests
 python tools/paintcraft_text_language_check.py --out build/paintcraft-next --target both
 ```
 
-On Linux, set `PAINTCRAFT_SHAPING_FONT` to an installed font covering Latin, Arabic
+On Linux, set `JFPAINTER_SHAPING_FONT` to an installed font covering Latin, Arabic
 and Hebrew. The UI script also accepts `--font FILE`. Test fonts are copied only
 into ignored build directories and are not redistributed. Five shaping tests cover
 Arabic joining/lam-alef, mixed Hebrew/Latin bidi, combining marks, forced font

@@ -1,4 +1,4 @@
-// fxui -- PaintCraft: the generic effect dialog (agent A6), like paint.net's IndirectUI: a
+// fxui -- JFPainter: the generic effect dialog (agent A6), like paint.net's IndirectUI: a
 // modal dialog window (title = effect name) built from the effect's FXPROP list, placed
 // next to the image; the canvas behind it shows the live preview.  Sub-module of fx.s.
 //   fxui_open()      prepare the rows of the running effect (g_fx): ranges, defaults, pan

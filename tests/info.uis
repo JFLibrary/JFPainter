@@ -9,7 +9,7 @@ expect menuitem:"Forum" disabled
 click menuitem:"Info"
 expect window 24680 open
 expect window 24680 modal
-expect text:"PaintCraft" exists
+expect text:"JFPainter" exists
 expect #6403 exists
 shot build/tests/info.png window 24680
 click #6402

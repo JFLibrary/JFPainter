@@ -1,4 +1,4 @@
-// t_view -- PaintCraft: Zoomen and Ansicht verschieben (agent T1).  Sub-module of tool.rs.
+// t_view -- JFPainter: Zoomen and Ansicht verschieben (agent T1).  Sub-module of tool.rs.
 //   Zoomen                  left click = next zoom preset around the point, right click =
 //                           previous one; a left drag draws a rectangle, the release zooms so
 //                           that it fills the canvas (centred); middle drag pans (view.rs)

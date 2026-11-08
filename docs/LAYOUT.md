@@ -29,7 +29,7 @@ Gespeichert wird je Fenster `dock` (0 / 1 / 2), bei 1 `ax dx ay dy`, bei 2 `x y`
 
 ## Icons (`src/pn_icons.s`, `src/icons_gen.s`)
 
-PaintCraft zeichnet 38 Icons (Symbolleiste, Werkzeugfenster, Fensterschalter, Menüs) farbig als
+JFPainter zeichnet 38 Icons (Symbolleiste, Werkzeugfenster, Fensterschalter, Menüs) farbig als
 Vektor-Schichten auf einem 16er-Raster statt der einfarbigen Glyphen des Stils. Die Daten erzeugt
 `python tools/gen_pn_icons.py` (Formen, Farben; Farbe 0 = Textfarbe, damit Umrisse in hell und
 dunkel passen). Gezeichnet wird über den Bibliotheks-Haken `ui_icon_hook` zur Renderzeit, nur in

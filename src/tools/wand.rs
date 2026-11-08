@@ -1,4 +1,4 @@
-// t_wand -- PaintCraft: Zauberstab (magic wand, agent T2).  Sub-module of sel.rs.
+// t_wand -- JFPainter: Zauberstab (magic wand, agent T2).  Sub-module of sel.rs.
 //                                              [apps/PaintCraft/src/t_wand.s]
 //
 // A click selects the pixels of similar colour around the clicked one: flood_fill_mask with

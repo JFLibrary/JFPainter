@@ -1,4 +1,4 @@
-// wnd_dock -- PaintCraft: places the four tool windows (Werkzeuge, Verlauf, Ebenen, Farben)
+// wnd_dock -- JFPainter: places the four tool windows (Werkzeuge, Verlauf, Ebenen, Farben)
 // inside the main window, every frame, so they follow moves and resizes of the main window.
 //                                              [apps/PaintCraft/src/wnd_dock.s]
 //

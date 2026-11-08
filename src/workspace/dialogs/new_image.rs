@@ -1,4 +1,4 @@
-// dlg_new -- PaintCraft: "Neu" (Datei > Neu…, Strg+N) as a modal dialog window like
+// dlg_new -- JFPainter: "Neu" (Datei > Neu…, Strg+N) as a modal dialog window like
 // paint.net 5: "Neue Größe: n MB", Seitenverhältnis beibehalten, Pixelgröße (Breite, Höhe,
 // Pixeldichte in Pixel/in or Pixel/cm), Druckgröße (Breite, Höhe in Zoll or Zentimeter).
 // Starts with the size of an image on the clipboard, else the size used last (800 x 600,

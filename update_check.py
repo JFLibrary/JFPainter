@@ -11,18 +11,18 @@ try:
             releases = json.load(f)
     else:
         req = urllib.request.Request(
-            "https://api.github.com/repos/JFLibrary/JFLib/releases?per_page=100",
-            headers={"User-Agent": "PaintCraft-update-check", "Accept": "application/vnd.github+json"})
+            "https://api.github.com/repos/JFLibrary/JFPainter/releases?per_page=100",
+            headers={"User-Agent": "JFPainter-update-check", "Accept": "application/vnd.github+json"})
         with urllib.request.urlopen(req, timeout=20) as response:
             payload = response.read(2_000_001)
         if len(payload) > 2_000_000:
             raise ValueError("Antwort zu gross")
         releases = json.loads(payload)
     def version(text):
-        match = re.search(r"(?i)(?:paintcraft[- _v]*)?(\d+(?:\.\d+){1,3})", text)
+        match = re.search(r"(?i)(?:jfpainter[- _v]*)?(\d+(?:\.\d+){1,3})", text)
         return tuple(map(int, match[1].split("."))) if match else ()
-    # The repository contains multiple apps: only tags that start with "PaintCraft" count.
-    own = re.compile(r"(?i)^\s*paintcraft[-_ ]*v?(\d+(?:\.\d+){1,3})")
+    # The release tags: "v1.2.3" or "JFPainter-v1.2.3" (as in the JFLib repository, which had several apps).
+    own = re.compile(r"(?i)^\s*(?:jfpainter[-_ ]*)?v?(\d+(?:\.\d+){1,3})")
     candidates = []
     for release in releases:
         if release.get("draft") or (release.get("prerelease") and not beta):
@@ -32,12 +32,12 @@ try:
         if match:
             candidates.append((tuple(map(int, match[1].split("."))), tag))
     if not candidates:
-        message = "Keine passende PaintCraft-Veroeffentlichung gefunden."
+        message = "Keine passende JFPainter-Veroeffentlichung gefunden."
     else:
         newest, tag = max(candidates)
         pad = lambda v: v + (0,) * (4 - len(v))
-        message = ("Neue PaintCraft-Version verfuegbar: " + tag if pad(newest) > pad(version(current))
-                   else "PaintCraft ist aktuell (" + current + ").")
+        message = ("Neue JFPainter-Version verfuegbar: " + tag if pad(newest) > pad(version(current))
+                   else "JFPainter ist aktuell (" + current + ").")
     sys.stdout.buffer.write(message.encode("utf-8"))
 except Exception as error:
     sys.stderr.buffer.write(("Updatepruefung fehlgeschlagen: " + str(error)).encode("utf-8"))

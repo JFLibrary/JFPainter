@@ -1,4 +1,4 @@
-# cursors.uis -- PaintCraft's own pointer cursors (cursors.s): every crosshair / arrow tool shows
+# cursors.uis -- JFPainter's own pointer cursors (cursors.s): every crosshair / arrow tool shows
 # its cursor (CUR_CUSTOM + ui_cursor_custom: crosshair + tool icon), Text the I-beam,
 # Ansicht verschieben the hand, the move tools the rotate cursor outside the selection;
 # cmd 910 renders all cursors at 100 / 150 / 200 % into build/tests/cursors.png.

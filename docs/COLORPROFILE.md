@@ -1,4 +1,4 @@
-# Farbprofil / Farbmanagement (PaintCraft, agent I1, plan M8, spec 2.12)
+# Farbprofil / Farbmanagement (JFPainter, agent I1, plan M8, spec 2.12)
 
 Module `src/colormgmt.s`; library: `legacy/ASMLIB/docs/modules/COLOR_MANAGEMENT.md`.
 
