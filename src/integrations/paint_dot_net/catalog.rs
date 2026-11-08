@@ -1,7 +1,9 @@
 //! Discovery and codec adapters for the optional original Paint.NET DLL host.
 //! Native PNAPI DLLs and managed assemblies may share Effects/FileTypes folders.
 
-use jflib::{gfx, img_core, plat, rt, ui};
+use jflib::{plat, rt, ui};
+#[cfg(any(windows, target_os = "linux"))]
+use jflib::{gfx, img_core};
 
 use crate::app::Pn;
 use alloc::{format, string::String, vec::Vec};
