@@ -14,9 +14,10 @@
 //   chrome_statusbar()             tool hint | selection, size, cursor | units | zoom
 //   PN_ZOOM_PRESETS                zoom presets in 1/100 % (descending, ZOOM_PRESETS_N)
 
-use jflib::ui;
+use jflib::{gfx, img_core, ui};
 
 use alloc::format;
+use alloc::rc::Rc;
 use alloc::string::String;
 use alloc::vec::Vec;
 
@@ -79,6 +80,17 @@ static HELP_ROWS: [u32; 12] = [
     CMD_HELP_ABOUT,
 ];
 static UNITS_LIST: [&str; 3] = ["Pixel", "Zoll", "Zentimeter"];
+/// the app logo in the title row: 20 DIP at 100 to 300 % scale, each drawn 1:1 (made from
+/// res/logo/jfpainter-small.svg up to 40 px and res/logo/jfpainter.svg above)
+static LOGO_PNG: [(i32, &[u8]); 7] = [
+    (20, include_bytes!("../../resources/logo/titlebar-20.png")),
+    (25, include_bytes!("../../resources/logo/titlebar-25.png")),
+    (30, include_bytes!("../../resources/logo/titlebar-30.png")),
+    (35, include_bytes!("../../resources/logo/titlebar-35.png")),
+    (40, include_bytes!("../../resources/logo/titlebar-40.png")),
+    (50, include_bytes!("../../resources/logo/titlebar-50.png")),
+    (60, include_bytes!("../../resources/logo/titlebar-60.png")),
+];
 
 /// the state of chrome.s
 pub(crate) struct Chrome {
@@ -91,6 +103,8 @@ pub(crate) struct Chrome {
     sb_zslider: i32,
     sb_ulast: i32,
     sb_zlast: i32,
+    /// LOGO_PNG decoded on first use: (side in px, picture); None = not tried yet
+    logo: Option<Vec<(i32, Rc<gfx::Surface>)>>,
 }
 
 impl Default for Chrome {
@@ -103,6 +117,7 @@ impl Default for Chrome {
             sb_zslider: 0,
             sb_ulast: 0,
             sb_zlast: 0,
+            logo: None,
         }
     }
 }
@@ -211,7 +226,7 @@ fn cmd_icon(ui: &Ui, id: u32) -> u32 {
 pub(crate) fn chrome_titlebar(p: &mut Pn, ui: &mut Ui) {
     ui.next_flags(ST_LARGE);
     ui.titlebar_begin_opt(None, 0); // no title text (paint.net shows the images)
-    app_icon(ui);
+    app_icon(p, ui);
     ui.spacer(6);
     ui.menubar(None);
     ui.spacer(12);
@@ -233,11 +248,22 @@ pub(crate) fn chrome_titlebar(p: &mut Pn, ui: &mut Ui) {
     ui.titlebar_end();
 }
 
-// app_icon() -- 20 DIP rounded square in the accent colour with a white brush
-fn app_icon(ui: &mut Ui) {
+// app_icon() -- the app logo, 20 DIP: the largest LOGO_PNG picture that fits, 1:1 and centred
+// (below 100 % the smallest, scaled); without a picture the accent square with a white brush
+fn app_icon(p: &mut Pn, ui: &mut Ui) {
     ui.next_size(20, 20);
     ui.box_begin(ID_APP_ICON, BOX_H | BOX_FIXED, 0);
     let r = ui.box_rect();
+    let logo = p.chrome.logo.get_or_insert_with(|| {
+        LOGO_PNG.iter().filter_map(|&(n, png)| img_core::io::decode(png).ok().map(|sf| (n, Rc::new(sf)))).collect()
+    });
+    let side = r[2].min(r[3]);
+    if let Some((n, sf)) = logo.iter().rev().find(|(n, _)| *n <= side).or(logo.first()) {
+        let n = (*n).min(side);
+        ui.draw_image(sf, 1, r[0] + (r[2] - n) / 2, r[1] + (r[3] - n) / 2, n, n);
+        ui.box_end();
+        return;
+    }
     let c = ui.color(T_ACCENT);
     ui.draw_color(c);
     let rr = ui.dp(5);

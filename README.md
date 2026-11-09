@@ -1,3 +1,5 @@
+<img src="res/logo/jfpainter.svg" alt="" width="96">
+
 # JFPainter
 
 JFPainter is a raster graphics editor inspired by paint.net, written in Rust with
