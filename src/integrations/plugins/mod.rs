@@ -1,11 +1,12 @@
-//! Platform-selected native plugin implementation and the fallback of the browser and Android
-//! (the plugin ABI is x86-64 "win64": native.rs).
-#[cfg(not(any(target_arch = "wasm32", target_os = "android")))]
+//! Platform-selected native plugin implementation and the fallback without native plugins (the
+//! plugin ABI is x86-64 "win64": native.rs runs on x86-64 Windows and Linux; the browser,
+//! Android, macOS and ARM64 take web.rs: the built-in effects and codecs only).
+#[cfg(all(target_arch = "x86_64", any(windows, target_os = "linux")))]
 mod native;
-#[cfg(any(target_arch = "wasm32", target_os = "android"))]
+#[cfg(not(all(target_arch = "x86_64", any(windows, target_os = "linux"))))]
 mod web;
 
-#[cfg(not(any(target_arch = "wasm32", target_os = "android")))]
+#[cfg(all(target_arch = "x86_64", any(windows, target_os = "linux")))]
 pub(crate) use native::*;
-#[cfg(any(target_arch = "wasm32", target_os = "android"))]
+#[cfg(not(all(target_arch = "x86_64", any(windows, target_os = "linux"))))]
 pub(crate) use web::*;

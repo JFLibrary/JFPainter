@@ -1,4 +1,5 @@
 #!args --plugins=@ptest --open tests/fixtures/p1_plugin.png
+#!only windows linux   # native plugins: the x86-64 "win64" ABI (cargo jflib test skips the script elsewhere)
 # plugins_crash.uis -- crash protection (agent P1): the test plugin "Absturz-Test" writes to
 # address 0 in render, "Absturz-Test (parallel)" divides by zero inside a PNAPI parallel_for
 # item on a worker thread.  Each fault is caught, the plugin disabled (PS_CRASHED, where / kind

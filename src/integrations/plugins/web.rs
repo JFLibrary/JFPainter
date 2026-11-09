@@ -1,5 +1,6 @@
-// Native DLL/SO plugins cannot be loaded by a browser. Built-in effects and codecs
-// still register through their ordinary library entrypoints and keep their ordering.
+// Without native plugins: the browser and Android cannot load DLL/SO plugins, and their ABI is x86-64
+// "win64" (macOS and ARM64 have none yet). Built-in effects and codecs still register through their
+// ordinary library entrypoints and keep their ordering.
 
 use jflib::{img_all, ui};
 
@@ -17,14 +18,19 @@ pub(crate) fn plug_init(_p: &mut Pn, _ui: &mut Ui) {
     img_all::use_all_codecs();
 }
 pub(crate) fn plug_states(_p: &mut Pn, ui: &mut Ui) {
-    pn_cmd_set(ui, CMD_FX_PLUGIN_ERRORS, if cfg!(target_os = "android") { CF_HIDDEN } else { CF_DISABLED });
+    // the browser shows the row greyed; elsewhere it stays hidden, as the native host's without errors
+    pn_cmd_set(ui, CMD_FX_PLUGIN_ERRORS, if cfg!(target_arch = "wasm32") { CF_DISABLED } else { CF_HIDDEN });
 }
 pub(crate) fn plug_frame(_p: &mut Pn, ui: &mut Ui) {
     ui.last_reset();
     ui.sem(
         K_TEXT,
         ID_PLUG_FIRST,
-        Some("Native DLL-/SO-Plugins sind im Browser nicht verfügbar."),
+        Some(if cfg!(target_arch = "wasm32") {
+            "Native DLL-/SO-Plugins sind im Browser nicht verfügbar."
+        } else {
+            "Native Plugins gibt es für dieses System noch nicht."
+        }),
         0,
     );
 }

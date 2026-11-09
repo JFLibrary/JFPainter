@@ -1,4 +1,5 @@
 #!args --plugins=@rsplug --open plugins/tests/rsdemo.png
+#!only windows linux   # native plugins: the x86-64 "win64" ABI (cargo jflib test skips the script elsewhere)
 # prepcheck.uis -- the two-register return of FXD_PREPARE (rax = aux | 0, edx = error) through
 # the test plugin plugins/prepcheck: an aux, no aux, an error (ERR_LIMIT).
 # Expected hashes: python plugins/tests/rsdemo_model.py.  Hooks: see rsdemo.uis.

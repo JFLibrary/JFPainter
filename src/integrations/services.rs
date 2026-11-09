@@ -142,11 +142,11 @@ pub(crate) fn frame(p: &mut Pn, ui: &mut Ui) {
     }
     ui.window_end();
 }
-#[cfg(not(any(windows, target_os = "linux")))]
+#[cfg(not(any(windows, target_os = "linux", target_os = "macos")))]
 fn run(_scan: bool, _beta: bool, _fixture: Option<&str>, _job: &Job) -> Result<Vec<u8>, String> {
     Err(String::from("Systemdienste sind in der Desktop-Version verfügbar.")) // i18n
 }
-#[cfg(any(windows, target_os = "linux"))]
+#[cfg(any(windows, target_os = "linux", target_os = "macos"))]
 fn run(scan: bool, beta: bool, fixture: Option<&str>, job: &Job) -> Result<Vec<u8>, String> {
     if scan {
         if let Some(path) = fixture {

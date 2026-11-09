@@ -402,6 +402,7 @@ Windows-Tinte	Windows Ink	Windows Ink
 Damit werten Stifte und Grafiktabletts den Andruck aus und werden mit hoher Rate abgetastet. Macht ein Gerät Probleme, hilft es oft, die Option auszuschalten.	With it, pens and graphics tablets report pressure and are sampled at a high rate. If a device has problems, turning the option off often helps.	Avec cette option, les stylets et tablettes graphiques transmettent la pression et sont échantillonnés à haute fréquence. Si un périphérique pose problème, désactiver l’option aide souvent.
 Unten stehen die Angaben zur Diagnose.	The diagnostic details are below.	Les informations de diagnostic figurent ci-dessous.
 Native DLL-/SO-Plugins sind im Browser nicht verfügbar.	Native DLL/SO plugins are not available in the browser.	Les plugins natifs DLL/SO ne sont pas disponibles dans le navigateur.
+Native Plugins gibt es für dieses System noch nicht.	Native plugins are not available for this system yet.	Les plugins natifs ne sont pas encore disponibles pour ce système.
 Integrierte Effekte, Dateiformate und Formen sind weiterhin verfügbar.	Built-in effects, file formats and shapes remain available.	Les effets, formats de fichier et formes intégrés restent disponibles.
 Alle Plugins wurden fehlerfrei geladen.	All plugins loaded without errors.	Tous les plugins ont été chargés sans erreur.
 Diese Plugins ließen sich nicht laden oder wurden nach einem Fehler abgeschaltet:	These plugins could not be loaded or were turned off after an error:	Ces plugins n’ont pas pu être chargés ou ont été désactivés après une erreur :
