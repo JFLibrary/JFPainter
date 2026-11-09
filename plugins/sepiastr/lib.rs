@@ -1,7 +1,7 @@
 // sepiastr -- example adjustment plugin "Sepia-Stärke" in Rust
 //                                                 [apps/PaintCraft/plugins/sepiastr/sepiastr.s]
 //
-//   python build_rs.py plugin sepiastr  -> build/<target>/plugins/sepiastr.dll / .so
+//   python tools/plugins.py  -> plugins/target/<triple>/release/sepiastr.dll / libsepiastr.so
 //                                             (copy it into <JFPainter folder>/Effects)
 //
 // One adjustment (Korrekturen menu, FXF_ADJ) with an integer property "Stärke" 0..100 %:

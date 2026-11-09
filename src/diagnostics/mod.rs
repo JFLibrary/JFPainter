@@ -119,7 +119,7 @@ pub(crate) fn diag_hook(_p: &Pn) -> Option<Box<dyn CompHook + '_>> {
 //   910 -              every JFPainter cursor at 100 / 150 / 200 % -> build/tests/cursors.png
 //                      (cursors.rs pn_cursor_shot); #9900 text "ok" / "err"
 //   911 -              crash now (crash.rs crash_test) -- with --crash-dir DIR the protocol goes
-//                      there (tools/pn_crash_check.py)
+//                      there (tools/crash_check.py)
 // Hidden records (refreshed every frame; `expect #id value N` / `text "..."`):
 //   9900 text last probe            9901 value documents         9902 value active index
 //   9903 value layers               9904 value current layer     9905 value modified (0 / 1)

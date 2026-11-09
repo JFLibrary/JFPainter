@@ -1,6 +1,6 @@
 # v5 effects of pdn-host/tests/EffectFixture.cs through Effekte > Paint.NET-Plugins.
 # The runner names the fixture folder: --pdn-plugins <root> --pdn-isolated --pdn-defaults
-# (tools/paintcraft_manual_check.py --pdn-host). The DLL lies in a subfolder of Effects.
+# (tools/manual_check.py --pdn-host). The DLL lies in a subfolder of Effects.
 # Every effect starts a process: on a busy machine that outlasts sync's default 10 seconds.
 size 1280 800
 theme light

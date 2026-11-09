@@ -190,6 +190,16 @@ cargo jflib test             # every tests/*.uis
 python tools/linux_test.py   # on Windows: the same scripts on the Linux program, through WSL
 ```
 
+Deeper checks of single areas are Python scripts in `tools/` (`--target win|linux|both`; each
+builds the program first unless `--no-build`, results go to `build/`): `plugin_check.py`
+(plugins, loader fuzz), `crash_check.py` (crash reports), `settings_check.py`, `clip_check.py`,
+`print_check.py`, `psd_check.py`, `manual_check.py`, `remaining_check.py`,
+`text_language_check.py`, `brush_preset_check.py`, `gradient_tool_check.py`,
+`pdn_watchdog_check.py`; `creative_check.py` needs G'MIC-Qt, `wine_check.py` a Wine setup,
+`touchcheck.py` the real desktop. `tests/*.py` and `tests/*.mjs` (browser, Playwright) check
+files, recent files, security and the WebAssembly compute modes. `tools/jfp.py` holds what
+they share.
+
 ### Release builds, styles, and packages
 
 ```sh

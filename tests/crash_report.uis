@@ -4,7 +4,7 @@
 # ausblenden (the protocol in a read-only text box), In die Zwischenablage kopieren,
 # Ordner der Absturzberichte öffnen, JFPainter neu starten, Beenden (headless runs only record the
 # last three: probe #6720 value CRF_* = 1 restart, 2 quit, 4 copied, 8 folder).  No other module
-# runs (no image, no menus).  The crash itself: tools/pn_crash_check.py.
+# runs (no image, no menus).  The crash itself: tools/crash_check.py.
 size 680 520
 theme light
 expect text:"JFPainter wurde unerwartet beendet" exists

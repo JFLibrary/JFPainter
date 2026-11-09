@@ -36,10 +36,11 @@ to `Shapes`. Restart JFPainter afterwards, matching the
 
 ## Build
 
-`python build_rs.py app JFPainter --target win` and `tools/package.py` build the helper
-into `<out>/win/pdn-host` when `dotnet` (the SDK) and Paint.NET exist on the machine;
-otherwise they print a note and go on without it. `PaintDotNetDir` names another
-Paint.NET folder. Intermediate SDK files go under the root's `build/paintcraft-pdn-host`.
+`python tools/pdn_host.py` builds the helper into `target/debug/pdn-host` (`--release`:
+`target/release/pdn-host`, `--out build/pdn-host` for the packages, which take it from there:
+`PACKAGE` `win_files`) when `dotnet` (the SDK) and Paint.NET exist on the machine; otherwise it
+says so and the program goes without it. `PaintDotNetDir` names another Paint.NET folder.
+Intermediate SDK files go under `pdn-host/bin` and `pdn-host/obj`.
 Update bundles carry it with the program (`tools/package.py`); a setup built on a machine
 without Paint.NET ships no helper. Linux packages never contain it.
 
@@ -275,7 +276,7 @@ The native G’MIC integration works independently of this Windows host; see
 ## Tests and protocol
 
 ```powershell
-python tools/paintcraft_manual_check.py --out build/paintcraft-parity --target win --pdn-host
+python tools/manual_check.py --out build/checks --target win --pdn-host
 ```
 
 This builds `tests/EffectFixture.csproj` and `tests/Fixture.csproj` itself and runs
@@ -307,13 +308,13 @@ write. Codec calls have a two-minute limit and honour save/decode cancellation.
 Additional checks:
 
 ```powershell
-python tools/paintcraft_remaining_check.py --out build/paintcraft-parity --target both --plugins
+python tools/remaining_check.py --out build/checks --target both --plugins
 ```
 
 The Linux suite takes explicit paths and never downloads dependencies:
 
 ```sh
-python3 tools/paintcraft_wine_check.py --out build/paintcraft-next \
+python3 tools/wine_check.py --out build/checks \
   --wine /usr/bin/wine --prefix "$HOME/.wine-paintcraft" \
   --host "$HOME/opt/paintnet-wine/JFPainter.PdnHost.exe" \
   --paintnet "$HOME/opt/paintnet-wine" \
@@ -322,8 +323,8 @@ python3 tools/paintcraft_wine_check.py --out build/paintcraft-next \
 ```
 
 Build the FileType fixture with `dotnet build tests/Fixture.csproj` from this
-directory. `tools/paintcraft_pdn_watchdog_check.py --help` describes the separate
+directory. `tools/pdn_watchdog_check.py --help` describes the separate
 heartbeat test against its blocking decoder. `tests/PresetsFixture.csproj`
 exports JSON and DataContract XML with an original Dynamic Draw DLL's own types;
-the optional `--original-plugin` argument to `tools/paintcraft_brush_preset_check.py`
+the optional `--original-plugin` argument to `tools/brush_preset_check.py`
 then imports and paints with both files on Windows and Linux.

@@ -7,7 +7,7 @@ Spec §2.6 (Gradienten), DRAW-009/010/011/012/013/014.  One file: `src/t_gradien
 ```
 python build.py app JFPainter --target both --out build/t3
 build/t3/win/JFPainter.exe --script apps/PaintCraft/tests/tools_gradient.uis [--verify-dirty]
-python tools/pn_gradient_check.py --target both --out build/t3      # bit-exact vs. Python
+python tools/gradient_tool_check.py --target both --out build/t3      # bit-exact vs. Python
 ```
 
 ## 1. Behaviour (paint.net 5.1)
@@ -70,7 +70,7 @@ Records (emitted in the tool row, i.e. while G is the current tool): `#524288` t
 3 end, 4 new).
 
 Tests: `tests/tools_gradient.uis` (interaction; Windows + Linux, also `--verify-dirty`);
-`tools/pn_gradient_check.py` (85 cases on a 200 × 150 RGBA fixture: 7 types × 3 repeats ×
+`tools/gradient_tool_check.py` (85 cases on a 200 × 150 RGBA fixture: 7 types × 3 repeats ×
 colour / transparency / Überschreiben with alpha colours, AA, right button, degenerate; plus
 1100 × 1200 with default threads and `--threads 1`; FNV-1a of the whole layer (hook 995)
 against the Python reference built on `tools/gradient_check.py`).

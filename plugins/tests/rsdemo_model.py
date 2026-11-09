@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""rsdemo_model.py -- the expected layer hashes of plugins/tests/rsdemo.uis, computed from the
-plugin fixture (tools/plugin_check.py) with the documented math of plugins/rsdemo (not taken
-from the app).  `python plugins/tests/rsdemo_model.py` prints them."""
+"""rsdemo_model.py -- the expected layer hashes of tests/plugins_rsdemo.uis and
+tests/plugins_prepcheck.uis, computed from the plugin fixture plugins/tests/rsdemo.png with the
+documented math of plugins/rsdemo (not taken from the app; fnv / png_bytes of
+tools/plugin_check.py).  `python plugins/tests/rsdemo_model.py` prints them."""
 import sys
 from pathlib import Path
 

@@ -1,6 +1,6 @@
 // pshapes -- example shape plugin in Rust             [apps/PaintCraft/plugins/pshapes/pshapes.s]
 //
-//   python build_rs.py plugin pshapes  -> build/<target>/plugins/pshapes.dll / .so
+//   python tools/plugins.py  -> plugins/target/<triple>/release/pshapes.dll / libpshapes.so
 //                                            (Shapes folder)
 //
 // Two custom shapes for the Formen tool, given as path data (the Geometry syntax of paint.net's

@@ -1,7 +1,9 @@
 """Small file-save regressions using ordinary files and real JFPainter binaries.
 
-Run from RustLib: python apps/PaintCraft/tests/file_save_check.py --out build/JFPainter-review/after
-No crash injection, fuzzing, links, or resource stress. Artifacts are retained.
+python tests/file_save_check.py [--target win|linux|both] [--out build/JFPainter-file-save] [--no-build]
+No crash injection, fuzzing, links, or resource stress. Artifacts are retained in OUT.
+From Windows the Linux program runs this script inside WSL (--linux-case), with its files in
+Linux's /tmp (modes and case-sensitive names need a Linux file system); they are copied to OUT.
 """
 import argparse
 import json
@@ -13,20 +15,22 @@ import subprocess
 import sys
 import tempfile
 
-ROOT = Path(__file__).resolve().parents[3]
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'tools'))
+import jfp
+
 SENTINEL = b'Existing temporary file from another save.\n'
 
 
-def native_cases(exe, base):
+def native_cases(platform, exe, base):
     base.mkdir(parents=True, exist_ok=True)
     work = Path(tempfile.mkdtemp(prefix='files-', dir=base))
-    env = dict(os.environ, JFPainter_CONFIG_DIR=str(work / 'config'))
     results = []
 
     def run(args, label):
-        p = subprocess.run([str(exe), '--no-plugins', *args], cwd=work,
-                           env=env, capture_output=True, timeout=60)
-        (work / (label + '.log')).write_bytes(p.stdout + p.stderr)
+        p = jfp.run_exe(platform, exe, ['--no-plugins', *args], timeout=60, cwd=work,
+                        env={'JFPainter_CONFIG_DIR': str(work / 'config')})
+        (work / (label + '.log')).write_text(p.stdout + p.stderr, encoding='utf-8')
         return p.returncode
 
     target = work / 'saved.png'
@@ -67,7 +71,7 @@ def native_cases(exe, base):
         results.append(dict(test='preserve-private-mode', ok=code == 0 and mode == 0o600,
                             mode=oct(mode), exit=code))
         # Distinct valid names on a case-sensitive filesystem must open distinct images.
-        fixture = ROOT / 'apps/PaintCraft/tests/fixtures/a1_rgba.png'
+        fixture = ROOT / 'tests/fixtures/a1_rgba.png'
         for name in ['Case.png', 'case.png']:
             shutil.copyfile(fixture, work / name)
         script = work / 'case.uis'
@@ -83,36 +87,40 @@ def native_cases(exe, base):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--out', required=True)
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('--target', default='both', choices=['win', 'linux', 'both'])
+    parser.add_argument('--out', default='build/JFPainter-file-save')
     parser.add_argument('--label', default='file-save-results')
-    parser.add_argument('--linux-case', action='store_true')
+    parser.add_argument('--no-build', action='store_true')
+    parser.add_argument('--linux-case', metavar='EXE', help=argparse.SUPPRESS)
     args = parser.parse_args()
     output = (ROOT / args.out).resolve()
     if args.linux_case:
         work = Path(tempfile.mkdtemp(prefix='jfgui-file-review-'))
-        rows = native_cases(output / 'linux/JFPainter', work)
+        rows = native_cases('linux', Path(args.linux_case), work)
         saved = output / 'file-save-cases' / work.name
         shutil.copytree(work, saved)
         for row in rows:
             row['artifacts'] = str(saved / Path(row['artifacts']).name)
         print(json.dumps(rows))
         return 0
-    results = native_cases(output / 'win/JFPainter.exe', output / 'file-save-cases')
-    for row in results:
-        row['platform'] = 'win'
-    def linux_path(path):
-        return subprocess.check_output(['wsl.exe', '-d', 'Ubuntu-24.04', '-e',
-                                        'wslpath', '-a', str(path)], text=True).strip()
-    command = ['wsl.exe', '-d', 'Ubuntu-24.04', '-e', 'python3', linux_path(Path(__file__).resolve()),
-               '--linux-case', '--out', linux_path(output)]
-    proc = subprocess.run(command, capture_output=True, text=True, timeout=180)
-    if proc.returncode:
-        raise RuntimeError(proc.stdout + proc.stderr)
-    linux = json.loads(proc.stdout)
-    for row in linux:
-        row['platform'] = 'linux'
-    results += linux
+    targets = jfp.targets(args.target)
+    if not args.no_build:
+        jfp.build(targets)
+    results = []
+    for target in targets:
+        if target == jfp.HOST:
+            rows = native_cases(target, jfp.exe(target), output / 'file-save-cases')
+        else:
+            command = jfp.linux_command(['python3', 'tests/file_save_check.py', '--out', jfp.wsl_path(output),
+                                         '--linux-case', jfp.wsl_path(jfp.exe('linux'))])
+            proc = subprocess.run(command, capture_output=True, text=True, timeout=180)
+            if proc.returncode:
+                raise RuntimeError(proc.stdout + proc.stderr)
+            rows = json.loads(proc.stdout)
+        for row in rows:
+            row['platform'] = target
+        results += rows
     (output / (args.label + '.json')).write_text(json.dumps(results, indent=2) + '\n', encoding='utf-8')
     for row in results:
         print(('PASS' if row['ok'] else 'FAIL'), row)

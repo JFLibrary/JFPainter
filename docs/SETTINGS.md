@@ -2,7 +2,7 @@
 
 Dateien: `src/settings.s` (Laden/Speichern), `src/dlg_settings.s` (Dialog, Modulvertrag
 `set_init/states/frame/cmd`), `inc/pn_set.inc` (IDs, Befehle, `g_st`-Layout), Tests
-`tests/settings.uis`, `tools/pn_settings_check.py`.
+`tests/settings.uis`, `tools/settings_check.py`.
 
 ## 1. Speicherort, Umleitung für Tests
 
@@ -14,7 +14,7 @@ Dateien: `src/settings.s` (Laden/Speichern), `src/dlg_settings.s` (Dialog, Modul
 | sonst (echtes Fenster) | `plat_config_dir()/JFPainter/settings.ini` (Windows `%APPDATA%/JFPainter`, Linux `$XDG_CONFIG_HOME` bzw. `~/.config/JFPainter`) |
 
 Tests übergeben immer `--config build/...`; ohne Angabe bleibt die Konfiguration des Users
-unberührt (`pn_settings_check.py nocfg` prüft, dass sie nicht entsteht).
+unberührt (`settings_check.py nocfg` prüft, dass sie nicht entsteht).
 
 Lesen: `set_init` (nach `tool_init`, vor den Werkzeugfenster-Inits) liest die Datei und wendet
 Theme, Akzent, Animationen, Farben, Palette, Ansicht, Werkzeug-Standards, zuletzt geöffnete
@@ -43,7 +43,7 @@ ignoriert); Aufzählungen nur über bekannte Namen. `version` > 1 wird gelesen w
 | JFPainter | version | 1 |
 | UI | theme, accent, animations, peninput, finger | `light`/`dark`/`system`; `RRGGBB` oder leer; 0/1; (PN1) 0/1 Stifteingabe („Windows-Tinte“, `plat_pen_enable`); 0 ein Finger auf der Leinwand malt, bis ein Stift benutzt wurde, 1 malt immer, 2 verschiebt immer ([TOUCH.md](TOUCH.md)) |
 | MainWindow | x, y, width, height, maximized | Client-Ursprung in Bildschirm-px; Client-Größe in DIP (640..16384 × 400..16384, geklemmt); normale Größe auch wenn maximiert. Nur mit echtem Fenster (headless unverändert) |
-| ToolsWindow, HistoryWindow, LayersWindow, ColorsWindow | visible, x, y (+ width, height bei Verlauf/Ebenen; expanded bei Farben) | WINRECT der wnd_*.s-Module: DIP relativ zum Client-Ursprung des Hauptfensters, ±20000 (sonst Standardplatz); Größe 120..4000 × 80..4000 |
+| ToolsWindow, HistoryWindow, LayersWindow, ColorsWindow | visible, dock, x, y bzw. ax, dx, ay, dy (+ width, height bei Verlauf/Ebenen; expanded bei Farben) | Platzierung (`src/workspace/panels/dock.rs`): `dock` 0 automatisch (Standardplatz), 1 verankert an der nächsten Kante des Hauptfensters (`ax` 0 links / 1 rechts, `ay` 0 oben / 1 unten, `dx`/`dy` Abstand in DIP), 2 frei (`x`, `y`: DIP relativ zum Client-Ursprung des Hauptfensters); Werte außerhalb ±20000 = Standardplatz; eine Datei ohne `dock` (ältere Versionen) bekommt die automatische Anordnung; Größe 120..4000 × 80..4000 |
 | Colors | primary, secondary, palette | `AARRGGBB`; Palette = bis 96 Farben, kommagetrennt (ungültige Einträge übersprungen) |
 | View | units, grid, rulers | `pixel`/`inch`/`cm`; 0/1; 0/1 |
 | Tools | default, width, hardness, spacing, antialias, blend, fill, tolerance, flood, sampling, selection_mode, selection_quality, pressure, path_smoothing | Standardwerkzeug (englischer Name, z. B. `Paintbrush`, `Zoom`) + TOOLCFG-Standards (width f64 1..2000, sonst TC_*-Bereiche aus pn_tooli.inc) |
@@ -121,13 +121,13 @@ Zeile 22: `#710 enabled` statt `disabled`.
   Threads, deaktivierte Update-Elemente, Diagnose → Zwischenablage, Schließen/Esc speichern,
   Fenster verschieben/verstecken/Größe, Farben, Palette, Ansicht, dann 850 → 852 → 851 und
   Prüfung aller Werte. Win + Linux, auch `--verify-dirty`.
-* `python tools/pn_settings_check.py [--target win|linux|both] [--out build/s1] [--window]`:
+* `python tools/settings_check.py [--target win|linux|both] [--out build/s1] [--window]`:
   echte Zwei-Prozess-Rundreise (Prozess 1 endet mit Strg+Q), Kommentar/unbekannte Abschnitte
   bleiben, zuletzt geöffnete Bilder; feindliche Datei (NaN, Überlauf, falsches Hex, 2000-Byte-
   Strings, unbekannte Namen); headless ohne Konfiguration schreibt nichts (User-Ordner wird
   geprüft); `$JFPainter_CONFIG_DIR`; `--window`: echte Fenster (Hauptfenster bei -50000 → wieder
   auf dem Monitor, Werkzeugfenster → Standardplatz, maximiert + normale Größe bleiben;
-  Linux mit `jfgui_BACKEND=x11`). Arbeitsordner `build/<out>/pn_settings_check/<target>/`.
+  Linux mit `jfgui_BACKEND=x11`). Arbeitsordner `build/<out>/settings_check/<target>/`.
 
 Proben (versteckte K_TEXT-Records, `ID_SET_PROBE` = 5900 + k):
 0 Datei (Wert 1 = Persistenz an) · 1 Anzahl geschriebener Dateien, Text ok/Fehler · 2 Datei

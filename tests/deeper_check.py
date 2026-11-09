@@ -1,10 +1,14 @@
-"""Bounded local regression checks. Run from RustLib after building JFPainter/codectest.
+"""Bounded local regression checks of JFPainter's files and settings.
 
-python apps/PaintCraft/tests/deeper_check.py codecs --out build/JFPainter-deeper
-python apps/PaintCraft/tests/deeper_check.py files --out build/JFPainter-deeper
-python apps/PaintCraft/tests/deeper_check.py settings --out build/JFPainter-deeper
-Decoder mutations run in Linux with 512 MiB address space, 20 CPU seconds and a
-30-second wall limit per batch. Seed and failing batch bytes are retained.
+python tests/deeper_check.py files [--target win|linux|both] [--out build/JFPainter-deeper] [--no-build]
+python tests/deeper_check.py settings [--target win|linux|both] [--out build/JFPainter-deeper] [--no-build]
+files: four processes write the same PNG at once (--shot), five rounds; the result is always one
+complete image, an unrelated *.tmp~ survives, no temporary file stays, a directory in the way is
+kept.  From Windows the Linux program runs this script inside WSL (--linux-child) with its files
+in Linux's /tmp; they are copied to OUT.  settings: tools/settings_check.py's malformed and env
+checks, each in a fresh folder below OUT.  Artifacts are retained.
+(In JFLib a third mode, codecs, ran the library's PDN/PNG decoder suites and mutations through
+JFLib's codectest app and tools: they test the library and stay in JFLib.)
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
@@ -12,20 +16,14 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import random
 import shutil
 import subprocess
 import sys
 import tempfile
 
-ROOT = Path(__file__).resolve().parents[3]
-SEED = 20261011
+ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
-
-
-def wsl_path(path):
-    return subprocess.check_output(['wsl.exe', '-d', 'Ubuntu-24.04', '-e',
-                                    'wslpath', '-a', str(path)], text=True).strip()
+import jfp
 
 
 def save_results(out, name, rows):
@@ -33,103 +31,7 @@ def save_results(out, name, rows):
     path.write_text(json.dumps(rows, indent=2) + '\n', encoding='utf-8')
 
 
-def codecs(out):
-    import imgtest_common as it
-    import pdn_check as pdn
-    import png_check as png
-
-    linux_exe = wsl_path(out / 'linux/codectest')
-    # Keep the corpus small; the large performance fixture is outside this run.
-    samples = out / 'pdn-fixtures'
-    samples.mkdir(exist_ok=True)
-    for p in pdn.SAMPLES.glob('*.pdn'):
-        if p.stat().st_size <= 2 * 1024 * 1024:
-            shutil.copy2(p, samples / p.name)
-    pdn.SAMPLES = samples
-
-    class BoundedRunner(it.Runner):
-        def cmd(self, args):
-            items = ['--shot', self.rel(self.work / 'unused.png'), *self.extra, *args]
-            if self.target == 'win':
-                return [str(self.exe), *items]
-            limits = ('import os,resource,sys; '
-                      'resource.setrlimit(resource.RLIMIT_AS,(536870912,536870912)); '
-                      'resource.setrlimit(resource.RLIMIT_CPU,(20,21)); '
-                      'resource.setrlimit(resource.RLIMIT_CORE,(0,0)); '
-                      'os.execv(sys.argv[1],sys.argv[1:])')
-            return ['wsl.exe', '-d', 'Ubuntu-24.04', '--cd', str(ROOT), '-e',
-                    'timeout', '--signal=KILL', '30s', 'python3', '-c', limits, linux_exe, *items]
-
-        def run(self, args, timeout=40):
-            env = dict(os.environ, JFPainter_CONFIG_DIR=str(out / 'codec-config'))
-            command = self.cmd(args)
-            try:
-                result = subprocess.run(command, cwd=ROOT, env=env, capture_output=True,
-                                        text=True, encoding='utf-8', errors='replace', timeout=40)
-            except subprocess.TimeoutExpired:
-                result = subprocess.CompletedProcess(command, -999, '', 'Batch exceeded 40-second host timeout')
-            if result.returncode:
-                failure = out / 'failures'
-                failure.mkdir(exist_ok=True)
-                source = ROOT / args[args.index('--batch') + 1]
-                shutil.copy2(source, failure / (self.target + '-' + source.name))
-                (failure / (self.target + '-' + source.stem + '.log')).write_text(
-                    result.stdout + result.stderr, encoding='utf-8')
-            return result
-
-        def batch(self, recs, crashes=None):
-            if len(recs) <= 32:
-                return super().batch(recs, crashes)
-            results = []
-            for start in range(0, len(recs), 32):
-                results.extend(super().batch(recs[start:start + 32], crashes))
-            return results
-
-    rows = []
-
-    def record(s):
-        it.report([s], s.name)
-        rows.append(dict(target=s.target, suite=s.name, passed=s.passed, failed=s.failed,
-                         seconds=round(s.dt, 3), messages=s.msgs, notes=s.notes))
-        save_results(out, 'deeper-codecs', dict(seed=SEED, suites=rows))
-        sys.stdout.flush()
-
-    for target in ['win', 'linux']:
-        runner = BoundedRunner(target, out, work_name='bounded-codecs')
-        for name in ['samples', 'roundtrip', 'flat', 'legacy', 'v3']:
-            s = getattr(pdn, 'suite_' + name)(it, runner, target)
-            s.name = 'pdn-' + name
-            record(s)
-        for n, name in enumerate(['straight', 'meta', 'apng']):
-            s = it.Suite('png-' + name, target)
-            it.run_suite(runner, s, getattr(png, 'suite_' + name)(random.Random(SEED + n)))
-            record(s)
-        if target != 'linux':
-            continue
-        mutants = pdn.nrbf_mutants
-        # Retain structural limits/references/cycles; omit the million-object and
-        # 10,000-level stress fixtures. Depth 60/64/65 still tests the depth boundary.
-        pdn.nrbf_mutants = lambda: [r for r in mutants()
-                                   if r[0] not in {'1M+1 objects', 'nesting 10000'}]
-        try:
-            s = pdn.suite_nrbf(it, runner, target)
-        finally:
-            pdn.nrbf_mutants = mutants
-        s.name = 'pdn-nrbf-bounds'
-        record(s)
-        s = pdn.suite_fuzz(it, runner, target, 200, SEED)
-        s.name = 'pdn-mutations'
-        record(s)
-        s = it.Suite('png-mutations', target)
-        recs = png.suite_fuzz(random.Random(SEED), 300)
-        for r in recs:
-            r.check = png.fuzz_check
-        it.run_suite(runner, s, recs)
-        record(s)
-    return int(any(r['failed'] for r in rows))
-
-
-def native_files(out, platform):
+def native_files(out, platform, exe):
     base = out / 'concurrent-files'
     base.mkdir(exist_ok=True)
     if platform == 'linux':
@@ -138,14 +40,13 @@ def native_files(out, platform):
     else:
         work = Path(tempfile.mkdtemp(prefix=platform + '-', dir=base))
         assert work.resolve().is_relative_to(out.resolve())
-    exe = out / platform / ('JFPainter.exe' if platform == 'win' else 'JFPainter')
     rows = []
 
     def run(path, theme, tag):
-        env = dict(os.environ, JFPainter_CONFIG_DIR=str(work / ('config-' + tag)))
-        result = subprocess.run([str(exe), '--no-plugins', '--theme', theme, '--size', '400x300',
-                                 '--shot', str(path)], cwd=work, env=env, capture_output=True, timeout=30)
-        (work / (tag + '.log')).write_bytes(result.stdout + result.stderr)
+        result = jfp.run_exe(platform, exe, ['--no-plugins', '--theme', theme, '--size', '400x300',
+                                             '--shot', str(path)], timeout=30, cwd=work,
+                             env={'JFPainter_CONFIG_DIR': str(work / ('config-' + tag))})
+        (work / (tag + '.log')).write_text(result.stdout + result.stderr, encoding='utf-8')
         return result.returncode
 
     hashes = set()
@@ -185,27 +86,33 @@ def native_files(out, platform):
     return rows
 
 
-def files(out, linux_child=False):
+def files(out, targets, linux_child=None):
     if linux_child:
-        print(json.dumps(native_files(out, 'linux')))
+        print(json.dumps(native_files(out, 'linux', linux_child)))
         return 0
-    rows = native_files(out, 'win')
-    proc = subprocess.run(['wsl.exe', '-d', 'Ubuntu-24.04', '-e', 'python3',
-                           wsl_path(Path(__file__).resolve()), 'files', '--linux-child', '--out', wsl_path(out)],
-                          capture_output=True, text=True, timeout=180)
-    if proc.returncode:
-        raise RuntimeError(proc.stdout + proc.stderr)
-    rows += json.loads(proc.stdout)
+    rows = []
+    for target in targets:
+        if target == jfp.HOST:
+            rows += native_files(out, target, jfp.exe(target))
+            continue
+        # Linux from Windows: this script inside WSL, so that its files are on a Linux file system
+        command = jfp.linux_command(['python3', 'tests/deeper_check.py', 'files', '--out', jfp.wsl_path(out),
+                                     '--linux-child', jfp.wsl_path(jfp.exe('linux'))])
+        proc = subprocess.run(command, capture_output=True, text=True, timeout=180)
+        if proc.returncode:
+            raise RuntimeError(proc.stdout + proc.stderr)
+        rows += json.loads(proc.stdout)
     save_results(out, 'deeper-files', rows)
     for row in rows:
         print(('PASS' if row['ok'] else 'FAIL'), row)
     return int(any(not r['ok'] for r in rows))
 
 
-def settings(out):
-    import pn_settings_check as check
+def settings(out, targets):
+    import settings_check as check
+    os.environ.pop('JFPainter_CONFIG_DIR', None)  # (jfp.run_exe passes the environment on)
     rows = []
-    for target in ['win', 'linux']:
+    for target in targets:
         for name in ['malformed', 'env']:
             runner = check.Runner(target, out)
             runner.base = Path(tempfile.mkdtemp(prefix=f'settings-{target}-{name}-', dir=out))
@@ -220,18 +127,21 @@ def settings(out):
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=['codecs', 'files', 'settings'])
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('mode', choices=['files', 'settings'])
+    parser.add_argument('--target', default='both', choices=['win', 'linux', 'both'])
     parser.add_argument('--out', default='build/JFPainter-deeper')
-    parser.add_argument('--linux-child', action='store_true')
+    parser.add_argument('--no-build', action='store_true')
+    parser.add_argument('--linux-child', metavar='EXE', help=argparse.SUPPRESS)
     args = parser.parse_args()
     out = (ROOT / args.out).resolve()
     out.mkdir(parents=True, exist_ok=True)
-    if args.mode == 'codecs':
-        return codecs(out)
+    targets = jfp.targets(args.target)
+    if not (args.no_build or args.linux_child):
+        jfp.build(targets)
     if args.mode == 'settings':
-        return settings(out)
-    return files(out, args.linux_child)
+        return settings(out, targets)
+    return files(out, targets, args.linux_child and Path(args.linux_child))
 
 
 if __name__ == '__main__':

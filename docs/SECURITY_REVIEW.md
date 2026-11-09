@@ -127,7 +127,7 @@ Aus dem vorherigen Chat übernommene, protokollierte Ergebnisse:
 - Entwicklungs- und Release-Builds: Windows, Linux und WASM erfolgreich.
 - 122 UI-Läufe nach Trennung der Konfigurationen erfolgreich. Diese historische Zahl
   umfasst auch Tests, die in dieser Fortsetzung nicht mehr ausgeführt werden.
-- `pn_gradient_check` bestanden. `pn_settings_check` meldete 12 Abweichungen bei Fenster-
+- `gradient_tool_check` bestanden. `settings_check` meldete 12 Abweichungen bei Fenster-
   geometrie und Testumgebung; diese sind kein belastbar bestätigter Produktbefund.
 - Die frühere Crashprüfung wurde unterbrochen; kein Bestehensnachweis.
 
@@ -301,13 +301,13 @@ Testlauf; der Browserhost lauscht nur auf `127.0.0.1`.
 Es gab **keinen neuen bestätigten Produktfehler** in diesen Läufen. Zwei bestehende
 Prüfwerkzeuge enthielten Erwartungen, die nicht mehr zum aktuellen Verhalten passten:
 
-1. `tools/pn_settings_check.py` verlangte nach dem Bereinigen ungültiger Positionen
+1. `tools/settings_check.py` verlangte nach dem Bereinigen ungültiger Positionen
    weiterhin absolute `x`-Koordinaten. `settings.rs::st_windows_load/st_windows_save`
    verwendet ohne expliziten Platzierungsmodus aber die automatische Anordnung
    (`dock=0`) und entfernt `x/y` absichtlich. Die Prüfung verlangt nun bei diesem Modus
    das Entfernen beider Koordinaten; ältere Referenzbuilds ohne `dock` behalten ihre
    bisherige Erwartung. Die vier Szenarien wurden anschließend neu ausgeführt.
-2. `tools/pn_crash_check.py` erwartete ausschließlich `JFPainter::diag::…`, während
+2. `tools/crash_check.py` erwartete ausschließlich `JFPainter::diag::…`, während
    `build_rs.py` den Rust-Crate-Namen zu `JFPainter` normalisiert. Die Prüfung akzeptiert
    beide historischen Schreibweisen, verlangt weiterhin exakt dieselbe Funktionsfolge
    und prüft weiterhin jede Rücksprungadresse gegen den tatsächlichen Aufruf im Binary.

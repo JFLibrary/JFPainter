@@ -1,7 +1,7 @@
 // swapchan -- example effect plugin "Kanäle tauschen" in Rust
 //                                                 [apps/PaintCraft/plugins/swapchan/swapchan.s]
 //
-//   python build_rs.py plugin swapchan [--target win|linux] [--out build/x]
+//   python tools/plugins.py [--target x86_64-unknown-linux-gnu]
 //   -> build/x/win/plugins/swapchan.dll, build/x/linux/plugins/swapchan.so; copy it into
 //      <JFPainter folder>/Effects
 //

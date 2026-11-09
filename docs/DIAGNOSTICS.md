@@ -49,7 +49,7 @@ in diesem Nachbau deaktiviert (die Bibliothek hätte `ui_open_url`).
 
 * `tests/crash_report.uis` (Berichtsfenster mit `tests/fixtures/crash_sample.txt`),
   `tests/info.uis`.
-* `python tools/pn_crash_check.py [--target win|linux|both] [--out build/x]`: `cmd 911`
+* `python tools/crash_check.py [--target win|linux|both] [--out build/x]`: `cmd 911`
   (crash_test, Schreibzugriff auf 0x10) mit `--crash-dir`: Exit-Code 3, genau ein Protokoll mit
   Datum im Namen, Ausnahme / RAX / Register / Diagnose, Aufrufkette per `.map` aufgelöst
   `crash_test <- a1_diag_cmd <- pn_cmd <- … <- plat_entry / _start`, dann `--crash-report` mit

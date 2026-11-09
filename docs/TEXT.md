@@ -1,7 +1,7 @@
 # T5 – Text tool (T)
 
 `src/tools/text.rs` (TOOL_TEXT, spec TEXT-001..020), tests `tests/tools_text.uis`,
-`tests/manual_parity.uis` and `tools/paintcraft_manual_check.py`.
+`tests/manual_parity.uis` and `tools/manual_check.py`.
 
 ## Behaviour (paint.net 5.1)
 * Left click on the canvas places the text cursor; the anchor is the top of the first line
@@ -125,9 +125,10 @@ tool's custom preedit overlay.
 
 ```powershell
 $env:JFPAINTER_SHAPING_FONT = 'C:\Windows\Fonts\arial.ttf'
-cargo test --locked --manifest-path lib/text_shape/Cargo.toml --target-dir build/paintcraft-next/cargo-shaping-tests
-python tools/paintcraft_text_language_check.py --out build/paintcraft-next --target both
+python tools/text_language_check.py --out build/checks --target both
 ```
+
+The shaping tests of `lib/text_shape` belong to JFLib and run in a JFLib checkout.
 
 On Linux, set `JFPAINTER_SHAPING_FONT` to an installed font covering Latin, Arabic
 and Hebrew. The UI script also accepts `--font FILE`. Test fonts are copied only

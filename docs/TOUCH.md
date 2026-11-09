@@ -83,7 +83,7 @@ Tablet-Verhalten von Windows und die Bildschirmtastatur.
 Bauen und starten, im Ordner des Repositories:
 
 ```
-python build_rs.py run JFPainter
+cargo run
 ```
 
 Mit dem Finger, ohne Stift:

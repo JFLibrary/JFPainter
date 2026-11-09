@@ -130,7 +130,7 @@ G’MIC arbeitet über seine native Standalone-Anwendung und braucht diese Brüc
 | G’MIC/Bildpinsel | 12 Läufe mit G’MIC-Qt Standalone 4.0.5: Bildspitze/Drehung/Undo, echter Filter, Auswahlbegrenzung, mehrere Ebenen, Prozessabbruch und fehlendes Programm. |
 | Text/Sprache | 16 UI-Läufe: Englisch/Französisch und Persistenz, Preedit, 200-Zeichen-IME-Bestätigung, Bidi-Auswahl, Zwischenablage und Undo/Redo. |
 | Shaping-Bibliothek | Fünf Tests: arabische Verbindungen/Lam-Alef, gemischtes Hebräisch/Latein, kombinierende Akzente, erzwungener Font-Fallback und ungültige Schriftdatei. |
-| Vorherige Handbuch-Ergänzungen | 18 Läufe aus `paintcraft_manual_check.py` und zehn aus `paintcraft_remaining_check.py` ohne optionale Windows-Plugin-Fixtures erneut bestanden. |
+| Vorherige Handbuch-Ergänzungen | 18 Läufe aus `manual_check.py` und zehn aus `remaining_check.py` ohne optionale Windows-Plugin-Fixtures erneut bestanden. |
 
 Windows- und Linux-Entwicklungs-/Release-Builds sowie der skalare Web-Build sind
 erfolgreich. Zusätzlich bestanden zehn Tests direkt mit den Release-Programmen:
@@ -146,17 +146,16 @@ noch einmal zu den aktuellen Zahlen addiert. Der Plugin-Host selbst wurde in die
 Erweiterung nicht verändert. Echte Scanner, echte IME-Kandidatensitzungen, beliebige
 Photoshop-Dateien und sämtliche fremden G’MIC-Dialoge sind damit nicht abgenommen.
 
-Reproduktion im Repository-Root (Python 3, Rust/Cargo und LLVM/LLD):
+Reproduktion im Repository-Root (Python 3, Rust/Cargo und `cargo jflib`; die Prüfskripte bauen
+JFPainter selbst, unter Windows läuft Linux über WSL):
 
 ```text
-python build_rs.py app JFPainter --target both --out build/paintcraft-next -j 6
-python build_rs.py app JFPainter --target both --release --out build/paintcraft-next-release -j 6
-python build_rs.py app JFPainter --target web --web-mode scalar --out build/paintcraft-next-web -j 4
-python tools/paintcraft_psd_check.py --out build/paintcraft-next --target both
-python tools/paintcraft_creative_check.py --out build/paintcraft-next --target both --gmic
-python tools/paintcraft_text_language_check.py --out build/paintcraft-next --target both
-python tools/paintcraft_manual_check.py --out build/paintcraft-next --target both
-python tools/paintcraft_remaining_check.py --out build/paintcraft-next --target both
+cargo jflib web --modes scalar
+python tools/psd_check.py --out build/checks --target both
+python tools/creative_check.py --out build/checks --target both --gmic
+python tools/text_language_check.py --out build/checks --target both
+python tools/manual_check.py --out build/checks --target both
+python tools/remaining_check.py --out build/checks --target both
 ```
 
 [CREATIVE_TOOLS.md](CREATIVE_TOOLS.md) beschreibt die separate G’MIC-Installation
@@ -164,7 +163,7 @@ für den optionalen Test. [TEXT.md](TEXT.md) beschreibt die Font-Fixture und den
 Cargo-Testaufruf. Cargo verwendet den eingecheckten Lockfile; die Lizenztexte werden
 mit den Binärdateien beziehungsweise Installationspaketen bereitgestellt.
 
-Lokale Ergebnisdateien stehen unter `build/paintcraft-next/`:
+Lokale Ergebnisdateien stehen unter `build/checks/`:
 `baseline-results.json`, `psd-check/results.json`, `creative-check/results.json`,
 `text-language-check/results.json`, `manual-check/results.json`,
 `remaining-check/results.json` und `shaping-tests.log`. Downloads und Testfonts
@@ -220,13 +219,13 @@ einrichten. Der Windows-EXE-Launcher benötigt dort kein separat installiertes
 Die unveränderte BoltBait-`Pastel.dll` erzeugte im direkten Windows-/Wine-Vergleich
 identische, gegenüber der Eingabe veränderte Pixel. Vier Prüfungen im nativen
 Linux-Editor decken Menüausführung mit Undo/Redo, Dateiformat-Roundtrip einschließlich
-Alpha/DPI, Abbruch und XAML-Formen ab (`tools/paintcraft_wine_check.py`). Die
+Alpha/DPI, Abbruch und XAML-Formen ab (`tools/wine_check.py`). Die
 separat gebaute FileType-Fixture verwendet die originale Paint.NET-API; sie
 beweist keine Kompatibilität mit beliebigen fremden Codecs.
 
 Ein blockierter Codec blieb unter laufendem Heartbeat aktiv und beendete sich
 unter Windows und Wine ungefähr fünf Sekunden nach dessen Stillstand, ohne
-Ergebnisbytes zu liefern (`tools/paintcraft_pdn_watchdog_check.py`). Dynamic Draw
+Ergebnisbytes zu liefern (`tools/pdn_watchdog_check.py`). Dynamic Draw
 v4.0 bestand auf beiden Plattformen das Laden der Original-DLL, die Konstruktion
 ihres eigenen Dialogs und den Render-Einstieg. Interaktive Plugin-Bedienung und
 Tablets sind damit noch nicht abgenommen.
@@ -257,7 +256,7 @@ Das sind 45 gezielte Prüfungen; die früheren vollständigen PSD-/Text-/G’MIC
 Abnahmen werden nicht erneut hinzugezählt. Zusätzlich sind der direkte
 Pastel-Pixelvergleich und die Originaldialog-Konstruktion in den lokalen
 Wine-Testprotokollen festgehalten. Der Web-Build ist weiterhin keine interaktive
-Browser-Abnahme. Ergebnisdateien liegen unter `build/paintcraft-next/`, insbesondere
+Browser-Abnahme. Ergebnisdateien liegen unter `build/checks/`, insbesondere
 `brush-preset-check/results.json`, `wine-check/results.json`, `watchdog-win.log`,
 `watchdog-linux.log`, `remaining-check/results.json` und `creative-check/results.json`.
 

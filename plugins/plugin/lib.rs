@@ -42,7 +42,7 @@
 // `plugin::trap` only executes ud2 -- the host's crash guard catches it and disables the plugin
 // ("Absturz in render (ungültiger Befehl ...)"), like any other fault inside plugin code.
 //
-// Build: python build_rs.py plugin [NAME] (section rust-plugin: cdylib, panic=abort, fat LTO,
+// Build: python tools/plugins.py (plugins/README.md: cdylib, panic=abort, fat LTO,
 // linked against nothing, checked like JFPainter's loader checks it).
 
 #![no_std]

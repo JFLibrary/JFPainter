@@ -1,18 +1,28 @@
-// Real JFPainter browser regressions. Run from RustLib; profiles and files are disposable.
+// Real JFPainter browser regressions on the browser version (`cargo jflib web` ->
+// target/jflib-web/JFPainter); profiles and files are disposable.  From the repository root:
+//   node tests/security_web.mjs [OUT=build/JFPainter-security/after] [--deeper] [--isolated]
+// Playwright: PLAYWRIGHT_MODULE (the playwright package directory) or Node's module resolution;
+// browsers below PLAYWRIGHT_BROWSERS_PATH (default build/browser-engines if it exists), Chromium:
+// CHROME_PATH or an installed Google Chrome, else Playwright's own.
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
+import {existsSync} from 'node:fs';
 import {readFile, mkdir, writeFile} from 'node:fs/promises';
-import {resolve, extname, sep} from 'node:path';
-import {loadPlaywright, chromiumOptions} from '../../../tools/tests/playwright.mjs';
-const root=resolve('.'), build=resolve(process.argv[2]||'build/JFPainter-security/after');
+import {createRequire} from 'node:module';
+import {resolve, join, extname, sep} from 'node:path';
+const root=resolve('.'), web=resolve(root,'target/jflib-web');
+const build=resolve(process.argv.slice(2).find(a=>!a.startsWith('--'))||'build/JFPainter-security/after');
 const deeper=process.argv.includes('--deeper');
 const artifact=resolve(build,deeper?'deeper-browser':'security-browser'); await mkdir(artifact,{recursive:true});
-process.env.PLAYWRIGHT_BROWSERS_PATH ||= resolve(root,'build/browser-engines');
-const pw=loadPlaywright();
+if(!process.env.PLAYWRIGHT_BROWSERS_PATH&&existsSync(resolve(root,'build/browser-engines')))process.env.PLAYWRIGHT_BROWSERS_PATH=resolve(root,'build/browser-engines');
+const pw=createRequire(resolve(root,'package.json'))(process.env.PLAYWRIGHT_MODULE||'playwright');
+const chrome=process.platform==='win32'?[process.env.LOCALAPPDATA,process.env.PROGRAMFILES,process.env['PROGRAMFILES(X86)']].filter(Boolean).some(p=>existsSync(join(p,'Google/Chrome/Application/chrome.exe'))):existsSync('/opt/google/chrome/chrome');
+const chromiumOptions=()=>process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:chrome?{channel:'chrome'}:{};
+assert.ok(existsSync(resolve(web,'JFPainter/index.html')),'no browser version: cargo jflib web');
 const server=createServer(async(req,res)=>{try{
   const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);
-  const filename=resolve(build,'web','.'+(pathname.endsWith('/')?pathname+'index.html':pathname));
-  if(!filename.startsWith(resolve(build,'web')+sep))throw Error('path');
+  const filename=resolve(web,'.'+(pathname.endsWith('/')?pathname+'index.html':pathname));
+  if(!filename.startsWith(web+sep))throw Error('path');
   const bytes=await readFile(filename);
   res.writeHead(200,{'content-type':{'.js':'text/javascript','.html':'text/html','.wasm':'application/wasm','.css':'text/css'}[extname(filename)]||'application/octet-stream','cache-control':'no-store',...(process.argv.includes('--isolated')?{'cross-origin-opener-policy':'same-origin','cross-origin-embedder-policy':'require-corp'}:{})}).end(bytes);
 }catch(e){res.writeHead(404).end(String(e));}});
@@ -39,11 +49,14 @@ for(const engine of ['chromium','firefox']){
   const context=await browser.newContext({viewport:{width:1280,height:850},acceptDownloads:true});
   const page=await context.newPage();const messages=[];page.on('pageerror',e=>messages.push(e.message));page.on('console',m=>{if(m.type()==='error')messages.push(m.text());});
   try{
+    // Chromium's File System Access pickers are native dialogs (handles.js): without them the host
+    // keeps its own dialog and the browser storage, as in Firefox
+    await page.addInitScript(()=>{for(const f of ['showOpenFilePicker','showSaveFilePicker'])Object.defineProperty(window,f,{value:undefined,configurable:true});});
     await page.addInitScript(()=>window.addEventListener('jfgui-ready',()=>window.__jfguiReady=true));
     await page.goto(url+'?agent=1');await page.waitForFunction(()=>window.__jfguiReady,{timeout:45000});
     await until(()=>state(page),s=>value(s,9901)===1,'initial document');
     await action(page,'ui.command',{id:105}); // Close initial, unmodified image.
-    await page.locator('#files').setInputFiles(resolve(root,'apps/PaintCraft/tests/fixtures/a1_rgba.png'));
+    await page.locator('#files').setInputFiles(resolve(root,'tests/fixtures/a1_rgba.png'));
     await until(()=>state(page),s=>value(s,9913)===64&&value(s,9914)===48,'imported image');
     await key(page,'Control+Shift+n');
     await until(()=>state(page),s=>value(s,9903)===2,'new layer');
@@ -124,7 +137,7 @@ for(const engine of ['chromium','firefox']){
     await page.reload();await page.waitForFunction(()=>window.__jfguiReady,{timeout:45000});
     await until(()=>state(page),s=>value(s,9901)===1,'case test initial');
     await action(page,'ui.command',{id:105});
-    const pixels=await readFile(resolve(root,'apps/PaintCraft/tests/fixtures/a1_rgba.png'));
+    const pixels=await readFile(resolve(root,'tests/fixtures/a1_rgba.png'));
     await page.locator('#files').setInputFiles([{name:'Case.png',mimeType:'image/png',buffer:pixels}]);
     await until(()=>state(page),s=>value(s,9901)===1&&value(s,9913)===64,'upper case image');
     await page.locator('#files').setInputFiles([{name:'case.png',mimeType:'image/png',buffer:pixels}]);

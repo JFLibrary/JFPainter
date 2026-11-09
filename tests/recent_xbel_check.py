@@ -2,13 +2,16 @@
 jfgui_RECENT): opening a file adds it with JFPainter as the program, Liste leeren takes only
 JFPainter's entries away, other programs' bookmarks stay.
 
-Run from the repository root: python apps/PaintCraft/tests/recent_xbel_check.py [EXE]
+  python tests/recent_xbel_check.py [--target win|linux|both] [--no-build]
+(the Linux program from Windows through WSL, its files in the same temporary folder)
 """
-import os
+import argparse
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
+import jfp
 
 FOREIGN = """<?xml version="1.0" encoding="UTF-8"?>
 <xbel version="1.0" xmlns:bookmark="http://www.freedesktop.org/standards/desktop-bookmarks" xmlns:mime="http://www.freedesktop.org/standards/shared-mime-info">
@@ -27,40 +30,47 @@ click menuitem:"Liste leeren"
 
 
 def main():
-    exe = sys.argv[1] if len(sys.argv) > 1 else "build/" + ("win/JFPainter.exe" if os.name == "nt" else "linux/JFPainter")
-    exe = str(Path(exe).resolve())
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--target", default="both", choices=["win", "linux", "both"])
+    ap.add_argument("--no-build", action="store_true")
+    a = ap.parse_args()
+    targets = jfp.targets(a.target)
+    if not a.no_build:
+        jfp.build(targets)
     fails = 0
 
     def check(ok, what):
         nonlocal fails
         fails += not ok
-        print(("ok   " if ok else "FAIL ") + what)
+        print(("ok   " if ok else "FAIL ") + f"[{target}] " + what)
 
-    with tempfile.TemporaryDirectory() as d:
-        xbel = Path(d, "recent.xbel")
-        xbel.write_text(FOREIGN, encoding="utf-8")
-        script = Path(d, "clear.uis")
-        script.write_text(CLEAR, encoding="utf-8")
-        png = "apps/PaintCraft/tests/fixtures/a1_rgba.png"
-        env = dict(os.environ, jfgui_RECENT=str(xbel))
-        run = lambda *args: subprocess.run([exe, "--config", d, *args], env=env, capture_output=True, text=True, timeout=60)
+    for target in targets:
+        with tempfile.TemporaryDirectory() as d:
+            p = jfp.wsl_path if target != jfp.HOST else str
+            xbel = Path(d, "recent.xbel")
+            xbel.write_text(FOREIGN, encoding="utf-8")
+            script = Path(d, "clear.uis")
+            script.write_text(CLEAR, encoding="utf-8")
+            png = "tests/fixtures/a1_rgba.png"
+            run = lambda *args: jfp.run_exe(target, jfp.exe(target), ["--config", p(d), *args], timeout=60,
+                                            env={"jfgui_RECENT": p(xbel)})
 
-        # a script without anything to do: the file of the command line is opened at the start
-        empty = Path(d, "empty.uis")
-        empty.write_text("theme light\n", encoding="utf-8")
-        r = run("--open", png, "--script", str(empty))
-        check(r.returncode == 0, f"open: exit {r.returncode} {r.stdout[:200]}")
-        text = xbel.read_text(encoding="utf-8")
-        entry = text.split("a1_rgba.png", 1)[1] if "a1_rgba.png" in text else ""
-        check("a1_rgba.png" in text, "open: the file is in the list")
-        check("JFPainter" in entry.split("</bookmark>", 1)[0], "open: with JFPainter as the program")
-        check("fremd.txt" in text, "open: the other program's bookmark stays")
+            # a script without anything to do: the file of the command line is opened at the start
+            empty = Path(d, "empty.uis")
+            empty.write_text("theme light\n", encoding="utf-8")
+            r = run("--open", png, "--script", p(empty))
+            check(r.returncode == 0, f"open: exit {r.returncode} {r.stdout[:200]}")
+            text = xbel.read_text(encoding="utf-8")
+            entry = text.split("a1_rgba.png", 1)[1] if "a1_rgba.png" in text else ""
+            check("a1_rgba.png" in text, "open: the file is in the list")
+            check("JFPainter" in entry.split("</bookmark>", 1)[0], "open: with JFPainter as the program")
+            check("fremd.txt" in text, "open: the other program's bookmark stays")
 
-        r = run("--open", png, "--script", str(script))
-        check(r.returncode == 0, f"Liste leeren: exit {r.returncode} {r.stdout[:300]}")
-        text = xbel.read_text(encoding="utf-8")
-        check("a1_rgba.png" not in text, "Liste leeren: JFPainter's entry is gone")
-        check("fremd.txt" in text and 'name="Fremd"' in text, "Liste leeren: the other program's bookmark stays")
+            r = run("--open", png, "--script", p(script))
+            check(r.returncode == 0, f"Liste leeren: exit {r.returncode} {r.stdout[:300]}")
+            text = xbel.read_text(encoding="utf-8")
+            check("a1_rgba.png" not in text, "Liste leeren: JFPainter's entry is gone")
+            check("fremd.txt" in text and 'name="Fremd"' in text, "Liste leeren: the other program's bookmark stays")
     print("recent_xbel_check: " + ("ok" if not fails else f"{fails} failed"))
     return 1 if fails else 0
 

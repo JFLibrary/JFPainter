@@ -1,17 +1,26 @@
 // End-to-end JFPainter effect preview benchmarks using its ordinary UI, with saved
-// output equality across scalar, SIMD128 and SIMD128 + four compute workers.
-// SIZES=2048x2048,4096x3072 REPEATS=3 ENGINES=chromium,firefox node ... BUILD
+// output equality across scalar, SIMD128 and SIMD128 + four compute workers, on the browser
+// version (`cargo jflib web` -> target/jflib-web/JFPainter).  From the repository root:
+//   SIZES=2048x2048,4096x3072 REPEATS=3 ENGINES=chromium,firefox MODES=scalar,simd,threads RESUME=1 \
+//   node tests/wasm_compute.mjs [OUT=build/wasm-compute/after]
+// Playwright: PLAYWRIGHT_MODULE (the playwright package directory) or Node's module resolution;
+// browsers below PLAYWRIGHT_BROWSERS_PATH (default build/browser-engines if it exists), Chromium:
+// CHROME_PATH or an installed Google Chrome, else Playwright's own.
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
+import {existsSync} from 'node:fs';
 import {readFile,mkdir,writeFile,rename} from 'node:fs/promises';
-import {resolve,extname,sep} from 'node:path';
-import {loadPlaywright, chromiumOptions} from '../../../tools/tests/playwright.mjs';
+import {createRequire} from 'node:module';
+import {resolve,join,extname,sep} from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {cpus} from 'node:os';
-const build=resolve(process.argv[2]||'build/wasm-compute/after'),artifact=resolve(build,'JFPainter-compute');
+const web=resolve('target/jflib-web'),build=resolve(process.argv[2]||'build/wasm-compute/after'),artifact=resolve(build,'JFPainter-compute');
+assert.ok(existsSync(resolve(web,'JFPainter/index.html')),'no browser version: cargo jflib web');
 await mkdir(artifact,{recursive:true});
-process.env.PLAYWRIGHT_BROWSERS_PATH ||= resolve('build/browser-engines');
-const pw=loadPlaywright();
+if(!process.env.PLAYWRIGHT_BROWSERS_PATH&&existsSync(resolve('build/browser-engines')))process.env.PLAYWRIGHT_BROWSERS_PATH=resolve('build/browser-engines');
+const pw=createRequire(resolve('package.json'))(process.env.PLAYWRIGHT_MODULE||'playwright');
+const chrome=process.platform==='win32'?[process.env.LOCALAPPDATA,process.env.PROGRAMFILES,process.env['PROGRAMFILES(X86)']].filter(Boolean).some(p=>existsSync(join(p,'Google/Chrome/Application/chrome.exe'))):existsSync('/opt/google/chrome/chrome');
+const chromiumOptions=()=>process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:chrome?{channel:'chrome'}:{};
 const sizes=(process.env.SIZES||'2048x2048,4096x3072').split(',').map(s=>s.split('x').map(Number));
 const repeats=Number(process.env.REPEATS||3),results=[],references=new Map();
 const effects=[{name:'Gaussian blur',command:472,slot:0,value:12},{name:'Motion blur',command:474,slot:1,value:32}];
@@ -29,8 +38,8 @@ function compiling(){try{return process.platform==='win32'?/rustc\.exe/i.test(ex
 async function idle(){let announced=false;while(compiling()){if(!announced){console.log('Waiting for compiler processes before measurement');announced=true;}await new Promise(r=>setTimeout(r,2000));}}
 const server=createServer(async(req,res)=>{try{
   const url=new URL(req.url,'http://localhost');if(url.pathname==='/favicon.ico'){res.writeHead(204).end();return;}
-  const path=resolve(build,'web','.'+decodeURIComponent(url.pathname.endsWith('/')?url.pathname+'index.html':url.pathname));
-  if(!path.startsWith(resolve(build,'web')+sep))throw Error('path');
+  const path=resolve(web,'.'+decodeURIComponent(url.pathname.endsWith('/')?url.pathname+'index.html':url.pathname));
+  if(!path.startsWith(web+sep))throw Error('path');
   let content=await readFile(path);
   // Slow scalar baselines may exceed the production agent deadline. Only this
   // isolated benchmark host extends it; the shipped loader remains unchanged.
@@ -80,6 +89,8 @@ try{
         if(!pending.length)continue;
         await idle();
         const context=await browser.newContext({viewport:{width:1280,height:800}}),page=await context.newPage(),errors=[];
+        // (Chromium's native File System Access pickers off: the host's own save dialog, as in Firefox)
+        await page.addInitScript(()=>{for(const f of ['showOpenFilePicker','showSaveFilePicker'])Object.defineProperty(window,f,{value:undefined,configurable:true});});
         await page.addInitScript(()=>{addEventListener('jfgui-ready',()=>window.__jfguiReady=true);});
         page.on('pageerror',e=>{errors.push(e.message);console.error(e.message);});page.on('console',m=>{if(m.type()==='error'&&!m.text().includes('404')){errors.push(m.text());console.error(m.text());}});
         await page.goto(`http://127.0.0.1:${server.address().port}/JFPainter/?agent=1&theme=light&compute=${mode}&workers=4`);

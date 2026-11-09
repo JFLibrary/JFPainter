@@ -1,7 +1,7 @@
 # JFPainter source structure
 
-JFPainter is one `no_std` application crate with domain modules under `src/`.
-`build_rs.py` discovers `src/main.rs` and all nested Rust modules automatically.
+JFPainter is one `no_std` application crate with domain modules under `src/`: the library
+crate `jfpainter` (`src/lib.rs`), which the program `JFPainter` (`src/main.rs`) only links.
 There are no flat compatibility aliases at the crate root. Cross-domain imports
 name their owner explicitly, for example `crate::document::model::DocId`.
 
@@ -81,21 +81,26 @@ existing library crates:
   `lib/img_all/psd/document.rs` handles raster-layer PSD/PSB documents. The public
   `img_all::psd::document` API is unchanged.
 
-The application is a package of the repository's Cargo workspace
-(`apps/PaintCraft/Cargo.toml`); `build_rs.py` builds it through Cargo, and
-rust-analyzer reads the workspace directly.
+The application is the package of `Cargo.toml` at the repository's root, with one dependency,
+`jflib` from crates.io; its plugins are a workspace of their own in `plugins/`. rust-analyzer
+reads the package directly.
 
 ## Build and validation
 
-Run from the JFLib root:
+Run from the repository's root:
 
 ```sh
-python build_rs.py check
-python -m unittest discover -s tools/tests -p test_project_sources.py
-python build_rs.py app JFPainter --target both
-python build_rs.py app JFPainter --target web --web-mode scalar
-cargo test --locked --manifest-path lib/text_shape/Cargo.toml --target-dir build/shaping-tests
+cargo build
+cargo build --target x86_64-unknown-linux-gnu
+cargo jflib web --modes scalar
+python tools/plugins.py
+cargo jflib test
+python tools/linux_test.py
 ```
+
+The shaping tests belong to JFLib (`lib/text_shape` there):
+`cargo test --locked --manifest-path lib/text_shape/Cargo.toml --target-dir build/shaping-tests`
+in a JFLib checkout.
 
 For the shaping tests, set `JFPAINTER_SHAPING_FONT` to an installed font with
 Latin, Arabic and Hebrew coverage (for example `C:\Windows\Fonts\arial.ttf`

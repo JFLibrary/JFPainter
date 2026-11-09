@@ -1,7 +1,7 @@
 // qoi -- example file type plugin "QOI" (Quite OK Image format) in Rust
 //                                                         [apps/PaintCraft/plugins/qoi/qoi.s]
 //
-//   python build_rs.py plugin qoi  -> build/<target>/plugins/qoi.dll / .so  (FileTypes folder)
+//   python tools/plugins.py  -> plugins/target/<triple>/release/qoi.dll / libqoi.so  (FileTypes folder)
 //
 // Decoder + encoder (qoiformat.org, specification 1.0): header "qoif", width / height (big
 // endian), channels 3 / 4, colour space; chunks QOI_OP_RGB / RGBA / INDEX / DIFF / LUMA / RUN;

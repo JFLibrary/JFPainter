@@ -3,7 +3,7 @@
 // parallel_for, hash32, a seed property and the alloc crate on the host's allocator (PnAlloc).
 // (No assembly counterpart; plugins/tests/rsdemo.uis checks it against a Python model.)
 //
-//   python build_rs.py plugin rsdemo  -> build/<target>/plugins/rsdemo.dll / .so  (Effects)
+//   python tools/plugins.py  -> plugins/target/<triple>/release/rsdemo.dll / librsdemo.so  (Effects)
 //
 // "Kontrast strecken" (Korrekturen): prepare finds the range lo..hi of every colour channel over
 // the visible pixels (alpha > 0) -- row bands on the host's workers, one result per band, reduced

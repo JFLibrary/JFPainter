@@ -126,8 +126,8 @@ Plugin-Funktionen sind damit noch nicht vollständig abgenommen.
 ## Tests
 
 ```text
-python tools/paintcraft_creative_check.py --out build/paintcraft-next --target both --gmic
-python tools/paintcraft_brush_preset_check.py --out build/paintcraft-next --target both
+python tools/creative_check.py --out build/checks --target both --gmic
+python tools/brush_preset_check.py --out build/checks --target both
 ```
 
 Mit `--original-plugin /pfad/zu/DynamicDraw.dll` erzeugt der Preset-Test zusätzlich
@@ -137,7 +137,7 @@ nativen JFPainter-Versionen eingelesen und zum Zeichnen benutzt. Die Original-DL
 wird weder verändert noch ins Repository kopiert.
 
 Der Test erwartet die separat bereitgestellte Standalone-Version 4.0.5 im ignorierten
-`build/paintcraft-next/gmic-runtime/`: Windows unter
+`build/checks/gmic-runtime/` (`--gmic-runtime` names another): Windows unter
 `win/gmic-4.0.5-qt-win64/gmic_qt.exe`, Linux über `gmic-qt-linux`. Der Linux-Wrapper
 setzt bei der portablen Testinstallation `LD_LIBRARY_PATH`, `QT_PLUGIN_PATH` und
 `QT_QPA_PLATFORM=offscreen`. Ohne `--gmic` werden nur die Bildpinsel geprüft.

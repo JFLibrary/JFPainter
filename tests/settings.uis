@@ -5,7 +5,7 @@
 # clipboard), then an in-process round trip: every persisted value is changed, the file is
 # written (cmd 850), everything goes back to the factory state (cmd 852) and the file is
 # read again (cmd 851 = factory + load).  The real two-process round trip, malformed
-# files and the main window: tools/pn_settings_check.py.
+# files and the main window: tools/settings_check.py.
 # Probes #5900.. (docs/SETTINGS.md §6); dialog window 24624, page list rows #5501..#5508.
 size 1280 800
 cmd 852
