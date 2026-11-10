@@ -305,6 +305,7 @@ pub(crate) const ID_SB_SELSIZE: u32 = 1023; // selection size text
 pub(crate) const ID_SB_UNITS: u32 = 1024; // units combo box (rows: library sub-ids)
 pub(crate) const ID_SB_ZOOM: u32 = 1025; // zoom combo box
 pub(crate) const ID_SB_ZOOM_SLIDER: u32 = 1026; // zoom slider
+pub(crate) const ID_TOOLBAR_SCROLL: u32 = 1035; // tool bar row: rolls sideways on Android and iOS; 1036 its row
 pub(crate) const ID_TOOLROW_SCROLL: u32 = 1030; // tool row: horizontal scroll view of the tool options (U3)
 pub(crate) const ID_TOOLROW_BACK: u32 = 1031; // tool row: page back button
 pub(crate) const ID_TOOLROW_FWD: u32 = 1032; // tool row: page forward button

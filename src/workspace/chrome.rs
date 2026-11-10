@@ -296,7 +296,15 @@ fn help_flyout(ui: &mut Ui) {
 /// chrome_toolbar() -- row 1: file, print, clipboard / selection, history, view toggles
 pub(crate) fn chrome_toolbar(_p: &mut Pn, ui: &mut Ui) {
     ui.next_size(-1, ROW_H);
-    ui.box_begin(0, BOX_H | BOX_XCENTER | BOX_FIXED, 2);
+    // a phone's or a tablet's row rolls sideways with the finger where it is too narrow; on the
+    // desktop it stays as it is however narrow the window (ui.mobile() once jflib has it: > 0.1.0)
+    let roll = cfg!(any(target_os = "android", target_os = "ios"));
+    if roll {
+        ui.scroll_begin(ID_TOOLBAR_SCROLL, SC_H | SC_NOBAR | BOX_XCENTER);
+        ui.box_begin(ID_TOOLBAR_SCROLL + 1, BOX_H | BOX_XCENTER, 2);
+    } else {
+        ui.box_begin(0, BOX_H | BOX_XCENTER | BOX_FIXED, 2);
+    }
     ui.spacer(6);
     ui.focus_group_begin(0); // the row is one Tab stop, the arrows move inside
     for &id in TOOLBAR_ROWS.iter() {
@@ -309,6 +317,10 @@ pub(crate) fn chrome_toolbar(_p: &mut Pn, ui: &mut Ui) {
     cmdbtn(ui, CMD_RULERS);
     ui.focus_group_end();
     ui.box_end();
+    if roll {
+        ui.spacer(6);
+        ui.scroll_end();
+    }
 }
 
 /// chrome_toolrow() -- row 2: "Werkzeug:" with the tool menu, then the tool's options
